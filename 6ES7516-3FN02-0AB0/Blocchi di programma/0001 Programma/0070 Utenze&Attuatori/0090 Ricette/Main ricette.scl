@@ -6,12 +6,9 @@ BEGIN
 	REGION 01 Processo e Trattamento
 	    REGION 01 Termico
 	        REGION 02 Sterilizzatore tubo        
-	                "GestRicetta"(K_MacchinaARicetta := "K_MacchinaARicetta_Sterilizzatore",
-	                              K_CodiceMacchinario:="K_CodiceMacchinario_SterilizzatoreTubo");
-	                
-	                "GestRicetta_SterilizzatoreTubo"(); //Lettura parametri da ricetta
-	            END_REGION ;
-	            
+	            "GestRicetta"(K_MacchinaARicetta := "K_MacchinaARicetta_Sterilizzatore",
+	                          K_CodiceMacchinario := "K_CodiceMacchinario_SterilizzatoreTubo");
+	        END_REGION ;
 	    END_REGION ;
 	    REGION 02 Meccanico 
 	        REGION 01 Spiedinatrice.
