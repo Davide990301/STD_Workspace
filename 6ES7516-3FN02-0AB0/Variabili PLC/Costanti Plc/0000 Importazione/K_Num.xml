@@ -654,7 +654,7 @@
       <SW.Tags.PlcUserConstant ID="6A" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumRicettaPerMacchina</Name>
+          <Name>K_NumRicettaPerMacchina1</Name>
           <Value>1</Value>
         </AttributeList>
         <ObjectList>
