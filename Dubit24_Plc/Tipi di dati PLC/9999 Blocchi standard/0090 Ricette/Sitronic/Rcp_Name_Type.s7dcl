@@ -1,0 +1,5 @@
+﻿TYPE
+    Rcp_Name_Type : STRUCT
+        "Name" : String[30];
+    END_STRUCT;
+END_TYPE

@@ -1,0 +1,14 @@
+﻿TYPE
+    Rcp_DataIn_Type : STRUCT
+        { S7_MLC := "MLC_3ki" }
+        Rcp_Edit : Int;
+        { S7_MLC := "MLC_3s8" }
+        Rcp_Work : Int;
+        { S7_MLC := "MLC_4kt" }
+        Rcp_Dest : Int;
+        { S7_MLC := "MLC_47b" }
+        Enable_changeover_condition : Array[0..9] of Bool;
+        { S7_MLC := "MLC_4Cd" }
+        Enable_Changeover : Bool;
+    END_STRUCT;
+END_TYPE

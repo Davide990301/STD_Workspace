@@ -1,0 +1,72 @@
+﻿TYPE
+    Std_Zona : STRUCT
+        In : STRUCT
+            RichiestaLampadaReset : Bool;
+        END_STRUCT;
+        { S7_MLC := "MLC_4QG" }
+        Gen : STRUCT
+            UpdatePrm_Mem : Bool;
+            UpdatePrm : Bool;
+            ResetLoc_Hmi : Bool;
+            Reset : Bool;
+        END_STRUCT;
+        Prm : STRUCT
+            CentralinaOkDaTempo : _.Std_stTimer := (
+                Preset := 1.0
+            );
+            RitardoCicloAuto : _.Std_stTimer := (
+                Preset := 1.0
+            );
+            RitardoCicloMan : _.Std_stTimer := (
+                Preset := 1.0
+            );
+            RitardoStopDaTempo : _.Std_stTimer;
+        END_STRUCT;
+        Dati : STRUCT
+            BloccoRichiamato : Bool;
+        END_STRUCT;
+        Allarmi : STRUCT
+            Prm : STRUCT
+                PulisciStoricoUtenze : Bool;
+            END_STRUCT;
+            SlotAllarmeDaUtenze : Array[0.._.K_NumSlotAllarmiDaUtenze] of STRUCT
+                Allarme : Bool;
+                AllarmeSilenziato : Bool;
+                TipoNum : Int;
+                TipoNome : String[10];
+                Indice : Int;
+                NumAllarme : Int;
+            END_STRUCT := [
+                (Allarme := (),AllarmeSilenziato := (),TipoNum := (),TipoNome := (),Indice := ()
+                )
+            ];
+            "A" : Array[0.._.K_NumAllarmiPerZone] of _.Std_PrmAllarmeStd := [
+                (),
+                (),
+                ()
+            ];
+            AG : Array[0..15] of _.Std_PrmAllarmeStd;
+            { S7_Setpoint := "True" }
+            WordHMI : Word;
+            { S7_Setpoint := "True" }
+            WordHMI_AG : Word;
+        END_STRUCT;
+        { S7_MLC := "MLC_3gE" }
+        Out : STRUCT
+            Auto : Bool;
+            Man : Bool;
+            Attivo : Bool;
+            StopDaTempo : Bool;
+            Attesa : Bool;
+            AutoDaHmi : Bool;
+            Stato : Int;
+            CumulativoAllarmi : Bool;
+            SirenaSuona : Bool;
+            { S7_Setpoint := "True" }
+            CentralinaOk : Bool;
+        END_STRUCT;
+        Rif_Inc : STRUCT
+            K_Zona_Padre : Int;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

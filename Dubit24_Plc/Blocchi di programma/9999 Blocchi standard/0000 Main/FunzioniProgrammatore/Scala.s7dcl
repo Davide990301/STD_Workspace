@@ -1,0 +1,51 @@
+﻿{
+    S7_IECCheck := "TRUE";
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "Scala" : Void
+    VAR_INPUT
+        ValoreIn : Real;
+        MaxLimitInput : Real;
+        MinLimitInput : Real;
+        MaxLimitOut : Real;
+        MinLimitOut : Real;
+    END_VAR
+    VAR_IN_OUT
+        ValoreOut : Real;
+    END_VAR
+    VAR_TEMP
+        AnologInput : Real;
+        Output_Range : Real;
+        Input_Range : Real;
+        Kangolare : Real;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        REGION Ingressi
+            #AnologInput := #ValoreIn;
+        END_REGION ;
+        REGION limiti ingresso
+            IF #AnologInput > #MaxLimitInput THEN
+                #AnologInput := #MaxLimitInput;
+            END_IF;
+        END_REGION ;
+        REGION Calcolo
+            #Output_Range := #MaxLimitOut - #MinLimitOut;
+            #Input_Range := #MaxLimitInput - #MinLimitInput;
+            #Kangolare := #Output_Range / #Input_Range;
+            
+            #ValoreOut := ((#AnologInput - #MaxLimitInput) * #Kangolare) + #MaxLimitOut;
+        END_REGION ;
+        REGION limiti uscita
+            IF #ValoreOut > #MaxLimitOut THEN
+                #ValoreOut := #MaxLimitOut;
+            END_IF;
+            IF #ValoreOut < #MinLimitOut THEN
+                #ValoreOut := #MinLimitOut;
+            END_IF;
+        END_REGION ;
+    END_NETWORK
+END_FUNCTION

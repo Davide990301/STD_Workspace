@@ -1,0 +1,41 @@
+﻿TYPE
+    Std_Portata : STRUCT
+        In : STRUCT
+            Impulso : Bool;
+        END_STRUCT;
+        Prm : STRUCT
+            LitriPerImpulso : Real := 1.0;
+            Setpoint_Parziale : Real;
+            LitriInVolo : Real;
+            { S7_Setpoint := "False" }
+            UnitàMisura : _.Std_UnitàDiMisura;
+        END_STRUCT;
+        Hmi : STRUCT
+            ResetTotalizzatoreTotale : Bool;
+            ResetTotalizzatoreParziale : Bool;
+        END_STRUCT;
+        Dati : STRUCT
+            PortataAttuale : Real;
+            RimanenteParziale : Real;
+            Impulso : Bool;
+            TriggerConteggioImpulso : Bool;
+            PortataLMin : Real;
+            PortataLSec : Real;
+            { S7_Setpoint := "False" }
+            TDurataImpulso : _.Std_stTimer;
+            MDistanzaImpulsi : Bool;
+            FPDistanzaImpulsi : Bool;
+        END_STRUCT;
+        Allarmi : STRUCT
+            "A" : Array[0.._.K_NumAllarmiPerPortate] of _.Std_PrmAllarmeStd;
+            { S7_Setpoint := "True" }
+            WordHMI : Word;
+        END_STRUCT;
+        Out : STRUCT
+            TotalizzatoreTotaleAttuale : Real;
+            TotalizzatoreParzialeAttuale : Real;
+            TotalizzatoreParzialeRaggiunto : Bool;
+            PortataAttuale : Real;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

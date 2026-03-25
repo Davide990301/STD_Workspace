@@ -1,0 +1,13 @@
+﻿TYPE
+    Rcp_Capper : STRUCT
+        { S7_MLC := "MLC_3VF" }
+        Abilitazione : Bool;
+        AltezzaCarosello : Real;
+        TipoDiTappo : Int;
+        VelocitàBassaOrientatoreTappi : Real;
+        VelocitàAltaOrientatoreTappi : Real;
+        VelocitàVibratoreTappiElevatore : Real;
+        VelocitàElevatoreTappi : Real;
+        VelocitàNastroTappi : Real;
+    END_STRUCT;
+END_TYPE

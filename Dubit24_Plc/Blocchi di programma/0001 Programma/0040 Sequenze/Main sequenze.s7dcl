@@ -1,0 +1,13 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "Main sequenze" : Void
+    VAR_TEMP
+        Indice_SequenzaAttuale : Int;
+        Hmi_SequenzaAttuale : Int;
+        Hmi_PassoAttuale : Int;
+    END_VAR
+
+END_FUNCTION

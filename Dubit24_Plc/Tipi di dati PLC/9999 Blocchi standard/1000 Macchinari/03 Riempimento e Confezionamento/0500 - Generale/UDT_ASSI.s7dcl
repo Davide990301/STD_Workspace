@@ -1,0 +1,211 @@
+﻿TYPE
+    UDT_ASSI : STRUCT
+        { S7_MLC := "MLC_3dv" }
+        StsFlag : STRUCT
+            ErrorPb : Bool;
+            OffsetDetect : Bool;
+            SetUpData : Bool;
+            ByPassOverTravel : Bool;
+            ByPassAxisAlarm : Bool;
+            Spare2 : Bool;
+            Spare1 : Bool;
+            SetUpEnable : Bool;
+            EndTrav_NEG : Bool;
+            Slow_NEG : Bool;
+            EndTrav_POS : Bool;
+            Slow_POS : Bool;
+            AppReach : Bool;
+            PosReach : Bool;
+            MinSpeed : Bool;
+            MotDirection : Bool;
+            AppInProgress : Bool;
+            JOGMODE_REQ : Bool;
+            AUTOMODE_REQ : Bool;
+            SAUTO_REQ : Bool;
+            Jog_P : Bool;
+            Jog_N : Bool;
+            PosInProgress : Bool;
+            StartPosition : Bool;
+            PosReached : Bool;
+            PosResch2 : Bool;
+            AxesZeroSpeed : Bool;
+            CmdHalt : Bool;
+            DoorEnable : Bool;
+            AxisTestMode : Bool;
+            Finecorsa_Tutto_Basso : Bool;
+            Finecorsa_Tutto_Alto : Bool;
+        END_STRUCT;
+        { S7_MLC := "MLC_527" }
+        XRealData : STRUCT
+            ActPos : DInt;
+            PrgPos : DInt;
+            DistToGo : DInt;
+            Speed : DInt;
+        END_STRUCT;
+        { S7_MLC := "MLC_3jw" }
+        XPrgData : STRUCT
+            ZeroOffset : DWord;
+            Cnt_Turn : Int;
+            StepTurn : Int;
+            EndTravelN : DInt;
+            SlowN : DInt;
+            EndTravelP : DInt;
+            SlowP : DInt;
+            InPosItion : Int;
+            InApproch : Int;
+            DeadBand : Int;
+            KApp : Int;
+            VAppMax : Int;
+            KPos : Int;
+            VposMax : Int;
+            KTim : Int;
+            Tacc : Int;
+            AxesMaxSpeed : Int;
+            WindMinSpeed : Int;
+            MinSpeedValue : Int;
+            OldAxesPos : DInt;
+            RowStep : Real;
+            Area2 : DInt;
+            FwErrMinValue : Int;
+            OvrSpeedErrValue : Int;
+            StopErrorValue : Int;
+            KPFollowError : Int;
+            AxisMaxQuote : DInt;
+            Spare : DWord;
+            Spare13101 : DWord;
+        END_STRUCT;
+        { S7_MLC := "MLC_4w6" }
+        DataTemp : STRUCT
+            RealEncCnt : DWord;
+            OldValue : Word;
+            Cnt_Turn : Real;
+            StepTurn : Real;
+            KFactor : Real;
+            Speed_CntMin : Real;
+            DeltaPos : DInt;
+            KSpeedFactor : DInt;
+            SelSpeedMax : DInt;
+            PickingQuote : DInt;
+            LastFollowError : DInt;
+            WaitingQuote : DInt;
+            QuotaPerTraslazione : DInt;
+            QuotaScarico : DInt;
+            QuotaScarico2 : DInt;
+            AuxRealEncoderQuote : DInt;
+            spare9 : DInt;
+            LevelDetect : DInt;
+        END_STRUCT;
+        { S7_MLC := "MLC_3H5" }
+        RampGen : STRUCT
+            RampFlag : STRUCT
+                RmpUpReq : Bool;
+                RampDwnReq : Bool;
+                RampNeed : Bool;
+                RmpEnable : Bool;
+                Spare : Bool;
+                RampUp : Bool;
+                RampDown : Bool;
+                SlopeChange : Bool;
+                Spare1 : Bool;
+            END_STRUCT;
+            ReqSpeed : Int;
+            ActSpeed : Int;
+            SlopeCnt : Int;
+            RampTiming : Int;
+            RampInc : Int;
+        END_STRUCT;
+        AxesSpeed : STRUCT
+            SpeedApp : Int;
+            SpeedPos : Int;
+            AxesSpeed : Int;
+            "OverRide" : Int;
+            Override1 : Int;
+            Override2 : Int;
+            Volume_Attuale : Int;
+            DrvCmd : STRUCT
+                DrvEnable : Bool;
+                AutoMode : Bool;
+                SAutoMode : Bool;
+                ManuMode : Bool;
+                EmgzStop : Bool;
+                CmdJogP : Bool;
+                CmdJogN : Bool;
+                Slow : Bool;
+                CmdStop : Bool;
+                FwErrorEnable : Bool;
+                StopErrEnable : Bool;
+                OverSpeedEnable : Bool;
+                FwError : Bool;
+                OvrSpeedError : Bool;
+                StopError : Bool;
+                Spare : Bool;
+                JogMotionReq : Bool;
+                DelayJogMotionStop : Bool;
+                AxisRampEnable : Bool;
+                CmdMotionFw : Bool;
+                CmdMotionBk : Bool;
+                Spare6 : Bool;
+                Spare7 : Bool;
+                Spare8 : Bool;
+                Spare9 : Bool;
+                Spare10 : Bool;
+                Spare11 : Bool;
+                Spare12 : Bool;
+                Spare13 : Bool;
+                Spare14 : Bool;
+                Spare15 : Bool;
+                Spare16 : Bool;
+            END_STRUCT;
+            DriverData : STRUCT
+                CmdWord : Word;
+                CmdSpeed : Int;
+                CtrlWord : Word;
+                Spare : Word;
+            END_STRUCT;
+            SPare : DInt;
+            SPare1 : DInt;
+            SPare11 : DInt;
+            SPare12 : DInt;
+            SPare13 : DInt;
+        END_STRUCT;
+        { S7_MLC := "MLC_59z" }
+        MisRequest : STRUCT
+            Req1 : Bool;
+            Req2 : Bool;
+            Req3 : Bool;
+            Req4 : Bool;
+            Req5 : Bool;
+            Req6 : Bool;
+            Req7 : Bool;
+            Req8 : Bool;
+            Req9 : Bool;
+            Req10 : Bool;
+            Req11 : Bool;
+            Req12 : Bool;
+            Req13 : Bool;
+            Req14 : Bool;
+            Req15 : Bool;
+            Req16 : Bool;
+            spare : Int;
+        END_STRUCT;
+        { S7_MLC := "MLC_Pe" }
+        MissionFlag : STRUCT
+            Mis_1 : Bool;
+            Mis_2 : Bool;
+            Mis_3 : Bool;
+            Mis_4 : Bool;
+            Mis_5 : Bool;
+            Mis_6 : Bool;
+            Mis_7 : Bool;
+            Mis_8 : Bool;
+            Mis_9 : Bool;
+            Mis_10 : Bool;
+            Mis_11 : Bool;
+            Mis_12 : Bool;
+            Mis_13 : Bool;
+            Mis_14 : Bool;
+            Mis_15 : Bool;
+            NoMissionInProgr : Bool;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

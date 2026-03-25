@@ -1,0 +1,15 @@
+﻿TYPE
+    Std_eValveType_MA_01_02 : STRUCT
+        Valve_4_3_G : Int := 1;
+        Valve_4_3_B : Int := 2;
+        Valve_4_3_E : Int := 3;
+        Valve_2x3_2_O : Int := 4;
+        Valve_2x3_2_G : Int := 5;
+        Valve_3_2_O_and_3_2_G : Int := 6;
+        Valve_4_2_bistable : Int := 7;
+        Valve_2x2_2_G : Int := 8;
+        Valve_4_2_Mono : Int := 9;
+        Valve_4_3_G_MA02 : Int := 14;
+        Valve_2x3_3_G_MA02 : Int := 15;
+    END_STRUCT;
+END_TYPE

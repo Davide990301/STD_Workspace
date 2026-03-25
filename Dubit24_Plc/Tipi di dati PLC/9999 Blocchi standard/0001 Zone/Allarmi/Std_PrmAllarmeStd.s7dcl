@@ -1,0 +1,14 @@
+﻿TYPE
+    Std_PrmAllarmeStd : STRUCT
+        { S7_MLC := "MLC_3XP" }
+        Abilitato : Bool;
+        { S7_MLC := "MLC_3rQ" }
+        Stato : Bool;
+        { S7_MLC := "MLC_4wE" }
+        Silenziato : Bool;
+        { S7_MLC := "MLC_4xC" }
+        EnWarnHmi : Bool;
+        { S7_MLC := "MLC_4NZ" }
+        EnCadutaCiclo : Bool;
+    END_STRUCT;
+END_TYPE

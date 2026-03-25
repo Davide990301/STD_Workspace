@@ -1,0 +1,16 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK Conteggi
+    VAR
+        { S7_Setpoint := "False" }
+        "C" : Array[0.._.K_NumConteggio] of _.Std_Conteggi;
+    END_VAR
+
+        "C"[0].Dati.MemStatoIngConteggio := FALSE;
+        "C"[0].Dati.ActConteggio := 0;
+        "C"[0].Dati.SimulazioneIngresso := FALSE;
+
+END_DATA_BLOCK

@@ -1,0 +1,16 @@
+﻿TYPE
+    "Std_ParametriMacchina(010102)" : STRUCT
+        Temperatura : STRUCT
+            Online : Real;
+            Offline : Real;
+        END_STRUCT;
+        MinimaTempSteriliz : STRUCT
+            Online : Real;
+            Offline : Real;
+        END_STRUCT;
+        LivelloSerbatoio : STRUCT
+            Online : Real;
+            Offline : Real;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

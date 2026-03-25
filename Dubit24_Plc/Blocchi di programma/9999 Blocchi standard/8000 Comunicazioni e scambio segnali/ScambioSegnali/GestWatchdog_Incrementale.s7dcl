@@ -1,0 +1,68 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION_BLOCK "GestWatchdog_Incrementale"
+    VAR_INPUT
+        Watchdog_Recive : DInt;
+        Reset : Bool;
+    END_VAR
+    VAR_OUTPUT
+        Watchdog_Send : DInt;
+    END_VAR
+    VAR_IN_OUT
+        Allarme : Bool;
+    END_VAR
+    VAR
+        Watchdog_Prec : DInt;
+        { S7_Setpoint := "False" }
+        TimerAllarme : _.Std_stTimer;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        IF #Watchdog_Recive > 1000000 THEN
+            #Watchdog_Send += 1;
+            IF #Watchdog_Send > 1000000 THEN
+                #Watchdog_Send := 0;
+            END_IF;
+        ELSE
+            #Watchdog_Send := #Watchdog_Recive + 1;
+        END_IF;
+           
+        #TimerAllarme.Preset := 6.0;
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkTitle := "MLC_5Bq"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            "T_ON"(
+                I_CicloCPU := "CicloScansioneCPU_I".O_rCicloCpu,
+                I_StartConteggio := wire#w1,
+                IO_DatiTimer := #TimerAllarme
+            )
+        END_RUNG
+        RUNG wire#powerrail
+            I_Contact( #Reset )
+            { S7_Templates := "SrcType := DInt" }
+            EQ_Contact(
+                in1 := #Watchdog_Prec,
+                in2 := #Watchdog_Send
+            )
+        END_RUNG wire#w1
+        RUNG wire#powerrail
+            Contact( #TimerAllarme.O )
+            S_SR(
+                operand := #Allarme,
+                r1 := #Reset
+            )
+        END_RUNG
+    END_NETWORK
+    { S7_Language := "SCL" }
+    NETWORK
+        #Watchdog_Prec := #Watchdog_Send;
+    END_NETWORK
+END_FUNCTION_BLOCK

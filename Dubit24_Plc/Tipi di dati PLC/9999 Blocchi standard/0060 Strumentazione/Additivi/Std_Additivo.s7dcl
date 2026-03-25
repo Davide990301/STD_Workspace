@@ -1,0 +1,38 @@
+﻿TYPE
+    Std_Additivo : STRUCT
+        In : STRUCT
+            appo : Bool;
+        END_STRUCT;
+        Prm : STRUCT
+            { S7_MLC := "MLC_4MT" }
+            PercentualeAdditivoRich : Real;
+        END_STRUCT;
+        Dati : STRUCT
+            appo : Bool;
+        END_STRUCT;
+        Allarmi : STRUCT
+            { S7_Setpoint := "False" }
+            "A" : Array[0.._.K_NumAllarmiPerAdditivi] of _.Std_PrmAllarmeStd := [
+                (),
+                { S7_MLC := "MLC_3aJ" }
+                (),
+                { S7_MLC := "MLC_hm" }
+                (),
+                { S7_MLC := "MLC_MX" }
+                ()
+            ];
+            WordHMI : Word := 16#0000;
+        END_STRUCT;
+        Out : STRUCT
+            { S7_MLC := "MLC_3iZ" }
+            AttualeAdditivo : Real;
+            Allarme : Bool;
+        END_STRUCT;
+        Rif_Inc : STRUCT
+            K_Zona : Int;
+            K_Analogica : Int;
+            K_Motore : Int;
+            K_Pid : Int;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

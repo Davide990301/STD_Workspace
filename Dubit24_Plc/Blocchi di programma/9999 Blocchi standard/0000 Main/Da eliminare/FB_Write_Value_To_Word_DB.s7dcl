@@ -1,0 +1,15 @@
+﻿{
+    S7_Author := "JEBU";
+    S7_Family := "VTEMdc";
+    S7_Optimized := "FALSE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "1.0"
+}
+DATA_BLOCK FB_Write_Value_To_Word_DB : FB_Write_Value_To_Word
+    iValue := 0;
+    iStartBit := 0;
+    iEndBit := 15;
+    xError := FALSE;
+    wDataWord := 16#0000;
+    wData := 16#0000;
+END_DATA_BLOCK

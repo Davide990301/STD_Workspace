@@ -1,0 +1,12 @@
+﻿TYPE
+    Std_StatoUtenza : STRUCT
+        Stato : Int;
+        { S7_MLC := "MLC_36s" }
+        K : Int;
+        {
+            S7_MLC := "MLC_38W";
+            S7_Setpoint := "False"
+        }
+        ValoreAttuale : _.Std_ValoreConUm;
+    END_STRUCT;
+END_TYPE

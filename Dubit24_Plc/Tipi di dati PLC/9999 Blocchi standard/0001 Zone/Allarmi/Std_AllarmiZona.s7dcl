@@ -1,0 +1,10 @@
+﻿TYPE
+    Std_AllarmiZona : STRUCT
+        { S7_MLC := "MLC_36K" }
+        Stato : Bool;
+        { S7_MLC := "MLC_39D" }
+        Silenziato : Bool;
+        { S7_MLC := "MLC_4pZ" }
+        Tipo : Byte;
+    END_STRUCT;
+END_TYPE

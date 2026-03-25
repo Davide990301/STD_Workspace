@@ -1,0 +1,193 @@
+﻿TYPE
+    Std_Pid : STRUCT
+        In : STRUCT
+            ChiudiPid : Bool;
+            ApriPid : Bool;
+            "%ApriPid" : Real;
+            EsclusioneAllarmi : Bool;
+            EnLimitaMinUscita : Bool;
+            EnLimitaMaxUscita : Bool;
+            LimitaMinUscita : Bool;
+            LimitaMaxUscita : Bool;
+            K_Motore1 : Int;
+            K_Motore2 : Int;
+            K_Valvola1 : Int;
+            K_Valvola2 : Int;
+            K_Analogica_Uscita : Int;
+        END_STRUCT;
+        Prm : STRUCT
+            MinOut : Real;
+            MaxOut : Real := 100.0;
+            LimitMinOut : Real;
+            LimitMaxOut : Real;
+            EnResettaComponenti : Bool;
+            ResettaComponentiConCmdMan : Bool;
+            PermettiCadutaCicloAutomatico : Bool;
+            ComandaUtenzaInUscita : Bool;
+            K_TipoAccoppiamentoUscitePid : Int;
+            DeadbandAccoppiamentoUscite : Real;
+            RampaSetpoint : STRUCT
+                Abilitazione : Bool;
+                RampUpRate : Real;
+                RampDownRate : Real;
+            END_STRUCT;
+            { S7_Setpoint := "False" }
+            UnitàMisura : _.Std_UnitàDiMisura := (
+                Out := (
+                    UmCode := 3
+                )
+            );
+            FF : STRUCT
+                interpolazione : Array[0..20] of STRUCT
+                    Setpoint : Real;
+                    Valore : Real;
+                END_STRUCT;
+                RicercaValore : STRUCT
+                    Abilitazione : Bool := FALSE;
+                    UscitaDiComando : Real := -2.6;
+                END_STRUCT;
+            END_STRUCT;
+            BIAS : STRUCT
+                DeadBand : Real := 0.3;
+                MaxLimit_Out : Real := 10.0;
+                MinLimit_Out : Real := -10.0;
+                KCorr : Real := 0.0009943267;
+                K : Real := 0.0012;
+            END_STRUCT;
+            EquilibriumSeeking : STRUCT
+                { S7_Setpoint := "False" }
+                FrequenzaAvvioTest : _.Std_stTimer := (
+                    Preset := 300.0
+                );
+                TimeoutRicerca : _.Std_stTimer := (
+                    Preset := 120.0
+                );
+                { S7_Setpoint := "False" }
+                DurataGradinoVariazione : _.Std_stTimer := (
+                    Preset := 1.0
+                );
+                DurataVariazioneAnalogica : _.Std_stTimer := (
+                    Preset := 1.0
+                );
+                { S7_Setpoint := "True" }
+                VariazioneMinimaAnalogica : Real := 1.0;
+                DirezioneRicercaPos : Bool := False;
+                VariazioneSulComando : Real := 0.5;
+            END_STRUCT;
+        END_STRUCT;
+        Hmi : STRUCT
+            Man : Bool;
+            Auto : Bool;
+            Stop : Bool;
+            ReinizzializzaComponenti : Bool;
+            ValoreIntegraleAttuale : Real;
+            ValoreDerivataAttuale : Real;
+            Sp_Ki : Real;
+            Sp_Kd : Real;
+            Sp_Kp : Real;
+            AttualeRifAnalog : Real;
+            InversionePid : Bool;
+            SetpointPID : Real;
+            SetpointFF : Real;
+            SetpointFF_DaPid : Bool := True;
+            InterpolazioniFF : STRUCT
+                IndiceHmiPrec : Int;
+                IndiceHmi : Int;
+                Setpoint : Real;
+                Valore : Real;
+            END_STRUCT;
+            StatoUscitaPID : Real;
+            Erorre : Real;
+            AperturaManReq : Real;
+            AvviaAutoTuning : Bool;
+            AutotuningRichiesto : Bool;
+            AutotuningInCorso : Bool;
+            AutotuningProgress : Real;
+            Diagnostica : STRUCT
+                "0-PIDForzatoChiusoDaPlc" : Bool;
+                "1-PIDForzatoApertoDaPlc" : Bool;
+                "2-PidChiusoCausaCicloAutomatico" : Bool;
+                "3-AllarmiPidEsclusi" : Bool;
+                "4-ResetIntegraleInCorso" : Bool;
+                "5-SuperamentoMassimoSp" : Bool;
+                "6-SuperamentoMinimoSp" : Bool;
+                "7-TroppoTempoFuoriSetpoint" : Bool;
+                "8-LimiteMinimaUscitaPIDRichiestaPlc" : Bool;
+                "9-LimiteMassimaUscitaPIDRichiestaPlc" : Bool;
+                "10-UtenzaInUscitaInStop" : Bool;
+                "11-EquilibriumSeekingInCorso" : Bool;
+                "12-AutotuningInCorso" : Bool;
+            END_STRUCT;
+            VisualizzazioniHMI : STRUCT
+                LimiteMinimaUscita : Bool;
+                LimiteMassimaUscita : Bool;
+                VisualizzaRampaSetpoint : Bool;
+            END_STRUCT;
+            AbilitazionePID : Bool;
+            AbilitazioneFF : Bool;
+            AbilitazioneBIAS : Bool;
+            AbilitazioneEquilibriumSeeking : Bool;
+        END_STRUCT;
+        Dati : STRUCT
+            SetpointPrecedente : Real;
+            ModePrecedente : Int;
+            AttendiTermineAutotuning : Bool;
+            ReinizializzaComponenti : Bool;
+            EquilibriumSeeking : STRUCT
+                InCorso : Bool;
+                Setpoint : Real;
+            END_STRUCT;
+            StabilizzazioneSetpoint : STRUCT
+                Setpoint_Precedente : Real := 40.0;
+                SetpointStabile_Preset : Int := 100;
+                SetpointStabile_Attuale : Int := -30605;
+                Setpoint_Discesa : Bool := TRUE;
+                Setpoint_Salita : Bool := FALSE;
+                SetpointStabile_Raggiunto : Bool := FALSE;
+            END_STRUCT;
+            StabilizzazioneAnalogica : STRUCT
+                Attuale_Precedente : Real := 0.0;
+                AttualeStabile_Preset : Int := 250;
+                AttualeStabile_Attuale : Int := 27020;
+                Attuale_Discesa : Bool := TRUE;
+                Attuale_Salita : Bool := FALSE;
+                AttualeStabile_Raggiunto : Bool := TRUE;
+            END_STRUCT;
+            Errore : Real := 40.0;
+            UltimoErroreMedioNelTempo : Real := 40.0;
+            SommaErroreNelTempo : Real := 3240.0;
+            NumeroMedieCalcolte : Real := 81.0;
+        END_STRUCT;
+        Allarmi : STRUCT
+            { S7_Setpoint := "False" }
+            "Timer" : _.Std_stTimer;
+            PresetSoglie : _.Std_Pid_Allarmi;
+            { S7_Setpoint := "False" }
+            "A" : Array[0.._.K_NumAllarmiPerPid] of _.Std_PrmAllarmeStd := [
+                (),
+                (),
+                (),
+                ()
+            ];
+            { S7_Setpoint := "True" }
+            WordHMI : Word;
+        END_STRUCT;
+        Out : STRUCT
+            Uscita_DaPid : Real := 0.0;
+            Uscita_DaFF : Real := -1.990769;
+            Uscita_DaBIAS : Real := 0.0;
+            TotaleUscitaAttuale : Real := -1.990769;
+            VelRichiestaMotore : Int;
+            "Paw" : Int;
+        END_STRUCT;
+        Rif_Inc : STRUCT
+            K_Analogica : Int;
+            K_Motore1 : Int;
+            K_Motore2 : Int;
+            K_Valvola1 : Int;
+            K_Valvola2 : Int;
+            K_Zona : Int;
+            K_Analogica_Uscita : Int;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

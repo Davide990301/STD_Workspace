@@ -1,0 +1,30 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK TimerZona
+    VAR RETAIN
+        { S7_Setpoint := "False" }
+        DeltaP_Filtri : _.Std_stTimer;
+    END_VAR
+
+    VAR
+        DeltaT_UscitaSterilizzazione : _.Std_stTimer;
+        DeltaT_UscitaSosta : _.Std_stTimer;
+    END_VAR
+
+        DeltaP_Filtri.IN := FALSE;
+        DeltaP_Filtri.O := FALSE;
+        DeltaP_Filtri.Preset := 5.0;
+        DeltaP_Filtri.TempoTrascorso := 0.0;
+        DeltaT_UscitaSterilizzazione.IN := FALSE;
+        DeltaT_UscitaSterilizzazione.O := FALSE;
+        DeltaT_UscitaSterilizzazione.Preset := 5.0;
+        DeltaT_UscitaSterilizzazione.TempoTrascorso := 0.0;
+        DeltaT_UscitaSosta.IN := FALSE;
+        DeltaT_UscitaSosta.O := FALSE;
+        DeltaT_UscitaSosta.Preset := 5.0;
+        DeltaT_UscitaSosta.TempoTrascorso := 0.0;
+
+END_DATA_BLOCK

@@ -1,0 +1,8 @@
+﻿TYPE
+    Std_Utente : STRUCT
+        User : String[10];
+        Psw : String[10];
+        Livello : Int;
+        TimeOut : Real;
+    END_STRUCT;
+END_TYPE

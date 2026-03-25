@@ -1,0 +1,6 @@
+﻿TYPE
+    Campionatura : STRUCT
+        OrarioCampionatura : Date_And_Time;
+        MetriCubi : Real;
+    END_STRUCT;
+END_TYPE

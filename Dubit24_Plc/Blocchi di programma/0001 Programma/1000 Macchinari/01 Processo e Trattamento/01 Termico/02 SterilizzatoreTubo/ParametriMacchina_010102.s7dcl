@@ -1,0 +1,42 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK ParametriMacchina_010102
+    VAR RETAIN
+        { S7_Setpoint := "False" }
+        LavaggioAcido : _."Std_ParametriMacchina(010102)";
+        { S7_Setpoint := "False" }
+        LavaggioSoda : _."Std_ParametriMacchina(010102)";
+        { S7_Setpoint := "False" }
+        Risciacquo : _."Std_ParametriMacchina(010102)";
+        Lavoro : _."Std_ParametriMacchina(010102)";
+    END_VAR
+
+        LavaggioAcido.Temperatura.Online := 50.0;
+        LavaggioAcido.Temperatura.Offline := 50.0;
+        LavaggioAcido.MinimaTempSteriliz.Online := 0.0;
+        LavaggioAcido.MinimaTempSteriliz.Offline := 0.0;
+        LavaggioAcido.LivelloSerbatoio.Online := 50.0;
+        LavaggioAcido.LivelloSerbatoio.Offline := 50.0;
+        LavaggioSoda.Temperatura.Online := 75.0;
+        LavaggioSoda.Temperatura.Offline := 75.0;
+        LavaggioSoda.MinimaTempSteriliz.Online := 0.0;
+        LavaggioSoda.MinimaTempSteriliz.Offline := 0.0;
+        LavaggioSoda.LivelloSerbatoio.Online := 50.0;
+        LavaggioSoda.LivelloSerbatoio.Offline := 50.0;
+        Risciacquo.Temperatura.Online := 0.0;
+        Risciacquo.Temperatura.Offline := 0.0;
+        Risciacquo.MinimaTempSteriliz.Online := 0.0;
+        Risciacquo.MinimaTempSteriliz.Offline := 0.0;
+        Risciacquo.LivelloSerbatoio.Online := 50.0;
+        Risciacquo.LivelloSerbatoio.Offline := 50.0;
+        Lavoro.Temperatura.Online := 116.5;
+        Lavoro.Temperatura.Offline := 114.0;
+        Lavoro.MinimaTempSteriliz.Online := 114.0;
+        Lavoro.MinimaTempSteriliz.Offline := 112.0;
+        Lavoro.LivelloSerbatoio.Online := 85.0;
+        Lavoro.LivelloSerbatoio.Offline := 75.0;
+
+END_DATA_BLOCK

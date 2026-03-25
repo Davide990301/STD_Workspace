@@ -1,0 +1,12 @@
+﻿TYPE
+    Std_Popup : STRUCT
+        RichiestaAperturaPopup : Bool;
+        RichiestaAperturaPopup_Memo : Bool;
+        PopupDaConfermare : Bool;
+        AckOperatore_Inviato : Bool;
+        AckOperatore_Ricevuto : Bool;
+        NackOperatore_Inviato : Bool;
+        NackOperatore_Ricevuto : Bool;
+        ENO_Blocco : Bool;
+    END_STRUCT;
+END_TYPE

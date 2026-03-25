@@ -1,0 +1,17 @@
+﻿MultiLingualTexts:
+  - id: MLC_4ty
+    it-IT: Load recipe in work (changeover)
+  - id: MLC_dK
+    it-IT: Load recipe in edit recipe
+  - id: MLC_3s3
+    it-IT: Load recipe in edit from work recipe
+  - id: MLC_3em
+    it-IT: Save recipe in archive
+  - id: MLC_3Zm
+    it-IT: Save recipe in work recipe (update)
+  - id: MLC_aL
+    it-IT: Copy recipe
+  - id: MLC_4Qy
+    it-IT: Updates the RCP_GEN_list of the recipes generic data reading from the archive
+  - id: MLC_3Tp
+    it-IT: Alarm reset from machine

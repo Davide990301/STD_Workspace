@@ -1,0 +1,93 @@
+﻿TYPE
+    Std_Paratia : STRUCT
+        In : STRUCT
+            SetpointAuto : Real;
+            PulsanteIncrementa : Bool;
+            PulsanteDecrementa : Bool;
+            TermicoIntervenuto : Bool;
+            FinecorsaPositivo : Bool;
+            FinecorsaNegativo : Bool;
+            AbilitazioneMovimento : Bool;
+        END_STRUCT;
+        Prm : STRUCT
+            IsteresiComando : Real;
+            { S7_Setpoint := "False" }
+            UnitaMisura : _.Std_UnitàDiMisura;
+            { S7_Setpoint := "True" }
+            AbilitazioneInterpolazione : Bool := False;
+            Interpolazione : Array[0..5] of STRUCT
+                Setpoint : Real;
+                Valore : Real;
+            END_STRUCT := [
+                (
+                    Setpoint := 0.0,
+                    Valore := 0.0
+                ),
+                (
+                    Setpoint := 20.0,
+                    Valore := 20.0
+                ),
+                (
+                    Setpoint := 40.0,
+                    Valore := 40.0
+                ),
+                (
+                    Setpoint := 60.0,
+                    Valore := 60.0
+                ),
+                (
+                    Setpoint := 80.0,
+                    Valore := 80.0
+                ),
+                (
+                    Setpoint := 100.0,
+                    Valore := 100.0
+                )
+            ];
+        END_STRUCT;
+        Dati : STRUCT
+            AnalogicaReale : Real;
+            PosizioneAttuale : Real;
+            IncrementaUscita : Bool;
+            PosizionePrecedente : Real;
+            { S7_Setpoint := "True" }
+            DeltaMovimentoTotale : Real;
+            DeltaMovimentoTotalePrecedente : Real;
+            VerificaOvertime : Bool;
+            InAllarme : Bool;
+            ForzataChiusa : Bool;
+        END_STRUCT;
+        Hmi : STRUCT
+            Auto : Bool;
+            Man : Bool;
+            PulsanteIncrementa : Bool;
+            PulsanteDecrementa : Bool;
+            Simulazione : Bool;
+            SetpointBloccato : Bool;
+        END_STRUCT;
+        Allarmi : STRUCT
+            { S7_Setpoint := "False" }
+            TimerRitMov : _.Std_stTimer;
+            PresetSoglie : STRUCT
+                MinimoSpostamento : Real;
+            END_STRUCT;
+            { S7_Setpoint := "False" }
+            "A" : Array[0.._.K_NumAllarmiPerParatie] of _.Std_PrmAllarmeStd := [
+                (),
+                (),
+                (),
+                ()
+            ];
+            WordHMI : Word;
+        END_STRUCT;
+        Out : STRUCT
+            CmdPos : Bool;
+            CmdNeg : Bool;
+        END_STRUCT;
+        Rif_Inc : STRUCT
+            K_AnalogicaPosAttuale : Int;
+            K_AnalogicaRiferimento : Int;
+            K_StazioneRiferimento : Int;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

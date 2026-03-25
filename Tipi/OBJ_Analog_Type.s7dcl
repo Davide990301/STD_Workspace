@@ -1,0 +1,62 @@
+﻿TYPE
+    OBJ_Analog_Type : STRUCT
+        IO : STRUCT
+            ix_Stop_Sim : Bool := true;
+            iw_PEW : Int;
+            if_PED : Real;
+            ix_Reset : Bool;
+            of_Value : Real;
+            od_Value : DInt;
+            oi_Value : Int;
+            ox_Alarm : Bool;
+        END_STRUCT;
+        Data : STRUCT
+            HMI : STRUCT
+                x_Alarm : Bool;
+                x_Simulation : Bool;
+                x_Conf_Req : Bool;
+                d_Conf_Vis : DInt;
+                i_Nr_HMI_Vis : Int := 1;
+                i_Req_Status : Int := 2;
+                i_Real_Status : Int := 1;
+                f_Act_Value : Real;
+                f_Man_Value : Real;
+                f_Sim_Value : Real;
+                "f_Compensation Value" : Real;
+                f_Fault_Min_Val_In : Real;
+                f_Fault_Max_Val_In : Real := 27648.0;
+                f_Min_In : Real;
+                f_Max_In : Real := 27648.0;
+                f_Min_Out : Real;
+                f_Max_Out : Real := 100.0;
+                t_Time_Ton_Alm : Time := T#100MS;
+            END_STRUCT;
+            CFG : STRUCT
+                i_Nr_HMI : Int := 1;
+                i_Nr_Machine : Int := 0;
+                "x_Use PED" : Bool := false;
+                "x_Invert Measure" : Bool := false;
+                x_I_Or_O : Bool;
+            END_STRUCT;
+            SUP : STRUCT
+                x_AlwaysOff : Bool;
+                x_Config_Edit : Bool;
+                x_Aux_fp01 : Bool;
+                x_Aux_fp02 : Bool;
+                x_Aux_fp03 : Bool;
+                x_Aux_fp04 : Bool;
+                x_Aux_fp05 : Bool := false;
+                x_Aux_fp06 : Bool := false;
+                f_Value_In : Real;
+                f_Max_Min_In : Real;
+                f_Max_Min_Out : Real;
+                f_Fact_K : Real;
+                t_Ton_Alm : _.OBJ_Timer_Type;
+            END_STRUCT;
+        END_STRUCT;
+        { S7_MLC := "MLC_4kc" }
+        ox_Status_Manual : Bool;
+        { S7_MLC := "MLC_Zb" }
+        ox_Status_Auto : Bool;
+    END_STRUCT;
+END_TYPE

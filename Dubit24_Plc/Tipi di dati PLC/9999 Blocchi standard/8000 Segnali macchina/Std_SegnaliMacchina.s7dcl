@@ -1,0 +1,42 @@
+﻿TYPE
+    Std_SegnaliMacchina : STRUCT
+        { S7_MLC := "MLC_3iy" }
+        SR : Array[0..1] of _.Std_SendReceive := [
+            (),
+            ()
+        ];
+        Prm : STRUCT
+            Watchdog : STRUCT
+                Bit : STRUCT
+                    Abilitato : Bool;
+                    RestituisciWatchdog : Bool;
+                    RestituisciNegato : Bool;
+                END_STRUCT;
+                Incrementale : STRUCT
+                    Abilitato : Bool;
+                END_STRUCT;
+            END_STRUCT;
+            TipoComunicazione : Int;
+        END_STRUCT;
+        Allarmi : STRUCT
+            { S7_Setpoint := "False" }
+            "A" : Array[0.._.K_NumAllarmiPerSegnaliMacchina] of _.Std_PrmAllarmeStd := [
+                (
+                    Abilitato := FALSE,
+                    Stato := FALSE,
+                    Silenziato := FALSE,
+                    EnWarnHmi := FALSE,
+                    EnCadutaCiclo := FALSE
+                ),
+                3((
+                    Abilitato := FALSE,
+                    Stato := FALSE,
+                    Silenziato := FALSE,
+                    EnWarnHmi := TRUE,
+                    EnCadutaCiclo := FALSE
+                ))
+            ];
+            WordHmi : Word;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

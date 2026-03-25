@@ -1,0 +1,21 @@
+﻿MultiLingualTexts:
+  - id: MLC_3nq
+    it-IT: Output Working Data 1
+  - id: MLC_4r2
+    it-IT: Output Working Data 2
+  - id: MLC_3gT
+    it-IT: Output Working Data 3
+  - id: MLC_59T
+    it-IT: Output Working Data 4
+  - id: MLC_47x
+    it-IT: 0=Time 1=Wait Cond 2=Cnt 4=Speed 16=End Recipe
+  - id: MLC_3T7
+    it-IT: Waiting Condition
+  - id: MLC_QY
+    it-IT: Setpoint Data
+  - id: MLC_5CJ
+    it-IT: Minimum Timer Adjustment
+  - id: MLC_3MK
+    it-IT: Text Number to Describe the Step
+  - id: MLC_36W
+    it-IT: Image Number to Describe the Step

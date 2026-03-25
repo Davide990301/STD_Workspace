@@ -1,0 +1,33 @@
+﻿MultiLingualTexts:
+  - id: MLC_5Ag
+    it-IT: 0 - 27648
+  - id: MLC_4pz
+    it-IT: 0 Niente da visualizzare / 1 Analogica / 2 PID / 3 Totalizzatore / 4 Trend / 5 Paratia
+  - id: MLC_3CK
+    it-IT: 0 Niente da visualizzare / 1 Analogica / 2 PID / 3 Totalizzatore / 4 Trend / 5 Paratia
+  - id: MLC_32k
+    it-IT: 0 Niente da visualizzare / 1 Analogica / 2 PID / 3 Totalizzatore / 4 Trend / 5 Paratia
+  - id: MLC_3Sq
+    it-IT: 0 Niente da visualizzare / 1 Analogica / 2 PID / 3 Totalizzatore / 4 Trend / 5 Paratia
+  - id: MLC_3U2
+    it-IT: 1=Rende la soglia modificabile da Hmi
+  - id: MLC_4xa
+    it-IT: Maxi
+  - id: MLC_42K
+    it-IT: Intmax
+  - id: MLC_55b
+    it-IT: Intmin
+  - id: MLC_4Ld
+    it-IT: Mini
+  - id: MLC_hK
+    it-IT: Maxi
+  - id: MLC_p6
+    it-IT: IntMax
+  - id: MLC_4UW
+    it-IT: IntMin
+  - id: MLC_3Vh
+    it-IT: Mini
+  - id: MLC_3ZB
+    it-IT: OutOfRange
+  - id: MLC_3Z7
+    it-IT: Serve per sapere chi legge e scrive

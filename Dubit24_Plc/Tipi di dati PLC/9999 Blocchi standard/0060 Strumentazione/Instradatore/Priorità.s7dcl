@@ -1,0 +1,6 @@
+﻿TYPE
+    Priorità : STRUCT
+        Soglia : Real;
+        Isteresi : Real;
+    END_STRUCT;
+END_TYPE

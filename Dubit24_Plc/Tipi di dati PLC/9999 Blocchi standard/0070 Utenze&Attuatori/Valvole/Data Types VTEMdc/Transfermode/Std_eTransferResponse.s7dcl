@@ -1,0 +1,54 @@
+﻿TYPE
+    Std_eTransferResponse : STRUCT
+        { S7_Visibility := "Unlisted := External" }
+        reserved : Int;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_Channel : Int := 1;
+        { S7_Visibility := "Unlisted := External" }
+        invlalid_TransferControl : Int := 2;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_AddressedTarget : Int := 3;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_Index : Int := 4;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_TransferValue : Int := 5;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_Combination : Int := 6;
+        { S7_Visibility := "Unlisted := External" }
+        access_denied_DataInUse : Int := 7;
+        { S7_Visibility := "Unlisted := External" }
+        no_data_empty_slot : Int := 8;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_ParameterSet : Int := 9;
+        { S7_Visibility := "Unlisted := External" }
+        access_denied_WebConfig : Int := 10;
+        { S7_Visibility := "Unlisted := External" }
+        access_denied_saving : Int := 11;
+        { S7_Visibility := "Unlisted := External" }
+        no_valve_detected : Int := 15;
+        { S7_Visibility := "Unlisted := External" }
+        reading_transfermode : Int := 20;
+        { S7_Visibility := "Unlisted := External" }
+        ready_for_new_transfer : Int := 21;
+        { S7_Visibility := "Unlisted := External" }
+        preparing_transfer : Int := 22;
+        { S7_Visibility := "Unlisted := External" }
+        transferring : Int := 23;
+        { S7_Visibility := "Unlisted := External" }
+        transfer_successful : Int := 24;
+        { S7_Visibility := "Unlisted := External" }
+        FB_needs_rising_edge_xExecute : Int := 25;
+        { S7_Visibility := "Unlisted := External" }
+        Valve_Mode_is_not_61_inactive : Int := 26;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_firmware_version : Int := 27;
+        { S7_Visibility := "Unlisted := External" }
+        communication_failed : Int := 28;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_module_number : Int := 29;
+        { S7_Visibility := "Unlisted := External" }
+        resetting : Int := 30;
+        { S7_Visibility := "Unlisted := External" }
+        aborting : Int := 31;
+    END_STRUCT;
+END_TYPE

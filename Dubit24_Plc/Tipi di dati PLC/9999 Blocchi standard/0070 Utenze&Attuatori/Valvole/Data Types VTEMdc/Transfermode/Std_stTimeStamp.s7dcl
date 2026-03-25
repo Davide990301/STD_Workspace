@@ -1,0 +1,12 @@
+﻿TYPE
+    Std_stTimeStamp : STRUCT
+        { S7_Visibility := "Unlisted := External" }
+        diHours : DInt;
+        { S7_Visibility := "Unlisted := External" }
+        iMinutes : Int;
+        { S7_Visibility := "Unlisted := External" }
+        iSeconds : Int;
+        { S7_Visibility := "Unlisted := External" }
+        iMilliseconds : Int;
+    END_STRUCT;
+END_TYPE

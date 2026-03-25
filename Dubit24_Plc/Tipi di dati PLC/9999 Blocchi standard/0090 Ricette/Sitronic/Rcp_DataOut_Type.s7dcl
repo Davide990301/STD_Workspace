@@ -1,0 +1,45 @@
+﻿TYPE
+    Rcp_DataOut_Type : STRUCT
+        Busy : Bool;
+        Alarm_Active : Bool := FALSE;
+        Warning_Timeout : Bool := FALSE;
+        { S7_MLC := "MLC_3nV" }
+        Warning_Active : Bool := FALSE;
+        { S7_MLC := "MLC_3Km" }
+        Rcp_in_Work_Modified : Bool;
+        { S7_MLC := "MLC_5An" }
+        Rcp_ShowSaveReminder : Bool;
+        { S7_MLC := "MLC_4u4" }
+        Rcp_Changed : Bool;
+        { S7_MLC := "MLC_54Q" }
+        PB_Enb_Load_in_Work : Bool;
+        { S7_MLC := "MLC_4hJ" }
+        PB_Enb_Load_in_Edit : Bool;
+        { S7_MLC := "MLC_sj" }
+        PB_Enb_Save_in_Archive : Bool;
+        { S7_MLC := "MLC_35R" }
+        PB_Enb_Save_in_Work : Bool;
+        { S7_MLC := "MLC_4ei" }
+        PB_Enb_Copy : Bool;
+        Rcp_Saved_in_work_mem : Bool;
+        Rcp_Saved_in_archive_mem : Bool;
+        Rcp_last_recipe_edited : Int;
+        Rcp_last_recipe_saved_in_work : Int;
+        Rcp_show_popup_unsaved_recipe : Bool;
+        Rcp_show_unsaved_recipe_PBloadFromWork : Bool;
+        Rcp_show_unsaved_recipe_PBloadFromEdit : Bool;
+        HMI_in_rcp_page : Bool;
+        RCP_GEN_List : Array[0.._.K_NumMacchinaARicetta] of _.Rcp_Name_Type;
+        {
+            S7_MLC := "MLC_45N";
+            S7_Setpoint := "True"
+        }
+        RCP_rcp_edit_name : String[30];
+        {
+            S7_MLC := "MLC_3BE";
+            S7_Setpoint := "True"
+        }
+        RCP_rcp_dest_name : String[30];
+        RCP_Max : Int;
+    END_STRUCT;
+END_TYPE

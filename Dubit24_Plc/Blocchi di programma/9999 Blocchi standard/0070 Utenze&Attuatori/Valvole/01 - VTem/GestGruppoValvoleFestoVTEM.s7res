@@ -1,0 +1,39 @@
+﻿MultiLingualTexts:
+  - id: MLC_48w
+    it-IT: |-
+      Ogni gruppo valvole festo può portare 8 valvole.
+      Ognuno di qusti slot utilizza 3. word in lettura e 3 word in scrittura.
+
+      Se non vengono utilizzate 8 valvole è possibile sfruttura i moduli liberi per leggere dei dati dalle valvole. é anche possibile la lettura e scrittura ciclica delle informazioni.
+  - id: MLC_4BK
+    it-IT: Dichiarare la costante ad esempio k_valvolafestovftem oppure k_analogica da assegnare allo slot
+  - id: MLC_4Vj
+    it-IT: Dichiarare l'utilizzo dello slot, se deve essere utilizzato per leggere le informazioni dichiarare TipoAnalogica altrimenti valvola
+  - id: MLC_4Xr
+    it-IT: Dichiarare la costante ad esempio k_valvolafestovftem oppure k_analogica da assegnare allo slot
+  - id: MLC_4Ky
+    it-IT: Dichiarare l'utilizzo dello slot, se deve essere utilizzato per leggere le informazioni dichiarare TipoAnalogica altrimenti valvola
+  - id: MLC_4ST
+    it-IT: Dichiarare la costante ad esempio k_valvolafestovftem oppure k_analogica da assegnare allo slot
+  - id: MLC_y5
+    it-IT: Dichiarare l'utilizzo dello slot, se deve essere utilizzato per leggere le informazioni dichiarare TipoAnalogica altrimenti valvola
+  - id: MLC_45i
+    it-IT: Dichiarare la costante ad esempio k_valvolafestovftem oppure k_analogica da assegnare allo slot
+  - id: MLC_mY
+    it-IT: Dichiarare l'utilizzo dello slot, se deve essere utilizzato per leggere le informazioni dichiarare TipoAnalogica altrimenti valvola
+  - id: MLC_4As
+    it-IT: Dichiarare la costante ad esempio k_valvolafestovftem oppure k_analogica da assegnare allo slot
+  - id: MLC_4kx
+    it-IT: Dichiarare l'utilizzo dello slot, se deve essere utilizzato per leggere le informazioni dichiarare TipoAnalogica altrimenti valvola
+  - id: MLC_4ai
+    it-IT: Dichiarare la costante ad esempio k_valvolafestovftem oppure k_analogica da assegnare allo slot
+  - id: MLC_3Ej
+    it-IT: Dichiarare l'utilizzo dello slot, se deve essere utilizzato per leggere le informazioni dichiarare TipoAnalogica altrimenti valvola
+  - id: MLC_3Ju
+    it-IT: Dichiarare la costante ad esempio k_valvolafestovftem oppure k_analogica da assegnare allo slot
+  - id: MLC_57Q
+    it-IT: Dichiarare l'utilizzo dello slot, se deve essere utilizzato per leggere le informazioni dichiarare TipoAnalogica altrimenti valvola
+  - id: MLC_Lq
+    it-IT: Dichiarare la costante ad esempio k_valvolafestovftem oppure k_analogica da assegnare allo slot
+  - id: MLC_4Cr
+    it-IT: Gestione della comunicazione con ogni slot del gruppo.

@@ -1,0 +1,77 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestAnalogica_Media" : Void
+    VAR_INPUT
+        K_Analog1 : Int;
+        K_Analog2 : Int;
+        K_AnalogMedia : Int;
+        K_Zona : Int;
+    END_VAR
+    VAR_IN_OUT
+        PrmMediaAnalog : STRUCT
+            DisabilitaMedia : Bool;
+            PrioritàMedia : Bool;
+            RitardoOutOfRange : _.Std_stTimer;
+            DifferenzaTemperatura : Real;
+        END_STRUCT;
+    END_VAR
+    VAR_TEMP
+        DifferenzaTemperatura : Real;
+        MediaIngressoAnalogico : Real;
+        MaxScalaturaTraLedue : Real;
+        MinScalaturaTraLedue : Real;
+    END_VAR
+    VAR CONSTANT
+        Maxi : Int := 1;
+        IntMax : Int := 2;
+        IntMin : Int := 3;
+        Mini : Int := 4;
+        OutOfRange : Int := 5;
+    END_VAR
+
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_4Lr"
+    }
+    NETWORK
+        //Ritestare questo blocco è stato migrato e mai testato inoltre successivamente modificata la questione dell'unità di misura!!!!
+        //Unità di misura
+        //Forzo l'unità di misura in percentuale per scalare ma poi alla fine del blocco la metto giusta
+        "Analogica".A[#K_AnalogMedia].Prm.UnitàMisura.In.UmCode := "Um_Codice_Percentuale";
+        //Max e min
+        #MaxScalaturaTraLedue := MAX(IN1 := "Analogica".A[#K_Analog1].Scalatura.OutMax, IN2 := "Analogica".A[#K_Analog2].Scalatura.OutMax); //Cerco la scalatura max più alta
+        #MinScalaturaTraLedue := MIN(IN1 := "Analogica".A[#K_Analog1].Scalatura.OutMin, IN2 := "Analogica".A[#K_Analog2].Scalatura.OutMin); //Cerco la scalatura min più bassa
+        
+        "Analogica".A[#K_AnalogMedia].Scalatura.InMax := "Analogica".A[#K_AnalogMedia].Scalatura.OutMax := #MaxScalaturaTraLedue; //Parametrizzo la struttura analogica media
+        "Analogica".A[#K_AnalogMedia].Scalatura.InMin := "Analogica".A[#K_AnalogMedia].Scalatura.OutMin := #MinScalaturaTraLedue; //Parametrizzo la struttura analogica media
+        
+        //Calcolo la media tra le due analogiche
+        #MediaIngressoAnalogico := ("Analogica".A[#K_Analog1].Out.AnalogicaAttuale.Valore + "Analogica".A[#K_Analog2].Out.AnalogicaAttuale.Valore)/2; //Media tra le due.
+        
+        //Se disabilito la media tra le due analogiche passo direttamente l'attuale
+        IF #PrmMediaAnalog.DisabilitaMedia THEN
+            IF NOT #PrmMediaAnalog.PrioritàMedia THEN
+                #MediaIngressoAnalogico := "Analogica".A[#K_Analog1].Out.AnalogicaAttuale.Valore;
+            ELSE
+                #MediaIngressoAnalogico := "Analogica".A[#K_Analog2].Out.AnalogicaAttuale.Valore;
+            END_IF;
+        END_IF;
+        
+        
+        "Analogica".A[#K_AnalogMedia].In.Ew := INT_TO_WORD(REAL_TO_INT(#MediaIngressoAnalogico));
+        
+        "GestAnalogica"(K_Zona := #K_Zona,
+                        K_Analogica := #K_AnalogMedia);
+        
+        "T_ON"(I_CicloCPU:="Zona".Comuni.TempoCicloCpu_r,
+               I_StartConteggio:= ABS("Analogica".A[#K_Analog1].Out.AnalogicaAttuale.Valore - "Analogica".A[#K_Analog2].Out.AnalogicaAttuale.Valore) >= #PrmMediaAnalog.DifferenzaTemperatura,
+               IO_DatiTimer:=#PrmMediaAnalog.RitardoOutOfRange);
+        
+        "Analogica".A[#K_AnalogMedia].Allarmi.A[#OutOfRange].Stato := #PrmMediaAnalog.RitardoOutOfRange.O;
+        
+        "Analogica".A[#K_AnalogMedia].Prm.UnitàMisura := "Analogica".A[#K_Analog1].Prm.UnitàMisura;
+    END_NETWORK
+END_FUNCTION

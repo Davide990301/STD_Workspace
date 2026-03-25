@@ -1,0 +1,12 @@
+﻿TYPE
+    Std_eValveState : STRUCT
+        { S7_Visibility := "Unlisted := External" }
+        NotReady : Int := 0;
+        { S7_Visibility := "Unlisted := External" }
+        Configurable : Int := 1;
+        { S7_Visibility := "Unlisted := External" }
+        Running : Int := 2;
+        { S7_Visibility := "Unlisted := External" }
+        Failure : Int := 3;
+    END_STRUCT;
+END_TYPE

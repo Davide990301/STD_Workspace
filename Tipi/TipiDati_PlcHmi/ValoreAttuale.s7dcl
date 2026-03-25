@@ -1,0 +1,6 @@
+﻿TYPE
+    ValoreAttuale : STRUCT
+        UmCode : DInt;
+        Valore : Real;
+    END_STRUCT;
+END_TYPE

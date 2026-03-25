@@ -1,0 +1,9 @@
+﻿TYPE
+    Std_Pid_Allarmi : STRUCT
+        Offset_Min : Real;
+        Offset_Max : Real;
+        Min_Allarme_Calcolato : Real;
+        Max_Allarme_Calcolato : Real;
+        Forza_Allarmi : Bool;
+    END_STRUCT;
+END_TYPE

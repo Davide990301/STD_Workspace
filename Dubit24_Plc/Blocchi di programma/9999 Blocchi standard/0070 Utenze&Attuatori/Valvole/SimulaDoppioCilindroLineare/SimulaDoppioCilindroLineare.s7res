@@ -1,0 +1,11 @@
+﻿MultiLingualTexts:
+  - id: MLC_4Yn
+    it-IT: mm / %
+  - id: MLC_TD
+    it-IT: mm / %
+  - id: MLC_yb
+    it-IT: K_Valvola che simula posizione anteriore
+  - id: MLC_4HQ
+    it-IT: K_Valvola che simula posizione posteriore
+  - id: MLC_4xT
+    it-IT: K_Valvola che comanda la valvola fisica

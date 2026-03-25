@@ -1,0 +1,20 @@
+﻿TYPE
+    Std_Segnale : STRUCT
+        In : STRUCT
+            Segnale : Bool;
+        END_STRUCT;
+        Prm : STRUCT
+            AbilitaScadenzaForzatura : Bool;
+            { S7_Setpoint := "False" }
+            TempoScadenzaForzatura : _.Std_stTimer;
+        END_STRUCT;
+        Hmi : STRUCT
+            ForzaturaOn : Bool;
+            ForzaturaOff : Bool;
+            Stato : Int;
+        END_STRUCT;
+        Out : STRUCT
+            Segnale : Bool;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

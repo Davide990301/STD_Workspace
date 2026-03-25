@@ -1,0 +1,15 @@
+﻿MultiLingualTexts:
+  - id: MLC_YU
+    it-IT: 0.2 - Consenso Inizio Fase
+  - id: MLC_3DT
+    it-IT: 0.3 - Abilita Passo Successivo  (al pastorizzatore)
+  - id: MLC_3bR
+    it-IT: 0.5 - Aux Passo Successivo Dopo Drenaggio
+  - id: MLC_3vP
+    it-IT: 0.6 - InizioGestionePassi
+  - id: MLC_ra
+    it-IT: 0.7 - FineGestionePassi
+  - id: MLC_4F8
+    it-IT: 1.0 - AppoggioFrInizio
+  - id: MLC_vA
+    it-IT: 1.1 - FronteInizio

@@ -1,0 +1,47 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK Portata
+    VAR RETAIN
+        "P" : Array[0.._.K_NumPortata] of _.Std_Portata;
+    END_VAR
+
+        "P"[0].In.Impulso := FALSE;
+        "P"[0].Prm.LitriPerImpulso := 1.0;
+        "P"[0].Prm.Setpoint_Parziale := 0.0;
+        "P"[0].Prm.LitriInVolo := 0.0;
+        "P"[0].Prm.UnitàMisura.In.UmCode := 0;
+        "P"[0].Prm.UnitàMisura.In.Valore := 0.0;
+        "P"[0].Prm.UnitàMisura.Hmi.Converti := FALSE;
+        "P"[0].Prm.UnitàMisura.Hmi.Calcola := FALSE;
+        "P"[0].Prm.UnitàMisura.Dati.FattoreDiConversione := 0.0;
+        "P"[0].Prm.UnitàMisura.Out.UmCode := 0;
+        "P"[0].Prm.UnitàMisura.Out.Valore := 0.0;
+        "P"[0].Hmi.ResetTotalizzatoreTotale := FALSE;
+        "P"[0].Hmi.ResetTotalizzatoreParziale := FALSE;
+        "P"[0].Dati.PortataAttuale := 0.0;
+        "P"[0].Dati.RimanenteParziale := 0.0;
+        "P"[0].Dati.Impulso := FALSE;
+        "P"[0].Dati.TriggerConteggioImpulso := FALSE;
+        "P"[0].Dati.PortataLMin := 0.0;
+        "P"[0].Dati.PortataLSec := 0.0;
+        "P"[0].Dati.TDurataImpulso.IN := FALSE;
+        "P"[0].Dati.TDurataImpulso.O := FALSE;
+        "P"[0].Dati.TDurataImpulso.Preset := 0.0;
+        "P"[0].Dati.TDurataImpulso.TempoTrascorso := 0.0;
+        "P"[0].Dati.MDistanzaImpulsi := FALSE;
+        "P"[0].Dati.FPDistanzaImpulsi := FALSE;
+        "P"[0].Allarmi."A"[0].Abilitato := FALSE;
+        "P"[0].Allarmi."A"[0].Stato := FALSE;
+        "P"[0].Allarmi."A"[0].Silenziato := FALSE;
+        "P"[0].Allarmi."A"[0].EnWarnHmi := FALSE;
+        "P"[0].Allarmi."A"[0].EnCadutaCiclo := FALSE;
+        "P"[0].Allarmi.WordHMI := 16#0000;
+        "P"[0].Out.TotalizzatoreTotaleAttuale := 0.0;
+        "P"[0].Out.TotalizzatoreParzialeAttuale := 0.0;
+        "P"[0].Out.TotalizzatoreParzialeRaggiunto := FALSE;
+        "P"[0].Out.PortataAttuale := 0.0;
+
+END_DATA_BLOCK

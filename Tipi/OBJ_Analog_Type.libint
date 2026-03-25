@@ -1,6 +1,8 @@
 ﻿DocumentHash:
-  - FileName: OBJ_Analog_Type.xml
-    Hash: VWSd7dOsGgAkxr5IzswetSsPCLUtm0iaSWW11LEkKk8=
+  - FileName: OBJ_Analog_Type.s7dcl
+    Hash: TI5ywoYysHSvHHBw5zUovgUosgxKdBubjfxdHfaHizo=
+  - FileName: OBJ_Analog_Type.s7res
+    Hash: iV5AfqUzz5nB68SIgXrzqrlDHT+bY2ikzvjDEYgPEK0=
 LibraryMetaFileHash: VdqV8httGzTbKIBZ7rRl7j/E9cMckT1tTYeooMoQicw=
 LibraryVersion:
   Guid: 5508505e-9e39-4487-8022-194f7eca4ca4

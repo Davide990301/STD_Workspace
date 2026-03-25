@@ -1,0 +1,26 @@
+﻿TYPE
+    Timer_Type : STRUCT
+        ixIN : Bool;
+        oxQ : Bool;
+        {
+            S7_Access := "ReadOnly := External";
+            S7_Visibility := "Hidden := External"
+        }
+        xDataMem : Bool;
+        {
+            S7_Access := "ReadOnly := External";
+            S7_Visibility := "Hidden := External"
+        }
+        xDataFP : Bool;
+        {
+            S7_Access := "ReadOnly := External";
+            S7_Visibility := "Hidden := External"
+        }
+        rDataPT : Real;
+        {
+            S7_Access := "ReadOnly := External";
+            S7_Visibility := "Hidden := External"
+        }
+        rDataAcc : Real;
+    END_STRUCT;
+END_TYPE

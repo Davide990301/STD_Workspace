@@ -1,0 +1,68 @@
+﻿TYPE
+    Std_eResponseReadMalfunctionList : STRUCT
+        { S7_Visibility := "Unlisted := External" }
+        idle : Int := 0;
+        { S7_Visibility := "Unlisted := External" }
+        setting_valve_to_inactive : Int := 1;
+        { S7_Visibility := "Unlisted := External" }
+        getting_malfunction_count : Int := 2;
+        { S7_Visibility := "Unlisted := External" }
+        transferring : Int := 3;
+        { S7_Visibility := "Unlisted := External" }
+        done : Int := 4;
+        { S7_Visibility := "Unlisted := External" }
+        no_entries_in_malfunction_list : Int := 5;
+        { S7_Visibility := "Unlisted := External" }
+        error_while_transmitting_data_to_vtem : Int := 6;
+        { S7_Visibility := "Unlisted := External" }
+        aborting : Int := 7;
+        { S7_Visibility := "Unlisted := External" }
+        resetting : Int := 8;
+        { S7_Visibility := "Unlisted := External" }
+        FB_needs_rising_edge_xExecute : Int := 10;
+        { S7_Visibility := "Unlisted := External" }
+        reserved : Int := 100;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_SetValveMode : Int := 101;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_SetAppControl : Int := 102;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_SetAppOption : Int := 103;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_SetPointValue1 : Int := 104;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_SetPointValue2 : Int := 105;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_configuration : Int := 106;
+        { S7_Visibility := "Unlisted := External" }
+        access_denied_WebConfig : Int := 110;
+        { S7_Visibility := "Unlisted := External" }
+        access_denied_saving_parameterisation : Int := 111;
+        { S7_Visibility := "Unlisted := External" }
+        no_license_for_this_MA : Int := 112;
+        { S7_Visibility := "Unlisted := External" }
+        all_licenses_in_use : Int := 113;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_license_file : Int := 114;
+        { S7_Visibility := "Unlisted := External" }
+        no_valve_detected : Int := 115;
+        { S7_Visibility := "Unlisted := External" }
+        valve_self_calibration_running : Int := 116;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_Channel : Int := 201;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_TransferControl : Int := 202;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_iChooseOtherValve : Int := 203;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_Index : Int := 204;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_TransferValue : Int := 205;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_Combination : Int := 206;
+        { S7_Visibility := "Unlisted := External" }
+        access_denied_DataInUse : Int := 207;
+        { S7_Visibility := "Unlisted := External" }
+        no_data_empty_slot : Int := 208;
+    END_STRUCT;
+END_TYPE

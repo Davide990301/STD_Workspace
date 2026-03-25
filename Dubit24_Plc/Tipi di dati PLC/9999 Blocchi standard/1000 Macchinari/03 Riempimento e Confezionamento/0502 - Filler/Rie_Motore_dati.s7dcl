@@ -1,0 +1,16 @@
+﻿TYPE
+    Rie_Motore_dati : STRUCT
+        VelSinc_1 : Real;
+        VelSinc_2 : Real;
+        VelSinc_3 : Real;
+        VelSinc_4 : Real;
+        VelSinc_5 : Real;
+        VelFix_1 : Real;
+        VelFix_2 : Real;
+        VelFix_3 : Real;
+        VelFix_4 : Real;
+        VelFix_5 : Real;
+        "@_T_Start_PT" : Time := T#2S;
+        "@_T_Stop_PT" : Time := T#2S;
+    END_STRUCT;
+END_TYPE

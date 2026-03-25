@@ -1,0 +1,69 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK TempoCiclo
+    VAR
+        TempoEsecuzioneSezioni : Array[0.._.K_NumKTipo] of STRUCT
+            Actual : LReal;
+            Appo : LReal;
+            Perc : Real;
+        END_STRUCT;
+        TempoEsecuzioneTotale : LReal;
+    END_VAR
+
+        TempoEsecuzioneSezioni[0].Actual := 59.6303733333333;
+        TempoEsecuzioneSezioni[0].Appo := 16#0002_CA53_756E_9C20;
+        TempoEsecuzioneSezioni[0].Perc := 101.588;
+        TempoEsecuzioneSezioni[1].Actual := 10.6522622222222;
+        TempoEsecuzioneSezioni[1].Appo := 16#0002_CA53_7425_DC42;
+        TempoEsecuzioneSezioni[1].Perc := 18.1475;
+        TempoEsecuzioneSezioni[2].Actual := 2.87701333333333;
+        TempoEsecuzioneSezioni[2].Appo := 16#0002_CA53_7439_A22C;
+        TempoEsecuzioneSezioni[2].Perc := 4.901362;
+        TempoEsecuzioneSezioni[3].Actual := 0.0813733333333333;
+        TempoEsecuzioneSezioni[3].Appo := 16#0002_CA53_743A_5594;
+        TempoEsecuzioneSezioni[3].Perc := 0.1386299;
+        TempoEsecuzioneSezioni[4].Actual := 0.0;
+        TempoEsecuzioneSezioni[4].Appo := 0.0;
+        TempoEsecuzioneSezioni[4].Perc := 0.0;
+        TempoEsecuzioneSezioni[5].Actual := 0.122457777777778;
+        TempoEsecuzioneSezioni[5].Appo := 16#0002_CA53_747C_A09E;
+        TempoEsecuzioneSezioni[5].Perc := 0.2086226;
+        TempoEsecuzioneSezioni[6].Actual := 9.52839555555556;
+        TempoEsecuzioneSezioni[6].Appo := 16#0002_CA53_747B_C4C4;
+        TempoEsecuzioneSezioni[6].Perc := 16.23285;
+        TempoEsecuzioneSezioni[7].Actual := 0.0;
+        TempoEsecuzioneSezioni[7].Appo := 0.0;
+        TempoEsecuzioneSezioni[7].Perc := 0.0;
+        TempoEsecuzioneSezioni[8].Actual := 30.8047644444444;
+        TempoEsecuzioneSezioni[8].Appo := 16#0002_CA53_7550_3BFC;
+        TempoEsecuzioneSezioni[8].Perc := 52.47988;
+        TempoEsecuzioneSezioni[9].Actual := 0.0;
+        TempoEsecuzioneSezioni[9].Appo := 0.0;
+        TempoEsecuzioneSezioni[9].Perc := 0.0;
+        TempoEsecuzioneSezioni[10].Actual := 1.09750222222222;
+        TempoEsecuzioneSezioni[10].Appo := 16#0002_CA53_7576_EA36;
+        TempoEsecuzioneSezioni[10].Perc := 0.8256088;
+        TempoEsecuzioneSezioni[11].Actual := 1.80765777777778;
+        TempoEsecuzioneSezioni[11].Appo := 16#0002_CA53_7566_5B52;
+        TempoEsecuzioneSezioni[11].Perc := 3.079578;
+        TempoEsecuzioneSezioni[12].Actual := 1.59227111111111;
+        TempoEsecuzioneSezioni[12].Appo := 16#0002_CA53_7577_EA3C;
+        TempoEsecuzioneSezioni[12].Perc := 2.712639;
+        TempoEsecuzioneSezioni[13].Actual := 0.335724444444444;
+        TempoEsecuzioneSezioni[13].Appo := 16#0002_CA53_7559_EF26;
+        TempoEsecuzioneSezioni[13].Perc := 0.5719498;
+        TempoEsecuzioneSezioni[14].Actual := 0.0;
+        TempoEsecuzioneSezioni[14].Appo := 0.0;
+        TempoEsecuzioneSezioni[14].Perc := 0.0;
+        TempoEsecuzioneSezioni[15].Actual := 0.0;
+        TempoEsecuzioneSezioni[15].Appo := 0.0;
+        TempoEsecuzioneSezioni[15].Perc := 0.0;
+        TempoEsecuzioneSezioni[16].Actual := 0.411697777777778;
+        TempoEsecuzioneSezioni[16].Appo := 16#0002_CA53_7553_6340;
+        TempoEsecuzioneSezioni[16].Perc := 0.7013801;
+    TempoEsecuzioneTotale := 58.6982355555555;
+
+END_DATA_BLOCK

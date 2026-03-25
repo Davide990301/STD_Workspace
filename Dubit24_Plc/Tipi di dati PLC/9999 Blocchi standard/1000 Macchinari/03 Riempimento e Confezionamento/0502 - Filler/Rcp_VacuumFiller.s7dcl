@@ -1,0 +1,24 @@
+﻿TYPE
+    Rcp_VacuumFiller : STRUCT
+        { S7_MLC := "MLC_qR" }
+        SelezTipoProdotto : Bool;
+        VelocitàPompaRiscladamentoOlio : Real;
+        { S7_MLC := "MLC_42d" }
+        TemperaturaRiscaldamentoOlio : Real;
+        { S7_MLC := "MLC_4cn" }
+        TemperaturaMinRiscaldamentoOlio : Real;
+        { S7_MLC := "MLC_4QX" }
+        TemperaturaMaxRiscaldamentoOlio : Real;
+        { S7_MLC := "MLC_y3" }
+        TemperaturaHystRiscaldamentoOlio : Real;
+        VelocitàPompaRiscladamentoSalamoia : Real;
+        { S7_MLC := "MLC_b4" }
+        TemperaturaRiscaldamentoSalamoia : Real;
+        { S7_MLC := "MLC_4pp" }
+        TemperaturaMinRiscaldamentoSalamoia : Real;
+        { S7_MLC := "MLC_4V3" }
+        TemperaturaMaxRiscaldamentoSalamoia : Real;
+        { S7_MLC := "MLC_4XB" }
+        TemperaturaHystRiscaldamentoSalamoia : Real;
+    END_STRUCT;
+END_TYPE

@@ -1,0 +1,7 @@
+﻿MultiLingualTexts:
+  - id: MLC_36K
+    it-IT: Stato allarme 0=Non presente 1 = Presente
+  - id: MLC_39D
+    it-IT: Stato tacitazione 0=Non presente 1 = Presente
+  - id: MLC_4pZ
+    it-IT: Classe di caduta ciclo 0=Warning 1=AllarmeAuto 2= AllarmeMan

@@ -1,0 +1,37 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK FlowMeter
+    VAR
+        { S7_Setpoint := "False" }
+        FlowMeter : Array[0..1] of _.Std_EthFlowMeter;
+        PortataFM1 : Real;
+        PortataFM2 : Real;
+    END_VAR
+
+        FlowMeter[0].Volume_flow := 0.0;
+        FlowMeter[0].Mass_Flow := 0.0;
+        FlowMeter[0].Corrected_Volume_Flow := 0.0;
+        FlowMeter[0].Velocity := 0.0;
+        FlowMeter[0].Totalizer_1 := 0.0;
+        FlowMeter[0].Totalizer_2 := 0.0;
+        FlowMeter[0].Totalizer_3 := 0.0;
+        FlowMeter[0].ControlTotalizzatore_1 := 16#00;
+        FlowMeter[0].ControlTotalizzatore_2 := 16#00;
+        FlowMeter[0].ControlTotalizzatore_3 := 16#00;
+        FlowMeter[1].Volume_flow := 190.2098;
+        FlowMeter[1].Mass_Flow := 0.0;
+        FlowMeter[1].Corrected_Volume_Flow := 0.0;
+        FlowMeter[1].Velocity := 0.0;
+        FlowMeter[1].Totalizer_1 := 1285494.0;
+        FlowMeter[1].Totalizer_2 := 0.0;
+        FlowMeter[1].Totalizer_3 := 0.0;
+        FlowMeter[1].ControlTotalizzatore_1 := 16#00;
+        FlowMeter[1].ControlTotalizzatore_2 := 16#00;
+        FlowMeter[1].ControlTotalizzatore_3 := 16#00;
+    PortataFM1 := 0.0;
+    PortataFM2 := 190.2098;
+
+END_DATA_BLOCK

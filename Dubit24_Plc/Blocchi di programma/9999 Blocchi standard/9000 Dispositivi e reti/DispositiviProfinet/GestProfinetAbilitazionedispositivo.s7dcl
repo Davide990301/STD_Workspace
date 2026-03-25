@@ -1,0 +1,11 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestProfinetAbilitazionedispositivo" : Void
+    { S7_Language := "SCL" }
+    NETWORK
+        // D_ACT_DP(REQ:=_bool_in_, MODE:=_usint_in_, LADDR:=_hw_any_in_, BUSY=>_bool_out_)
+    END_NETWORK
+END_FUNCTION

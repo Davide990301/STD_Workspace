@@ -1,0 +1,8 @@
+﻿TYPE
+    Rcp_Generale : STRUCT
+        VelocitàMaxFormato : Word;
+        Rcp_Trasporti : Int;
+        { S7_MLC := "MLC_4yR" }
+        "Tipo Contenitore" : Int;
+    END_STRUCT;
+END_TYPE

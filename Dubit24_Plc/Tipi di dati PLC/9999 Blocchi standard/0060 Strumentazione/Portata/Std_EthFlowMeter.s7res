@@ -1,0 +1,19 @@
+﻿MultiLingualTexts:
+  - id: MLC_3sW
+    it-IT: Portata volumetrica (m³/h)
+  - id: MLC_4y3
+    it-IT: Portata massica (kg/h)
+  - id: MLC_jt
+    it-IT: Portata volumetrica (kg/h)
+  - id: MLC_eL
+    it-IT: m³
+  - id: MLC_4Gy
+    it-IT: l
+  - id: MLC_3b4
+    it-IT: l
+  - id: MLC_3hE
+    it-IT: 0=Avvia 1=Reset+Mantieni 2=PreimpostatoMantieni 3=Azzera+Totalizza 4=Preimpostato+Tot 5=HoldMantieni
+  - id: MLC_3Cm
+    it-IT: 0=Avvia 1=Reset+Mantieni 2=PreimpostatoMantieni 3=Azzera+Totalizza 4=Preimpostato+Tot 5=HoldMantieni
+  - id: MLC_4Ja
+    it-IT: 0=Avvia 1=Reset+Mantieni 2=PreimpostatoMantieni 3=Azzera+Totalizza 4=Preimpostato+Tot 5=HoldMantieni

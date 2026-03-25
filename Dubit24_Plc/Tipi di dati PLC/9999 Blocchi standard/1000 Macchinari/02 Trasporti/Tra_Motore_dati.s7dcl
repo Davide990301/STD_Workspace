@@ -1,0 +1,28 @@
+﻿TYPE
+    Tra_Motore_dati : STRUCT
+        { S7_Setpoint := "True" }
+        VelSinc_1 : Real;
+        { S7_Setpoint := "True" }
+        VelSinc_2 : Real;
+        { S7_Setpoint := "True" }
+        VelSinc_3 : Real;
+        { S7_Setpoint := "True" }
+        VelSinc_4 : Real;
+        { S7_Setpoint := "True" }
+        VelSinc_5 : Real;
+        { S7_Setpoint := "True" }
+        VelFix_1 : Real;
+        { S7_Setpoint := "True" }
+        VelFix_2 : Real;
+        { S7_Setpoint := "True" }
+        VelFix_3 : Real;
+        { S7_Setpoint := "True" }
+        VelFix_4 : Real;
+        { S7_Setpoint := "True" }
+        VelFix_5 : Real;
+        { S7_Setpoint := "True" }
+        "@_T_Start_PT" : Time := T#2S;
+        { S7_Setpoint := "True" }
+        "@_T_Stop_PT" : Time := T#2S;
+    END_STRUCT;
+END_TYPE

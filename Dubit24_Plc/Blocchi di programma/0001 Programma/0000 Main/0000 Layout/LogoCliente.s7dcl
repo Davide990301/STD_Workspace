@@ -1,0 +1,15 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK LogoCliente
+    VAR RETAIN
+        K_LogoCliente_1 : Int;
+        K_LogoCliente_2 : Int;
+    END_VAR
+
+    K_LogoCliente_1 := 1;
+    K_LogoCliente_2 := 2;
+
+END_DATA_BLOCK

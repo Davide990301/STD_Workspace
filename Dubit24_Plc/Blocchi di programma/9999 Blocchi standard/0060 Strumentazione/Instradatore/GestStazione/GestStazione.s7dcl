@@ -1,0 +1,242 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestStazione" : Void
+    VAR_INPUT
+        { S7_MLC := "MLC_cb" }
+        ConsensoMacchina : Bool;
+        { S7_MLC := "MLC_3tw" }
+        FermaChiamata : Bool;
+        { S7_MLC := "MLC_4G8" }
+        K_Stazione : Int;
+        { S7_MLC := "MLC_fc" }
+        K_StazionePartner1 : Int;
+        { S7_MLC := "MLC_4Pn" }
+        K_StazionePartner2 : Int;
+        { S7_MLC := "MLC_5CF" }
+        K_Analogica : Int;
+        { S7_MLC := "MLC_Ls" }
+        K_Paratia : Int;
+        { S7_MLC := "MLC_4Fj" }
+        K_Motore1 : Int;
+        { S7_MLC := "MLC_3UM" }
+        K_Motore2 : Int;
+    END_VAR
+    VAR_TEMP
+        DestinazioneAttuale : Int;
+        AlmenoUnaDestInChiamata : Bool;
+        ChiamataOrBypass : Bool;
+        AbilitazioneHmi : Bool;
+        ConsensoMacchinaAValle : Bool;
+        AnalogicaOk : Bool;
+        Motore1Ok : Bool;
+        Motore2Ok : Bool;
+        ParatiaOk : Bool;
+        AllarmeAnalogica : STRUCT
+            SogliaMini : Bool;
+            SogliaMaxi : Bool;
+            SogliaIntMin : Bool;
+            SogliaIntMax : Bool;
+        END_STRUCT;
+        ChiamataDaValle : Bool;
+        SorgenteAttiva : Bool;
+        BypassDestinazione : Bool;
+        BypassSorgente : Bool;
+        DestinazioneAttiva : Bool;
+        MacchinaOk : Bool;
+        StazionePartner1Ok : Bool;
+        StazionePartner2Ok : Bool;
+        GestPartner_1 : STRUCT
+            DestinazioneStazioneSelezionata : Bool;
+            DestinazionePartnerPossibile : Bool;
+            DestinazionePartnerSelezionata : Bool;
+            RichiestaAssociaPartner : Bool;
+            PartnerAssociato : Bool;
+            TipoAssociazione : Byte;
+        END_STRUCT;
+        GestPartner_2 : STRUCT
+            DestinazioneStazioneSelezionata : Bool;
+            DestinazionePartnerPossibile : Bool;
+            DestinazionePartnerSelezionata : Bool;
+            RichiestaAssociaPartner : Bool;
+            PartnerAssociato : Bool;
+            TipoAssociazione : Byte;
+        END_STRUCT;
+        ValleOk : Bool;
+        StazioneOk : Bool;
+        PartnersOK : Bool;
+        UtenzeOk : Bool;
+        CounterAllarme : Int;
+    END_VAR
+    VAR CONSTANT
+        NonPresente : Int := 0;
+        Attivo : Bool := 1;
+        Maxi : Int := 1;
+        IntMax : Int := 2;
+        IntMin : Int := 3;
+        Mini : Int := 4;
+        OutOfRange : Int := 5;
+    END_VAR
+
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_4ZN"
+    }
+    NETWORK
+        //Pulisco memorie
+        #AlmenoUnaDestInChiamata := False;
+        "Percorso".Stazione[#K_Stazione].Dati.AlmenoUnaDestinazioneProgettata := False;
+        
+        //Scansiono tutte le destinazioni della stazione per generare le memorie necessarie
+        FOR #DestinazioneAttuale := 0 TO "K_NumStazione" DO
+            #ChiamataOrBypass := "Percorso".Stazione[#DestinazioneAttuale].OUT.Chiamata OR "Percorso".Stazione[#K_Stazione].Prm.ByPassChiamataDestinazione;
+            IF "Percorso".Stazione[#K_Stazione].Destinazione[#DestinazioneAttuale].IN.Attivo THEN
+                "Percorso".Stazione[#K_Stazione].Dati.DestAttivaPresente := True;
+                IF #ChiamataOrBypass THEN
+                    #AlmenoUnaDestInChiamata := True;
+                END_IF;
+            END_IF;
+            IF "Percorso".Stazione[#K_Stazione].Destinazione[#DestinazioneAttuale].IN.Possibile THEN
+                "Percorso".Stazione[#K_Stazione].Dati.AlmenoUnaDestinazioneProgettata := True;
+                "Percorso".Stazione[#DestinazioneAttuale].Dati.AlmenoUnaSorgenteProgettata := True;
+                IF "Percorso".Stazione[#K_Stazione].Destinazione[#DestinazioneAttuale].IN.Attivo THEN
+                    "Percorso".Stazione[#DestinazioneAttuale].Dati.SorgAttivaPresente := True;
+                END_IF;
+            END_IF;
+            
+            // REGION Gestione partners
+            //     #GestPartner_1.TipoAssociazione := #GestPartner_2.TipoAssociazione := "Percorso".Stazione[#K_Stazione].Prm.Partner.TipoAssociazione;
+            //     CASE #GestPartner_1.TipoAssociazione OF
+            //         0://Associazione completa quindi verifico tutte le condizioni sopra
+            //             #GestPartner_1.DestinazioneStazioneSelezionata := "Percorso".Stazione[#K_Stazione].Destinazione[#DestinazioneAttuale].IN.Selezionato;
+            //             #GestPartner_1.DestinazionePartnerPossibile := "Percorso".Stazione[#K_StazionePartner1].Destinazione[#DestinazioneAttuale].IN.Possibile;
+            //             #GestPartner_1.DestinazionePartnerSelezionata := "Percorso".Stazione[#K_StazionePartner1].Destinazione[#DestinazioneAttuale].IN.Selezionato;
+            //             #GestPartner_1.RichiestaAssociaPartner := #GestPartner_1.DestinazioneStazioneSelezionata AND #GestPartner_1.DestinazionePartnerPossibile AND NOT #GestPartner_1.DestinazionePartnerSelezionata;
+            //             #GestPartner_1.PartnerAssociato := #GestPartner_1.DestinazioneStazioneSelezionata AND #GestPartner_1.DestinazionePartnerSelezionata;
+            //         1:
+            //             #GestPartner_1.PartnerAssociato := True;
+            //     END_CASE;
+            //     CASE #GestPartner_2.TipoAssociazione OF
+            //         0://Associazione completa quindi verifico tutte le condizioni sopra
+            //             #GestPartner_2.DestinazioneStazioneSelezionata := "Percorso".Stazione[#K_Stazione].Destinazione[#DestinazioneAttuale].IN.Selezionato;
+            //             #GestPartner_2.DestinazionePartnerPossibile := "Percorso".Stazione[#K_StazionePartner2].Destinazione[#DestinazioneAttuale].IN.Possibile;
+            //             #GestPartner_2.DestinazionePartnerSelezionata := "Percorso".Stazione[#K_StazionePartner2].Destinazione[#DestinazioneAttuale].IN.Selezionato;
+            //             #GestPartner_2.RichiestaAssociaPartner := #GestPartner_2.DestinazioneStazioneSelezionata AND #GestPartner_2.DestinazionePartnerPossibile AND NOT #GestPartner_2.DestinazionePartnerSelezionata;
+            //             #GestPartner_2.PartnerAssociato := #GestPartner_2.DestinazioneStazioneSelezionata AND #GestPartner_2.DestinazionePartnerSelezionata;
+            //         1:
+            //             #GestPartner_2.PartnerAssociato := True;
+            //     END_CASE;
+            // END_REGION ;
+        END_FOR;
+        REGION Verifico condizioni analogica
+            IF #K_Analogica = #NonPresente THEN
+                #AnalogicaOk := True;
+            ELSE
+                // #AllarmeAnalogica.SogliaMini :=
+                // "Percorso".Stazione[#K_Stazione].Prm.CadutaChiamata.DaAnalogicaPer.SogliaMini = 1 AND "Analogica".A[#K_Analogica].Out.SogliaMini OR
+                // "Percorso".Stazione[#K_Stazione].Prm.CadutaChiamata.DaAnalogicaPer.SogliaMini = 2 AND NOT "Analogica".A[#K_Analogica].Out.SogliaMini;
+                // #AllarmeAnalogica.SogliaMaxi :=
+                // "Percorso".Stazione[#K_Stazione].Prm.CadutaChiamata.DaAnalogicaPer.SogliaMaxi = 1 AND "Analogica".A[#K_Analogica].Out.SogliaMaxi OR
+                // "Percorso".Stazione[#K_Stazione].Prm.CadutaChiamata.DaAnalogicaPer.SogliaMaxi = 2 AND NOT "Analogica".A[#K_Analogica].Out.SogliaMaxi;
+                // #AllarmeAnalogica.SogliaIntMax :=
+                // "Percorso".Stazione[#K_Stazione].Prm.CadutaChiamata.DaAnalogicaPer.SogliaIntMax = 1 AND "Analogica".A[#K_Analogica].Out.SogliaIntMax OR
+                // "Percorso".Stazione[#K_Stazione].Prm.CadutaChiamata.DaAnalogicaPer.SogliaIntMax = 2 AND NOT "Analogica".A[#K_Analogica].Out.SogliaIntMax;
+                // #AllarmeAnalogica.SogliaIntMin :=
+                // "Percorso".Stazione[#K_Stazione].Prm.CadutaChiamata.DaAnalogicaPer.SogliaIntMin = 1 AND "Analogica".A[#K_Analogica].Out.SogliaIntMin OR
+                // "Percorso".Stazione[#K_Stazione].Prm.CadutaChiamata.DaAnalogicaPer.SogliaIntMin = 2 AND NOT "Analogica".A[#K_Analogica].Out.SogliaIntMin;
+                
+                #AnalogicaOk :=
+                NOT (#AllarmeAnalogica.SogliaMini OR #AllarmeAnalogica.SogliaMaxi OR #AllarmeAnalogica.SogliaIntMin OR #AllarmeAnalogica.SogliaIntMax)
+                AND NOT "Analogica".A[#K_Analogica].Allarmi.A[#OutOfRange].Stato;
+                
+            END_IF;
+        END_REGION
+        REGION Verifico condizioni paratia
+            IF #K_Paratia = #NonPresente THEN
+                #ParatiaOk := True;
+            ELSE
+                #ParatiaOk := True;
+                FOR #CounterAllarme := 1 TO "K_NumAllarmiPerPid" DO
+                    IF "Paratia".P[#K_Paratia].Allarmi.A[#CounterAllarme].Stato THEN
+                        #ParatiaOk := False;
+                    END_IF;
+                END_FOR;
+            END_IF;
+        END_REGION
+        REGION Verifico stato stazione partner 1
+            IF #K_StazionePartner1 = #NonPresente THEN
+                #StazionePartner1Ok := True;
+            ELSIF #GestPartner_1.PartnerAssociato = #Attivo THEN
+                #StazionePartner1Ok := "Percorso".Stazione[#K_StazionePartner1].OUT.Chiamata;
+            ELSE
+                #StazionePartner1Ok := True;
+            END_IF;
+        END_REGION
+        REGION Verifico stato stazione partner 2
+            IF #K_StazionePartner2 = #NonPresente THEN
+                #StazionePartner2Ok := True;
+            ELSIF #GestPartner_2.PartnerAssociato = #Attivo THEN
+                #StazionePartner2Ok := "Percorso".Stazione[#K_StazionePartner2].OUT.Chiamata;
+            ELSE
+                #StazionePartner2Ok := True;
+            END_IF;
+        END_REGION
+        REGION Verfico condizioni motore
+            IF #K_Motore1 = #NonPresente THEN
+                #Motore1Ok := True;
+            ELSE
+                #Motore1Ok := "Motore".M[#K_Motore1].Out.Pronto;
+            END_IF;
+        END_REGION
+        REGION Verfico condizioni pompa
+            IF #K_Motore2 = #NonPresente THEN
+                #Motore2Ok := True;
+            ELSE
+                #Motore2Ok := "Motore".M[#K_Motore2].Out.Pronto;
+            END_IF;
+        END_REGION
+        REGION Condizioni di chiamata stazione
+            #SorgenteAttiva := "Percorso".Stazione[#DestinazioneAttuale].Dati.SorgAttivaPresente;
+            #DestinazioneAttiva := "Percorso".Stazione[#K_Stazione].Dati.DestAttivaPresente := True;
+            #BypassDestinazione := "Percorso".Stazione[#K_Stazione].Prm.ByPassChiamataDestinazione;
+            #BypassSorgente := False;//"Percorso".Stazione[#K_Stazione].Prm.
+            #ChiamataDaValle := #AlmenoUnaDestInChiamata OR ((#SorgenteAttiva OR #BypassSorgente) AND (#BypassDestinazione AND NOT #DestinazioneAttiva));
+            #AbilitazioneHmi := "Percorso".Stazione[#K_Stazione].Hmi.Abilita;
+            #MacchinaOk := #ConsensoMacchina;// OR "Percorso".Stazione[#K_Stazione].Hmi.ByPassConsensoMacchina;
+            #ValleOk := #MacchinaOk AND #ChiamataDaValle;
+            #UtenzeOk := #AnalogicaOk AND #Motore1Ok AND #Motore2Ok AND #ParatiaOk;
+            #PartnersOK := #StazionePartner1Ok AND #StazionePartner2Ok;
+            #StazioneOk := NOT #FermaChiamata AND #AbilitazioneHmi;
+        END_REGION
+        
+        "Percorso".Stazione[#K_Stazione].OUT.Chiamata := #ValleOk AND #UtenzeOk AND #PartnersOK AND #StazioneOk;
+    END_NETWORK
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_4nC"
+    }
+    NETWORK
+        // "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica."00-Analogica" := NOT #AnalogicaOk;
+        // "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica."01-Paratia" := NOT #ParatiaOk;
+        // "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica."02-Motore" := NOT #Motore1Ok;
+        // "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica."03-Pompa" := NOT #Motore2Ok;
+        // "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica."04-NessunaStazioneInChiamata" := NOT #ChiamataDaValle;
+        // "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica."05-StopChiamataDaPLC" := #FermaChiamata;
+        // "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica."06-SelettoreHMIStop" := NOT #AbilitazioneHmi;
+        // "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica."07-MancanzaConsensoMacchina" := NOT #ConsensoMacchina;
+        // "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica."08-StazionePartnerNonChiama" := NOT #StazionePartner1Ok;
+        // "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica."09-" := False;
+    END_NETWORK
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_55f"
+    }
+    NETWORK
+        "Percorso".Stazione[#K_Stazione].Rif_Inc.K_Analogica := #K_Analogica;
+        "Percorso".Stazione[#K_Stazione].Rif_Inc.K_Paratia := #K_Paratia;
+        "Percorso".Stazione[#K_Stazione].Rif_Inc.K_Motore := #K_Motore1;
+        "Percorso".Stazione[#K_Stazione].Rif_Inc.K_Pompa := #K_Motore2;
+    END_NETWORK
+END_FUNCTION

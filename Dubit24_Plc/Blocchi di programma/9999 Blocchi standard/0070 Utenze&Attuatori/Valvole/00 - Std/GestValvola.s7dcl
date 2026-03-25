@@ -1,0 +1,561 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestValvola" : Void
+    VAR_INPUT
+        K_Zona : Int;
+        K_Valvola : Int;
+        K_TipoValvola : Int;
+    END_VAR
+    VAR_TEMP
+        TimeOut : STRUCT
+            CmdPosNotSensPos : Bool;
+            CmdNegNotSensNeg : Bool;
+            SensPosAndSensNeg : Bool;
+            Cumulativo : Bool;
+        END_STRUCT;
+        CondPos : Bool;
+        ValvolaBistabileCentriAperti : Bool;
+        CounterAllarme : Int;
+        K_ZonaInt : Int;
+        K_ValvolaInt : Int;
+        CounterSlot : Int;
+        SensorPos : Bool;
+        SensorNeg : Bool;
+        StatoValvola : Int;
+    END_VAR
+    VAR CONSTANT
+        ComportamentoTimeOut_NessunComportamento : Int := 0;
+        ComportamentoTimeOut_TuttoPos : Int := 1;
+        ComportamentoTimeOut_TuttoNeg : Int := 2;
+        ComportamentoTimeOut_InvertiComando : Int := 3;
+    END_VAR
+
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_YH"
+    }
+    NETWORK
+        REGION Diagnostica programmatore
+            (*Passiamo tutte le costanti di accesso agli array in modo da verificarle e controllarle*)
+            "Diagnostica"(K_Attuale_ArrayInCuiAccediamo := #K_Valvola,
+                          K_NumMax_MassimoValoreDellArrayInCuiAccediamo := "K_NumValvola",
+                          K_Tipo_ArrayInCuiAccediamo := "K_TipoSezionePastorizzatore",
+                          K_Attuale_DiChiAccede := #K_Valvola,
+                          K_Tipo_DiChiAccede := "K_TipoSezionePastorizzatore",
+                          K_AttualeInterno => #K_ValvolaInt);
+            
+            "Diagnostica"(K_Attuale_ArrayInCuiAccediamo := #K_Zona,
+                          K_NumMax_MassimoValoreDellArrayInCuiAccediamo := "K_NumZona",
+                          K_Tipo_ArrayInCuiAccediamo := "K_TipoComunicazione",
+                          K_Attuale_DiChiAccede := #K_Valvola,
+                          K_Tipo_DiChiAccede := "K_TipoSezionePastorizzatore",
+                          K_AttualeInterno => #K_ZonaInt);
+        END_REGION ;
+    END_NETWORK
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_Rv"
+    }
+    NETWORK
+        // IF "Valvola".V[#K_ValvolaInt].In.RichiestaAutoFlipFlop THEN
+        //     IF "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.NumeroFlip.Actual <= "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.NumeroFlip.Preset THEN
+        //         "Valvola".V[#K_ValvolaInt].In.RichiestaAutoPos := NOT "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.CmdFlip;
+        //         "Valvola".V[#K_ValvolaInt].In.RichiestaAutoNeg := "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.CmdFlip;
+        //     END_IF;
+        // ELSE
+        //     "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.NumeroFlip.Actual :=
+        //     "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.NumeroFlip.Preset := 0;
+        // END_IF;
+        // IF NOT "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.MemoFlip AND "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.CmdFlip THEN
+        //     "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.NumeroFlip.Actual += 1;
+        // END_IF;
+        // "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.MemoFlip := "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.CmdFlip;
+        // "Valvola".V[#K_ValvolaInt].In.RichiestaAutoFlipFlop := False;
+        
+        
+        IF NOT "Valvola".V[#K_ValvolaInt].In.RichiestaAutoFlipFlop THEN
+            "Valvola".V[#K_Valvola].Dati.FlipFlop.NumeroFlip.Actual :=
+            "Valvola".V[#K_Valvola].Dati.FlipFlop.NumeroFlip.Preset := 0;
+        END_IF;
+        
+        "Valvola".V[#K_Valvola].In.RichiestaAutoFlipFlop := False;
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkTitle := "MLC_qA"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            I_Contact( "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Stop )
+            wire#w1
+            I_Contact( "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManScarico )
+            wire#w2
+            Contact( "Zona".Z[#K_ZonaInt].Out.Attivo )
+            wire#w3
+            Contact( "Zona".Z[#K_ZonaInt].Out.Auto )
+            Contact( "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Auto )
+            wire#w4
+            I_Contact( "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Stop )
+            wire#w5
+            I_Contact( "Valvola".V[#K_ValvolaInt].Allarmi.A["KAllValv_TimeOutPosiz"].Stato )
+            wire#w6
+            Contact( "Valvola".V[#K_ValvolaInt].In.RichiestaAutoPos )
+            wire#w7
+            I_Contact( "Valvola".V[#K_ValvolaInt].In.Feedback_SensorePos )
+            wire#w8
+            Contact( "Valvola".V[#K_ValvolaInt].In.ConsMovimentoPos )
+            wire#w10
+            I_Contact( "Valvola".V[#K_ValvolaInt].In.RichiestaAutoFolleScarico )
+            Coil( "Valvola".V[#K_ValvolaInt].Dati.CondPos )
+        END_RUNG
+        RUNG wire#w1
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_BistabileCentriChiusi"
+            )
+        END_RUNG wire#w2
+        RUNG wire#powerrail
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_Monostabile"
+            )
+        END_RUNG wire#w2
+        RUNG wire#powerrail
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_Modulante"
+            )
+        END_RUNG wire#w2
+        RUNG wire#w4
+            { S7_Templates := "SrcType := Int" }
+            NE_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_Modulante"
+            )
+            { S7_Templates := "SrcType := Int" }
+            NE_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_Monostabile"
+            )
+        END_RUNG wire#w5
+        RUNG wire#w5
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := "Valvola".V[#K_ValvolaInt].Prm.ComportamentoTimeOut,
+                in2 := #ComportamentoTimeOut_NessunComportamento
+            )
+        END_RUNG wire#w6
+        RUNG wire#w7
+            I_Contact( "Valvola".V[#K_ValvolaInt].Prm.TogliComandoDopoPos )
+        END_RUNG wire#w8
+        RUNG wire#w3
+            Contact( "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManPos )
+        END_RUNG wire#w8
+        RUNG wire#w3
+            I_Contact( "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManNeg )
+            Contact( "Valvola".V[#K_ValvolaInt].Allarmi.A["KAllValv_TimeOutPosiz"].Stato )
+            wire#w9
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := "Valvola".V[#K_ValvolaInt].Prm.ComportamentoTimeOut,
+                in2 := #ComportamentoTimeOut_TuttoPos
+            )
+        END_RUNG wire#w8
+        RUNG wire#w9
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := "Valvola".V[#K_ValvolaInt].Prm.ComportamentoTimeOut,
+                in2 := #ComportamentoTimeOut_InvertiComando
+            )
+            Contact( "Valvola".V[#K_ValvolaInt].In.RichiestaAutoNeg )
+        END_RUNG wire#w8
+        RUNG wire#w8
+            Contact( "Valvola".V[#K_ValvolaInt].Hmi.BypassSicurezze )
+        END_RUNG wire#w10
+        RUNG wire#w3
+            { S7_Templates := "SrcType := Int" }
+            NE_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_Modulante"
+            )
+            { S7_Templates := "SrcType := Int" }
+            NE_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_Monostabile"
+            )
+            Contact( "Valvola".V[#K_ValvolaInt].Dati.CondPos )
+            I_Contact( "Valvola".V[#K_ValvolaInt].Prm.TogliComandoDopoPos )
+            I_Contact( "Valvola".V[#K_ValvolaInt].Dati.CondNeg )
+        END_RUNG wire#w10
+        RUNG wire#w3
+            { S7_Templates := "SrcType := Int" }
+            NE_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_Modulante"
+            )
+            { S7_Templates := "SrcType := Int" }
+            NE_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_Monostabile"
+            )
+            wire#w11
+            Contact( "Zona".Z[#K_ZonaInt].Out.Attivo )
+            wire#w12
+            Contact( "Zona".Z[#K_ZonaInt].Out.Auto )
+            Contact( "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Auto )
+            Contact( "Valvola".V[#K_ValvolaInt].In.RichiestaAutoNeg )
+            wire#w13
+            I_Contact( "Valvola".V[#K_ValvolaInt].In.Feedback_SensoreNeg )
+            wire#w14
+            I_Contact( "Valvola".V[#K_ValvolaInt].Allarmi.A["KAllValv_TimeOutPosiz"].Stato )
+            wire#w15
+            Contact( "Valvola".V[#K_ValvolaInt].In.ConsMovimentoNeg )
+            wire#w17
+            I_Contact( "Valvola".V[#K_ValvolaInt].In.RichiestaAutoFolleScarico )
+            Coil( "Valvola".V[#K_ValvolaInt].Dati.CondNeg )
+        END_RUNG
+        RUNG wire#w13
+            I_Contact( "Valvola".V[#K_ValvolaInt].Prm.TogliComandoDopoPos )
+        END_RUNG wire#w14
+        RUNG wire#w14
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := "Valvola".V[#K_ValvolaInt].Prm.ComportamentoTimeOut,
+                in2 := #ComportamentoTimeOut_NessunComportamento
+            )
+        END_RUNG wire#w15
+        RUNG wire#w12
+            Contact( "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManNeg )
+        END_RUNG wire#w15
+        RUNG wire#w12
+            I_Contact( "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManPos )
+            Contact( "Valvola".V[#K_ValvolaInt].Allarmi.A["KAllValv_TimeOutPosiz"].Stato )
+            wire#w16
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := "Valvola".V[#K_ValvolaInt].Prm.ComportamentoTimeOut,
+                in2 := #ComportamentoTimeOut_TuttoNeg
+            )
+        END_RUNG wire#w15
+        RUNG wire#w16
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := "Valvola".V[#K_ValvolaInt].Prm.ComportamentoTimeOut,
+                in2 := #ComportamentoTimeOut_InvertiComando
+            )
+            Contact( "Valvola".V[#K_ValvolaInt].In.RichiestaAutoPos )
+        END_RUNG wire#w15
+        RUNG wire#w15
+            Contact( "Valvola".V[#K_ValvolaInt].Hmi.BypassSicurezze )
+        END_RUNG wire#w17
+        RUNG wire#w11
+            Contact( "Valvola".V[#K_ValvolaInt].Dati.CondNeg )
+            I_Contact( "Valvola".V[#K_ValvolaInt].Prm.TogliComandoDopoPos )
+            I_Contact( "Valvola".V[#K_ValvolaInt].Dati.CondPos )
+        END_RUNG wire#w17
+        RUNG wire#w3
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_Monostabile"
+            )
+            wire#w18
+            I_Contact( "Valvola".V[#K_ValvolaInt].Dati.CondPos )
+        END_RUNG wire#w17
+        RUNG wire#w3
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := #K_TipoValvola,
+                in2 := "K_TipoValvola_Modulante"
+            )
+        END_RUNG wire#w18
+    END_NETWORK
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_SM"
+    }
+    NETWORK
+        REGION Appoggio ingressi
+            "Valvola".V[#K_ValvolaInt].Prm.K_TipoValvola := #K_TipoValvola;
+            "Valvola".V[#K_ValvolaInt].In.Reset := "Zona".Z[#K_ZonaInt].Gen.Reset;
+        END_REGION ;
+        REGION Controllo parametri
+            IF "Valvola".V[#K_ValvolaInt].In.RichiestaPressionePos > "Valvola".V[#K_ValvolaInt].Prm.MassimaPressione THEN
+                "Valvola".V[#K_ValvolaInt].In.RichiestaPressionePos := "Valvola".V[#K_ValvolaInt].Prm.MassimaPressione;
+            END_IF;
+            IF "Valvola".V[#K_ValvolaInt].In.RichiestaPortataPos > 100 THEN
+                "Valvola".V[#K_ValvolaInt].In.RichiestaPortataPos := 100;
+            END_IF;
+            IF "Valvola".V[#K_ValvolaInt].In.RichiestaPortataNeg > 100 THEN
+                "Valvola".V[#K_ValvolaInt].In.RichiestaPortataNeg := 100;
+            END_IF;
+            IF "Valvola".V[#K_ValvolaInt].In.RichiestaPortataPos < 0 THEN
+                "Valvola".V[#K_ValvolaInt].In.RichiestaPortataPos := 0;
+            END_IF;
+            IF "Valvola".V[#K_ValvolaInt].In.RichiestaPortataNeg < 0 THEN
+                "Valvola".V[#K_ValvolaInt].In.RichiestaPortataNeg := 0;
+            END_IF;
+            IF "Valvola".V[#K_ValvolaInt].Prm.K_VistaManuale <> "K_VistaManuale_NessunaVista" THEN
+                "VistaManuali".VistaManuale["Valvola".V[#K_ValvolaInt].Prm.K_VistaManuale].K_NumeroUtenza := #K_ValvolaInt;
+                "VistaManuali".VistaManuale["Valvola".V[#K_ValvolaInt].Prm.K_VistaManuale].K_Tipo := #K_TipoValvola;
+            END_IF;
+        END_REGION ;
+        REGION BypassFinecorsa
+            IF "Zona".Z[#K_ZonaInt].Out.Auto THEN
+                "Valvola".V[#K_ValvolaInt].Hmi.BypassSicurezze := False;
+            END_IF;
+        END_REGION ;
+        REGION TStart e STop della valvola
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := "Valvola".V[#K_ValvolaInt].Dati.CondPos,
+                   IO_DatiTimer := "Valvola".V[#K_ValvolaInt].Prm.TStartPos);
+            
+            "T_OFF"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                    I_StartConteggio := "Valvola".V[#K_ValvolaInt].Prm.TStartPos.O,
+                    IO_DatiTimer := "Valvola".V[#K_ValvolaInt].Prm.TStopPos);
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := "Valvola".V[#K_ValvolaInt].Dati.CondNeg,
+                   IO_DatiTimer := "Valvola".V[#K_ValvolaInt].Prm.TStartNeg);
+            
+            "T_OFF"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                    I_StartConteggio := "Valvola".V[#K_ValvolaInt].Prm.TStartNeg.O,
+                    IO_DatiTimer := "Valvola".V[#K_ValvolaInt].Prm.TStopNeg);
+            
+            
+        END_REGION ;
+        REGION Ritardo feedback sensori        
+            #SensorPos := "Valvola".V[#K_ValvolaInt].In.Feedback_SensorePos OR (("Zona".Comuni.Simulazione_PLCSim OR "Valvola".V[#K_ValvolaInt].Prm.SensorLess) AND "Valvola".V[#K_ValvolaInt].Dati.CmdPos);
+            #SensorNeg := "Valvola".V[#K_ValvolaInt].In.Feedback_SensoreNeg OR (("Zona".Comuni.Simulazione_PLCSim OR "Valvola".V[#K_ValvolaInt].Prm.SensorLess) AND "Valvola".V[#K_ValvolaInt].Dati.CmdNeg);
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := #SensorPos,
+                   IO_DatiTimer := "Valvola".V[#K_ValvolaInt].Prm.RitSensPos);
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := #SensorNeg,
+                   IO_DatiTimer := "Valvola".V[#K_ValvolaInt].Prm.RitSensNeg);
+            
+        END_REGION ;
+        REGION TimeOut Posizionamento valvola   
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := (("Valvola".V[#K_ValvolaInt].Dati.CmdPos AND NOT #SensorPos) AND "Zona".Z[#K_ZonaInt].Out.Attivo) AND NOT "Zona".Comuni.Simulazione_PLCSim AND NOT "Valvola".V[#K_ValvolaInt].In.Reset,
+                   IO_DatiTimer := "Valvola".V[#K_ValvolaInt].Prm.TimeOutPos);
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := (("Valvola".V[#K_ValvolaInt].Dati.CmdNeg AND NOT #SensorNeg) AND "Zona".Z[#K_ZonaInt].Out.Attivo) AND NOT "Zona".Comuni.Simulazione_PLCSim AND NOT "Valvola".V[#K_ValvolaInt].In.Reset,
+                   IO_DatiTimer := "Valvola".V[#K_ValvolaInt].Prm.TimeOutNeg);
+            
+            #TimeOut.CmdPosNotSensPos := "Valvola".V[#K_ValvolaInt].Prm.TimeOutPos.O;
+            #TimeOut.CmdNegNotSensNeg := "Valvola".V[#K_ValvolaInt].Prm.TimeOutNeg.O;
+            #TimeOut.SensPosAndSensNeg := "Valvola".V[#K_ValvolaInt].In.Feedback_SensorePos AND "Valvola".V[#K_ValvolaInt].In.Feedback_SensoreNeg;
+            #TimeOut.Cumulativo := #TimeOut.CmdPosNotSensPos OR #TimeOut.CmdNegNotSensNeg OR #TimeOut.SensPosAndSensNeg;
+        END_REGION
+        REGION Allarmi valvola
+            REGION Reset allarmi valvola
+                IF "Zona".Z[#K_ZonaInt].Gen.Reset THEN
+                    FOR #CounterAllarme := 0 TO "K_NumAllarmiPerValvole" DO
+                        "Valvola".V[#K_ValvolaInt].Allarmi.A[#CounterAllarme].Stato := False;
+                    END_FOR;
+                END_IF;
+            END_REGION ;    
+            REGION Set allarmi valvola 
+                IF #TimeOut.Cumulativo THEN
+                    "Valvola".V[#K_ValvolaInt].Allarmi.A["KAllValv_TimeOutPosiz"].Stato := True;
+                END_IF;
+                "Valvola".V[#K_ValvolaInt].Allarmi.A["KAllValv_ValvolaNonInAuto"].Stato := NOT "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Auto;
+                "Valvola".V[#K_ValvolaInt].Allarmi.A["KAllValv_ValvolaNonInAuto"].Silenziato := True;
+                "Valvola".V[#K_ValvolaInt].Allarmi.A["KAllValv_ByPassFinecorsa"].Stato := "Valvola".V[#K_ValvolaInt].Hmi.BypassSicurezze;
+            END_REGION ;
+            REGION Scrittura Word allarmi HMI        
+                FOR #CounterAllarme := 1 TO "K_NumAllarmiPerValvole" DO
+                    "GestAllarme_Std"(GestioneSirena := True,
+                                      Allarme := "Valvola".V[#K_ValvolaInt].Allarmi.A[#CounterAllarme],
+                                      NumAllarme := #CounterAllarme,
+                                      K_Zona := #K_ZonaInt,
+                                      WordHmi := "Valvola".V[#K_ValvolaInt].Allarmi.WordHMI);
+                END_FOR;
+            END_REGION ;
+        END_REGION ;
+        REGION Scrittua delle uscite della valvola
+            
+            "Valvola".V[#K_ValvolaInt].Dati.CmdPos := "Valvola".V[#K_ValvolaInt].Prm.TStopPos.O;
+            "Valvola".V[#K_ValvolaInt].Dati.CmdNeg := "Valvola".V[#K_ValvolaInt].Prm.TStopNeg.O;
+            
+            IF NOT "Valvola".V[#K_ValvolaInt].Prm.InversioneDirezione THEN
+                "Valvola".V[#K_ValvolaInt].Out.CmdPos := "Valvola".V[#K_ValvolaInt].Dati.CmdPos;
+                "Valvola".V[#K_ValvolaInt].Out.CmdNeg := "Valvola".V[#K_ValvolaInt].Dati.CmdNeg;
+            ELSE
+                "Valvola".V[#K_ValvolaInt].Out.CmdPos := "Valvola".V[#K_ValvolaInt].Dati.CmdNeg;
+                "Valvola".V[#K_ValvolaInt].Out.CmdNeg := "Valvola".V[#K_ValvolaInt].Dati.CmdPos;
+            END_IF;
+            
+            #ValvolaBistabileCentriAperti := "Valvola".V[#K_ValvolaInt].Prm.K_TipoValvola = "K_TipoValvola_BistabileCentriAperti";
+            
+            IF (((NOT "Valvola".V[#K_ValvolaInt].Dati.CmdPos AND NOT "Valvola".V[#K_ValvolaInt].Dati.CmdNeg) OR NOT "Zona".Z[#K_ZonaInt].Out.Attivo) AND #ValvolaBistabileCentriAperti) OR "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManScarico THEN
+                
+                "Valvola".V[#K_ValvolaInt].Out.CmdScarico := True;
+            ELSE
+                "Valvola".V[#K_ValvolaInt].Out.CmdScarico := False;
+            END_IF;
+            
+            IF "Valvola".V[#K_ValvolaInt].Dati.CmdPos THEN
+                IF "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Auto THEN
+                    "Valvola".V[#K_ValvolaInt].Out.CmdPortata := "Valvola".V[#K_ValvolaInt].In.RichiestaPortataPos;
+                    "Valvola".V[#K_ValvolaInt].Out.CmdPressione := "Valvola".V[#K_ValvolaInt].In.RichiestaPressionePos;
+                ELSE
+                    "Valvola".V[#K_ValvolaInt].Out.CmdPortata := "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManPortata;
+                    "Valvola".V[#K_ValvolaInt].Out.CmdPressione := "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManPressione;
+                END_IF;
+            ELSE
+                IF "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Auto THEN
+                    "Valvola".V[#K_ValvolaInt].Out.CmdPortata := "Valvola".V[#K_ValvolaInt].In.RichiestaPortataNeg;
+                    "Valvola".V[#K_ValvolaInt].Out.CmdPressione := 0;
+                ELSE
+                    "Valvola".V[#K_ValvolaInt].Out.CmdPortata := 0;
+                    "Valvola".V[#K_ValvolaInt].Out.CmdPressione := 0;
+                END_IF;
+            END_IF;
+            
+        END_REGION ;
+        REGION Caduta ciclo automatico della zona di riferimento   
+            FOR #CounterAllarme := 1 TO "K_NumAllarmiPerValvole" DO
+                "GestSlotAllarmeUtenze"(K_NumAllarme := #CounterAllarme,
+                                        Allarme := "Valvola".V[#K_ValvolaInt].Allarmi.A[#CounterAllarme],
+                                        K_Zona := #K_ZonaInt,
+                                        K_Indice := #K_ValvolaInt,
+                                        K_Tipo := "K_TipoValvola");
+            END_FOR;
+        END_REGION
+        REGION Ritardo flip-flop        
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.CmdFlip,
+                   IO_DatiTimer := "Valvola".V[#K_ValvolaInt].Prm.RitFlip);
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                    I_StartConteggio := NOT "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.CmdFlip,
+                    IO_DatiTimer := "Valvola".V[#K_ValvolaInt].Prm.RitFlop);
+            
+            IF "Valvola".V[#K_ValvolaInt].Prm.RitFlip.O THEN
+                "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.CmdFlip := False;
+            END_IF;
+            IF "Valvola".V[#K_ValvolaInt].Prm.RitFlop.O THEN
+                "Valvola".V[#K_ValvolaInt].Dati.FlipFlop.CmdFlip := True;
+            END_IF;
+        END_REGION ;
+        REGION Valvola realmente aperta o chiusa
+            "Valvola".V[#K_ValvolaInt].Dati.RealmenteInNeg := "Valvola".V[#K_ValvolaInt].Prm.RitSensNeg.O AND ("Valvola".V[#K_ValvolaInt].Dati.CmdNeg OR "Valvola".V[#K_ValvolaInt].Prm.TogliComandoDopoPos);
+            "Valvola".V[#K_ValvolaInt].Dati.RealmenteInPos := "Valvola".V[#K_ValvolaInt].Prm.RitSensPos.O AND ("Valvola".V[#K_ValvolaInt].Dati.CmdPos OR "Valvola".V[#K_ValvolaInt].Prm.TogliComandoDopoPos);
+        END_REGION ;
+        REGION Stato valvola per HMI
+            REGION Appoggio le richieste automatiche
+                //Questo appoggio serve perchè lato PLC posso resettare il comando tra un ciclo e l'altro
+                //e l'hmi mostrerebbe il lampeggio, quando dal punto di vista di comando invece rimane sempre alto
+                //un'esempio è quello di comando proveniente da sequenziatore dove ogni passo setta e MAI resetta il comando
+                //impartito. Di conseguenza lo resettiamo nel blocco della valvola ad ogni tempo ciclo.
+                "Valvola".V[#K_ValvolaInt].Hmi.RichiestaAutoPos := "Valvola".V[#K_ValvolaInt].In.RichiestaAutoPos;
+                "Valvola".V[#K_ValvolaInt].Hmi.RichiestaAutoNeg := "Valvola".V[#K_ValvolaInt].In.RichiestaAutoNeg;
+            END_REGION ;
+            REGION Stato della valvola FROM HMI        
+                CASE "Valvola".V[#K_ValvolaInt].Prm.K_TipoValvola OF
+                    // "K_TipoValvola_Monostabile":
+                    //     "Valvola".V[#K_ValvolaInt].Hmi.Visibilita.ManNegOff := False;
+                    //     "Valvola".V[#K_ValvolaInt].Hmi.TipoManuale := 5;
+                    "K_TipoValvola_BistabileCentriAperti":
+                        "Valvola".V[#K_ValvolaInt].Hmi.Visibilita.ManScarico := True;
+                        "Valvola".V[#K_ValvolaInt].Hmi.Visibilita.ManNegOff := True;
+                    "K_TipoValvola_BistabileCentriApertiEChiusi":
+                        "Valvola".V[#K_ValvolaInt].Hmi.Visibilita.ManScarico := True;
+                        "Valvola".V[#K_ValvolaInt].Hmi.Visibilita.ManNegOff := True;
+                    ELSE
+                        "Valvola".V[#K_ValvolaInt].Hmi.Visibilita.ManNegOff := True;
+                        "Valvola".V[#K_ValvolaInt].Hmi.Visibilita.ManScarico := False;
+                END_CASE;
+                "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Stop := "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.StatoFromHmi = 0;
+                "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Auto := "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.StatoFromHmi = 1;
+                IF "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.StatoFromHmi = 2 THEN
+                    IF "Valvola".V[#K_ValvolaInt].Hmi.TipoManuale = 5 THEN
+                        IF "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.StatoFromHmi <> "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.StatoPrecManPos THEN
+                            "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManPos := True;
+                        END_IF;
+                    ELSE
+                        "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManPos := True;
+                    END_IF;
+                ELSE
+                    "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManPos := False;
+                END_IF;
+                "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManNeg := "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.StatoFromHmi = 3;
+                "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManScarico := "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.StatoFromHmi = 4;
+                "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.StatoPrecManPos := "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.StatoFromHmi;
+            END_REGION;
+            REGION Stato della valvola in uscita
+                #StatoValvola := 0;
+                IF "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Auto THEN
+                    IF "Valvola".V[#K_ValvolaInt].Dati.CmdPos THEN
+                        #StatoValvola := 2;
+                    ELSIF "Valvola".V[#K_ValvolaInt].Dati.CmdNeg THEN
+                        #StatoValvola := 0;
+                    END_IF;
+                ELSIF "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.Stop THEN
+                    #StatoValvola:= 1;
+                ELSIF "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManPos THEN
+                    IF "Zona".Comuni.Clocks.Clock1Hz THEN
+                        #StatoValvola := 3;
+                    ELSE
+                        #StatoValvola := 4;
+                    END_IF;
+                    ELSIF "Valvola".V[#K_ValvolaInt].Hmi.StatoCmd.ManNeg THEN
+                        #StatoValvola:= 4;
+                END_IF;
+                IF "Valvola".V[#K_ValvolaInt].Allarmi.A["KAllValv_TimeOutPosiz"].Stato OR "Valvola".V[#K_ValvolaInt].Allarmi.A["KAllValv_ResetRichiesto"].Stato THEN
+                    #StatoValvola := 5;
+                END_IF;
+                "Valvola".V[#K_ValvolaInt].Out.Stato := #StatoValvola;
+                
+            END_REGION ;
+        END_REGION
+        REGION Update della valvola
+            IF "Zona".Z[#K_ZonaInt].Gen.UpdatePrm THEN
+                "Valvola".V[#K_ValvolaInt].Hmi.BypassSicurezze :=
+                "Valvola".V[#K_ValvolaInt].Hmi.Visibilita.ModulantePortata :=
+                "Valvola".V[#K_ValvolaInt].Hmi.Visibilita.ModulantePressione :=
+                "Valvola".V[#K_ValvolaInt].In.RichiestaAutoNeg :=
+                "Valvola".V[#K_ValvolaInt].In.RichiestaAutoPos :=
+                "Valvola".V[#K_ValvolaInt].In.Feedback_SensoreNeg :=
+                "Valvola".V[#K_ValvolaInt].In.Feedback_SensorePos := False;
+                
+                "Valvola".V[#K_ValvolaInt].In.ConsMovimentoNeg :=
+                "Valvola".V[#K_ValvolaInt].In.ConsMovimentoPos := True;
+                
+                "Valvola".V[#K_ValvolaInt].Rif_Inc.K_Zona := #K_ZonaInt;
+                
+                "Valvola".V[#K_ValvolaInt].Prm.K_VistaManuale := 0;
+                
+                IF "Valvola".V[#K_ValvolaInt].Prm.K_TipoValvola <> "K_TipoValvola_Monostabile" THEN
+                    IF "Valvola".V[#K_ValvolaInt].Hmi.TipoManuale = 5 THEN
+                        "Valvola".V[#K_ValvolaInt].Hmi.TipoManuale := 0;
+                    END_IF;
+                END_IF;
+                "Valvola".V[#K_ValvolaInt].Dati.InclusaInUnaSequenza := False;
+                FOR #CounterSlot := 0 TO "K_NumRifIncrociatiSequenza" DO
+                    IF "Valvola".V[#K_ValvolaInt].Rif_Inc.K_Sequenza[#CounterSlot] <> 0 THEN
+                        "Valvola".V[#K_ValvolaInt].Dati.InclusaInUnaSequenza := True;
+                    END_IF;
+                END_FOR;
+            END_IF;
+        END_REGION ;
+        REGION Pulisco i comandi della sequenza
+            IF "Valvola".V[#K_ValvolaInt].Dati.InclusaInUnaSequenza OR True THEN
+                "Valvola".V[#K_ValvolaInt].In.RichiestaAutoPos :=
+                "Valvola".V[#K_ValvolaInt].In.RichiestaAutoNeg := False;
+            END_IF;
+        END_REGION ;
+    END_NETWORK
+END_FUNCTION

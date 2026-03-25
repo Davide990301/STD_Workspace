@@ -1,0 +1,11 @@
+﻿TYPE
+    Std_Destinazioni : STRUCT
+        { S7_Setpoint := "False" }
+        Destinazione : Array[0..25] of _.Std_Stazioni;
+        Dati : STRUCT
+            DestAttivaPresente : Bool;
+            DestSelezionataPresente : Bool;
+            AlmenoUnaSorgente : Bool;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

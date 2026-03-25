@@ -1,0 +1,13 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "Main consensi" : Void
+    VAR_TEMP
+        TotalizzatoreOltreMetà : Bool;
+        OutSegnale : Bool;
+        SegnaleDaInviare : Bool;
+    END_VAR
+
+END_FUNCTION

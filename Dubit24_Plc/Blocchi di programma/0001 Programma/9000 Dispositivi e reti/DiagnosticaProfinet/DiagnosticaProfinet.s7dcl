@@ -1,0 +1,40 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK DiagnosticaProfinet
+    VAR
+        { S7_MLC := "MLC_4wC" }
+        AllarmiRicercaDisp : STRUCT
+            Configurati : String;
+            Disturbati : String;
+            Disattivati : String;
+            Disponibili : String;
+            ConWarning : String;
+        END_STRUCT;
+        Dispositivo : Array[0.._.K_NumDispositivoProfinet] of STRUCT
+            Configurato : Bool;
+            Disturbato : Bool;
+            Disattivato : Bool;
+            Disponibile : Bool;
+            SegnalazionePresente : Bool;
+            Stato : Int;
+            WordHMI : Word;
+        END_STRUCT;
+    END_VAR
+
+    AllarmiRicercaDisp.Configurati := 'Tutto ok';
+    AllarmiRicercaDisp.Disturbati := 'Tutto ok';
+    AllarmiRicercaDisp.Disattivati := 'Tutto ok';
+    AllarmiRicercaDisp.Disponibili := 'Tutto ok';
+    AllarmiRicercaDisp.ConWarning := 'Tutto ok';
+        Dispositivo[0].Configurato := TRUE;
+        Dispositivo[0].Disturbato := FALSE;
+        Dispositivo[0].Disattivato := FALSE;
+        Dispositivo[0].Disponibile := TRUE;
+        Dispositivo[0].SegnalazionePresente := FALSE;
+        Dispositivo[0].Stato := 4;
+        Dispositivo[0].WordHMI := 16#0000;
+
+END_DATA_BLOCK

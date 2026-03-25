@@ -1,0 +1,25 @@
+﻿MultiLingualTexts:
+  - id: MLC_cb
+    it-IT: Consenso chiamata da macchina a valle
+  - id: MLC_3tw
+    it-IT: Se a 1 blocca la chiamata a monte di prodotto
+  - id: MLC_4G8
+    it-IT: Assegnare la costante per questa stazione
+  - id: MLC_fc
+    it-IT: 'Assegnare K stazione da assegnare (ES: Additivo che funziona insieme a questa stazione )'
+  - id: MLC_4Pn
+    it-IT: 'Assegnare K stazione da assegnare (ES: Additivo che funziona insieme a questa stazione )'
+  - id: MLC_5CF
+    it-IT: Assegnare analogica da verificare
+  - id: MLC_Ls
+    it-IT: Assegnare paratia da cui prendere lo stato
+  - id: MLC_4Fj
+    it-IT: Assegnare motore da cui prendere lo stato
+  - id: MLC_3UM
+    it-IT: Assegnare pompa da cui prendere lo stato
+  - id: MLC_4ZN
+    it-IT: Gestione della chiamata della stazione
+  - id: MLC_4nC
+    it-IT: Diagnostica HMI della stazione
+  - id: MLC_55f
+    it-IT: Riferimenti incrociati

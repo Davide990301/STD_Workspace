@@ -1,0 +1,9 @@
+﻿MultiLingualTexts:
+  - id: MLC_YH
+    it-IT: Diagnostica programmatore
+  - id: MLC_Rv
+    it-IT: Gestione del comando flip flop
+  - id: MLC_qA
+    it-IT: 'Condizioni di comando della valvola  '
+  - id: MLC_SM
+    it-IT: Logica della valvola

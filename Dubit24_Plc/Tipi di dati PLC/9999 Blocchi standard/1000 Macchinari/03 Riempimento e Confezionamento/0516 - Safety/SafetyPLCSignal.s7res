@@ -1,0 +1,9 @@
+﻿MultiLingualTexts:
+  - id: MLC_3vH
+    it-IT: Circuito sicurezza abilitato
+  - id: MLC_3EW
+    it-IT: Circuito sicurezza ritardato abilitato
+  - id: MLC_4Fk
+    it-IT: Richiesta reset Circuito sicurezza
+  - id: MLC_iJ
+    it-IT: Errore Feedback circuito sicurezza

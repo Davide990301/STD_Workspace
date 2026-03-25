@@ -1,0 +1,317 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestStazione_ProntoRicevere" : Void
+    VAR_INPUT
+        AttivaChiamata : Bool;
+        K_Stazione : Int;
+    END_VAR
+    VAR_TEMP
+        { S7_MLC := "MLC_hB" }
+        ProntaChiamareNoFeedback : Bool;
+        StazioneRiferimentoAdditiva : Int;
+        StazioneRiferimentoAdditivoPresente : Bool;
+        StazioneSorgenteAdditivoPresente : Bool;
+        DestinazioneAttuale : Int;
+        AlmenoUnaDestInChiamata : Bool;
+        ChiamataOrBypass : Bool;
+        AlmenoUnaDestAttiva : Bool;
+        PercorsoNonAttivato : Bool;
+        PercorsoSelezionato : Bool;
+        K_StazioneDestinazione : Int;
+        StazioneRiferimento1_InvioAdditivo : Int;
+        StazioneRiferimento2_InvioAdditivo : Int;
+        BypassControlloRiferimenti : Bool;
+    END_VAR
+
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_fm"
+    }
+    NETWORK
+        REGION Pulizia memorie
+            #K_StazioneDestinazione :=
+            #StazioneRiferimento1_InvioAdditivo :=
+            #StazioneRiferimento2_InvioAdditivo :=
+            #StazioneRiferimentoAdditiva := 0;
+            
+            #AlmenoUnaDestInChiamata :=
+            #StazioneSorgenteAdditivoPresente :=
+            #StazioneRiferimentoAdditivoPresente :=
+            #PercorsoNonAttivato :=
+            #PercorsoSelezionato :=
+            #AlmenoUnaDestAttiva := False;
+        END_REGION ;
+        
+        FOR #DestinazioneAttuale := 0 TO "K_NumStazione" DO //Sfoglio tutte le stazioni
+            //Se la stazione controllata è in chiamata oppure se è bypassata (non deve aspettare la chimata di valle per chiamare)
+            #ChiamataOrBypass := "Percorso".Stazione[#DestinazioneAttuale].OUT.Chiamata OR "Percorso".Stazione[#K_Stazione].Prm.ByPassChiamataDestinazione;
+            
+            IF "Percorso".Stazione[#K_Stazione].Destinazione[#DestinazioneAttuale].IN.Selezionato THEN
+                #PercorsoSelezionato := True;
+                IF NOT "Percorso".Stazione[#K_Stazione].Destinazione[#DestinazioneAttuale].IN.Attivo THEN
+                    #PercorsoNonAttivato := True;
+                END_IF;
+            END_IF;
+            IF "Percorso".Stazione[#K_Stazione].Destinazione[#DestinazioneAttuale].IN.Attivo THEN //Se la strada verso la destinazione è attiva (quindi selezionata e caricata in lavoro)
+                #AlmenoUnaDestAttiva := True;
+                "Percorso".Stazione[#DestinazioneAttuale].Dati.SorgAttivaPresente := True;
+                IF #ChiamataOrBypass THEN                                                                                                       //verifico che sia anche in chiamata
+                    #AlmenoUnaDestInChiamata := True;  //e setto la chiamata.
+                END_IF;                                                                                                                         //Anche se non chiama posso salvare la K.
+                #K_StazioneDestinazione := #DestinazioneAttuale;                                           //Salvo nella stazione la K che identifica la mia destinazione attiva.
+                IF "Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.Abilitazione THEN                                                        //Se ho abilitato il funzionamento additivo per questa stazione
+                    FOR #StazioneRiferimentoAdditiva := 0 TO "K_NumStazione" DO                                                                 //Inizio a cercare la stazione partner, sfogliando tutte le stazioni
+                        IF "Percorso".Stazione[#StazioneRiferimentoAdditiva].Dati.K_StazioneDestinazione = #DestinazioneAttuale THEN            //verifico che abbia la mia stessa destinazione,
+                            IF #StazioneRiferimentoAdditiva <> #K_Stazione THEN                                                                 //mi assicuro di saltare la stazione attuale.
+                                #StazioneSorgenteAdditivoPresente := #StazioneRiferimentoAdditivoPresente := True;                              //A questo punto posso dire di avere una stazione ed una destinazione attiva.
+                                "Percorso".Stazione[#StazioneRiferimentoAdditiva].Dati.RicezioneAdditivo.K_StazioneRiferimento := #K_Stazione;  //Scrivo nella stazione che ho trovato la sorgente additivo.
+                                IF #StazioneRiferimento1_InvioAdditivo = 0 THEN                                                                 //Scrivo nella stazione attuale la k della destinazione di riferimento trovata.
+                                    #StazioneRiferimento1_InvioAdditivo := #StazioneRiferimentoAdditiva;
+                                ELSE
+                                    #StazioneRiferimento2_InvioAdditivo := #StazioneRiferimentoAdditiva;
+                                END_IF;
+                            END_IF;
+                        END_IF;
+                    END_FOR;
+                END_IF;
+            END_IF;
+            IF "Percorso".Stazione[#K_Stazione].Destinazione[#DestinazioneAttuale].IN.Possibile THEN    //Se questo percorso è possibile significa che
+                "Percorso".Stazione[#DestinazioneAttuale].Dati.AlmenoUnaSorgenteProgettata := True;     //questa destinazione ha almeno una sorgente progettata
+                "Percorso".Stazione[#K_Stazione].Dati.AlmenoUnaDestinazioneProgettata := True;          //e di conseguenza questa stazione ha almeno una destinazione progettata.
+            END_IF;
+        END_FOR;
+        
+        REGION Gestione timeout stazione
+            "T_ON"(I_CicloCPU := "CicloScansioneCPU_I".O_rCicloCpu,
+                   I_StartConteggio := "Percorso".Stazione[#K_Stazione].OUT.Chiamata AND NOT "Percorso".Stazione[#K_Stazione].IN.Feedback_Run,
+                   IO_DatiTimer := "Percorso".Stazione[#K_Stazione].Prm.FeedbackRun.Attesa);
+        END_REGION ;
+        
+        //Appoggio di seguito le tempo
+        "Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.K_StazioneRiferimento1 := #StazioneRiferimento1_InvioAdditivo;
+        "Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.K_StazioneRiferimento2 := #StazioneRiferimento2_InvioAdditivo;
+        
+        "Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.Attiva := #StazioneRiferimentoAdditivoPresente;
+        "Percorso".Stazione["Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.K_StazioneRiferimento1].Dati.RicezioneAdditivo.Attiva :=
+        "Percorso".Stazione["Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.K_StazioneRiferimento2].Dati.RicezioneAdditivo.Attiva := #StazioneSorgenteAdditivoPresente;
+        "Percorso".Stazione[#K_Stazione].Dati.DestAttivaPresente := #AlmenoUnaDestAttiva;
+        "Percorso".Stazione[#K_Stazione].Dati.K_StazioneDestinazione := #K_StazioneDestinazione;
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkComment := "MLC_3Ws";
+        S7_NetworkTitle := "MLC_3SX"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #AlmenoUnaDestInChiamata )
+            wire#w1
+            Contact( #AttivaChiamata )
+            I_Contact( "Percorso".Stazione[#K_Stazione].IN.SorgenteNonPronta )
+            I_Contact( "Percorso".Stazione[#K_Stazione].IN.LivelloSorgenteInferiorePriorità )
+            I_Contact( "Percorso".Stazione[#K_Stazione].IN.LivelloDestinazioneSuperiorePriorità )
+            wire#w2
+            Contact( "Percorso".Stazione[#K_Stazione].Dati.SorgAttivaPresente )
+            Contact( "Percorso".Stazione[#K_Stazione].Hmi.Abilita )
+            wire#w3
+            Coil( #ProntaChiamareNoFeedback )
+            wire#w4
+            Contact( "Percorso".Stazione[#K_Stazione].IN.Feedback_Run )
+            wire#w5
+            Coil( "Percorso".Stazione[#K_Stazione].OUT.ProntaAChiamare )
+        END_RUNG
+        RUNG wire#powerrail
+            I_Contact( "Percorso".Stazione[#K_Stazione].Dati.AlmenoUnaDestinazioneProgettata )
+        END_RUNG wire#w1
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].Prm.IgnoraDestinazione )
+        END_RUNG wire#w1
+        RUNG wire#w2
+            I_Contact( "Percorso".Stazione[#K_Stazione].Dati.AlmenoUnaSorgenteProgettata )
+        END_RUNG wire#w3
+        RUNG wire#w4
+            I_Contact( "Percorso".Stazione[#K_Stazione].Prm.FeedbackRun.Attesa.O )
+        END_RUNG wire#w5
+        RUNG wire#w4
+            I_Contact( "Percorso".Stazione[#K_Stazione].Prm.FeedbackRun.Abilitazione )
+        END_RUNG wire#w5
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkTitle := "MLC_4FP"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.Attiva )
+            Contact( "Percorso".Stazione["Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.K_StazioneRiferimento1].OUT.ProntaAChiamare )
+            wire#w1
+            Contact( "Percorso".Stazione["Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.K_StazioneRiferimento2].OUT.ProntaAChiamare )
+            wire#w2
+            Coil( "Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.TuttiRiferimentiOk )
+        END_RUNG
+        RUNG wire#w1
+            { S7_Templates := "SrcType := Int" }
+            EQ_Contact(
+                in1 := #StazioneRiferimento2_InvioAdditivo,
+                in2 := 0
+            )
+        END_RUNG wire#w2
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkComment := "MLC_4Gk";
+        S7_NetworkTitle := "MLC_kT"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].OUT.ProntaAChiamare )
+            wire#w1
+            Contact( "Percorso".Stazione[#K_Stazione].Dati.RicezioneAdditivo.Attiva )
+            Contact( "Percorso".Stazione["Percorso".Stazione[#K_Stazione].Dati.RicezioneAdditivo.K_StazioneRiferimento].OUT.ProntaAChiamare )
+            wire#w2
+            Contact( "Percorso".Stazione["Percorso".Stazione[#K_Stazione].Dati.RicezioneAdditivo.K_StazioneRiferimento].Dati.InvioAdditivo.TuttiRiferimentiOk )
+            wire#w3
+            Contact( "Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.TuttiRiferimentiOk )
+            wire#w4
+            Coil( "Percorso".Stazione[#K_Stazione].OUT.Chiamata )
+        END_RUNG
+        RUNG wire#powerrail
+            I_Contact( "Percorso".Stazione[#K_Stazione].OUT.ProntaAChiamare )
+            Contact( #ProntaChiamareNoFeedback )
+            Contact( "Percorso".Stazione[#K_Stazione].Prm.FeedbackRun.Abilitazione )
+            Contact( "Percorso".Stazione[#K_Stazione].Prm.FeedbackRun.ChiamaAncheDopoTimeot )
+            Coil( #BypassControlloRiferimenti )
+        END_RUNG wire#w1
+        RUNG wire#w2
+            Contact( #BypassControlloRiferimenti )
+        END_RUNG wire#w3
+        RUNG wire#w1
+            I_Contact( "Percorso".Stazione[#K_Stazione].Dati.RicezioneAdditivo.Attiva )
+        END_RUNG wire#w3
+        RUNG wire#w3
+            I_Contact( "Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.Attiva )
+        END_RUNG wire#w4
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkComment := "MLC_aP";
+        S7_NetworkTitle := "MLC_46x"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.Attiva )
+            wire#w1
+            I_Contact( "Percorso".Stazione["Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.K_StazioneRiferimento1].OUT.ProntaAChiamare )
+            wire#w2
+            Coil( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.AttesaPompaMandata )
+        END_RUNG
+        RUNG wire#w1
+            I_Contact( "Percorso".Stazione["Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.K_StazioneRiferimento2].OUT.ProntaAChiamare )
+            { S7_Templates := "SrcType := Int" }
+            NE_Contact(
+                in1 := #StazioneRiferimento2_InvioAdditivo,
+                in2 := 0
+            )
+        END_RUNG wire#w2
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].Dati.RicezioneAdditivo.Attiva )
+            I_Contact( "Percorso".Stazione["Percorso".Stazione[#K_Stazione].Dati.RicezioneAdditivo.K_StazioneRiferimento].OUT.ProntaAChiamare )
+            Coil( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.AttesaAdditivoPronto )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].Dati.AlmenoUnaDestinazioneProgettata )
+            I_Contact( #AlmenoUnaDestInChiamata )
+            Coil( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.DestinazioneNonPronta )
+        END_RUNG
+        RUNG wire#powerrail
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Abilita )
+            Coil( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.MancaAttivazioneDaHmi )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].Dati.AlmenoUnaDestinazioneProgettata )
+            I_Contact( #AlmenoUnaDestAttiva )
+            Coil( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.NessunaDestinazioneAttiva )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( #PercorsoNonAttivato )
+            Coil( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.PercorsoNonAttivo )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].IN.LivelloDestinazioneSuperiorePriorità )
+            Coil( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.PrioritàLivelloDestinazione )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].IN.LivelloSorgenteInferiorePriorità )
+            Coil( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.PrioritàLivelloSorgente )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].IN.SorgenteNonPronta )
+            Coil( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.StazioneAMonteNonPronta )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( "Percorso".Stazione[#K_Stazione].Prm.FeedbackRun.Abilitazione )
+            Contact( "Percorso".Stazione[#K_Stazione].OUT.Chiamata )
+            I_Contact( "Percorso".Stazione[#K_Stazione].OUT.ProntaAChiamare )
+            Contact( #ProntaChiamareNoFeedback )
+            Coil( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.AttesaFeedbackRun )
+        END_RUNG
+        RUNG wire#powerrail
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.StazioneAMonteNonPronta )
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.PrioritàLivelloSorgente )
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.AttesaFeedbackRun )
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.PrioritàLivelloDestinazione )
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.PercorsoNonAttivo )
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.MancaAttivazioneDaHmi )
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.NessunaDestinazioneAttiva )
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.MancaAttivazioneDaHmi )
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.DestinazioneNonPronta )
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.AttesaAdditivoPronto )
+            I_Contact( "Percorso".Stazione[#K_Stazione].Hmi.Diagnostica.AttesaPompaMandata )
+            Not()
+            wire#w3
+            Contact( #PercorsoSelezionato )
+            wire#w4
+            Coil( "Percorso".Stazione[#K_Stazione].Allarmi.Stato.AlmenoUnaDiagnosticaAttiva )
+        END_RUNG
+        RUNG wire#w3
+            I_Contact( "Percorso".Stazione[#K_Stazione].Dati.AlmenoUnaDestinazioneProgettata )
+            Contact( "Percorso".Stazione[#K_Stazione].Dati.SorgAttivaPresente )
+        END_RUNG wire#w4
+    END_NETWORK
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_3Mm"
+    }
+    NETWORK
+        //Ripulisco le memorie di arresto chiamata a causa delle priorità
+        IF NOT "Percorso".Stazione[#K_Stazione].Dati.GestionePrioritàAttiva.DaDestinazione THEN
+            "Percorso".Stazione[#K_Stazione].IN.LivelloDestinazioneSuperiorePriorità := False;
+        END_IF;
+        IF NOT "Percorso".Stazione[#K_Stazione].Dati.GestionePrioritàAttiva.DaSorgente THEN
+            "Percorso".Stazione[#K_Stazione].IN.LivelloSorgenteInferiorePriorità := False;
+        END_IF;
+        "Percorso".Stazione[#K_Stazione].Dati.LivelloTank_PerMotore := "Percorso".Stazione[#K_Stazione].Dati.LivelloTank_DaSorgente;
+        "Percorso".Stazione[#K_Stazione].Dati.IntMinLivelloTank_PerMotore := "Percorso".Stazione[#K_Stazione].Dati.IntMinLivelloTank_DaSorgente;
+        //Ripulisco le memorie dopo averle lette
+        "Percorso".Stazione[#K_Stazione].IN.SorgenteNonPronta :=
+        "Percorso".Stazione[#K_Stazione].Dati.SorgAttivaPresente :=
+        "Percorso".Stazione[#K_Stazione].Dati.RicezioneAdditivo.Attiva :=
+        "Percorso".Stazione[#K_Stazione].Dati.GestionePrioritàAttiva.DaDestinazione :=
+        "Percorso".Stazione[#K_Stazione].Dati.GestionePrioritàAttiva.DaSorgente :=
+        "Percorso".Stazione[#K_Stazione].Dati.IntMinLivelloTank_DaSorgente := False;
+        "Percorso".Stazione[#K_Stazione].Dati.LivelloTank_DaSorgente := 0;
+    END_NETWORK
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_3UT"
+    }
+    NETWORK
+        // "Percorso".Stazione[#K_Stazione].Rif_Inc.K_Analogica := #K_Analogica;
+        // "Percorso".Stazione[#K_Stazione].Rif_Inc.K_Paratia := #K_Paratia;
+        // "Percorso".Stazione[#K_Stazione].Rif_Inc.K_Motore := #K_Motore;
+        // "Percorso".Stazione[#K_Stazione].Rif_Inc.K_Pompa := #K_Pompa;
+    END_NETWORK
+END_FUNCTION

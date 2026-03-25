@@ -1,0 +1,35 @@
+﻿TYPE
+    Rcp_Filler : STRUCT
+        Tempo_Filtro_Variazioni : S5Time;
+        Rit_Aper_Rub_Cambio_Prod : S5Time;
+        Rit_Chiu_Rub_Cambio_Prod : S5Time;
+        Preset_Vasi_Dopo_Riscaldamento : Int;
+        Preset_Passi_Fine_Produz : Int := 30;
+        Preset_Vasi_Lotto : DInt := 1;
+        AbilVasoRovesciato : Bool;
+        { S7_MLC := "MLC_37Z" }
+        SelezTipoContRovesc : Bool;
+        AbilVasoCapovolto : Bool;
+        AbilRiscaldAcqua : Bool;
+        VelocitàMescolatore : Int;
+        VelocitàMescolatore2 : Int;
+        AltezzaCarosello : Real := 220.0;
+        Temperatura_Riferimento : Real;
+        Delta_Temp_Intervento : Real;
+        Coeffic_Temp_Volume : Real;
+        VolumeRichiesto : Real := 180.0;
+        "VolumeMax%" : Real := 100.0;
+        MinAcquaTempOut : Real;
+        MaxAcquaTempOut : Real;
+        MinAcquaTemp : Real;
+        MaxAcquaTemp : Real;
+        MinTankTempOut : Real;
+        MaxTankTempOut : Real;
+        TankTempMin : Real;
+        TankTempMax : Real := 85.0;
+        TankTempHyst : Real := 2.0;
+        ProductINPipeTempMin : Real;
+        ProductINPipeTempMax : Real := 85.0;
+        ProductINPipeTempHyst : Real := 2.0;
+    END_STRUCT;
+END_TYPE

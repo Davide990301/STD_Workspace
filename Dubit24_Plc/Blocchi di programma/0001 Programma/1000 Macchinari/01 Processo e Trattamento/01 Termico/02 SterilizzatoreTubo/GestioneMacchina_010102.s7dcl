@@ -1,0 +1,7 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestioneMacchina_010102" : Void
+END_FUNCTION

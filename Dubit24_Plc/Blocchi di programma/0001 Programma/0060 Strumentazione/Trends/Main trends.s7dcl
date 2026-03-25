@@ -1,0 +1,31 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "Main trends" : Void
+    {
+        S7_Language := "LAD";
+        S7_NetworkTitle := "MLC_4B6"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            "GestTrend"(
+                K_Trend := "K_Trend_1",
+                K_Analog1 := "K_Analogica_Esempio",
+                K_Analog2 := "K_Analogica_Esempio",
+                K_Analog3 := "K_Analogica_Esempio",
+                K_Analog4 := "K_Analogica_Esempio",
+                K_Analog5 := "K_Analogica_Esempio",
+                K_Pid1 := "K_Pid_Esempio",
+                K_Pid2 := "K_Pid_Esempio",
+                K_Pid3 := "K_Pid_Esempio"
+            )
+        END_RUNG
+    END_NETWORK
+    { S7_Language := "LAD" }
+    NETWORK
+        RUNG wire#powerrail
+        END_RUNG
+    END_NETWORK
+END_FUNCTION

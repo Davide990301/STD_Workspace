@@ -1,0 +1,14 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "Main zone" : Void
+    VAR_TEMP
+        NonUsato : Bool;
+    END_VAR
+    VAR CONSTANT
+        Nessuna : Int := 0;
+    END_VAR
+
+END_FUNCTION

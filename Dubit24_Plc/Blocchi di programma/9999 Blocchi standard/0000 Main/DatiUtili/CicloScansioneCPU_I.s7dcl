@@ -1,0 +1,17 @@
+﻿{
+    S7_Author := "Roman";
+    S7_BlockNumber := "8";
+    S7_Family := "BrainElectric";
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_UserDefinedId := "89";
+    S7_Version := "1.3"
+}
+DATA_BLOCK CicloScansioneCPU_I : CicloScansioneCPU_G
+    I_PrimoCicloCpu := FALSE;
+    l_lrCicloCpu := 0.0743422844444444;
+    l_lrCicloCpuMem := 16#0003_2FC2_DE58_DEF6;
+    l_rCicloCpuResto := 0.205517246914266;
+    O_rCicloCpu := 0.07434229;
+    O_iCicloCpu := 74;
+END_DATA_BLOCK

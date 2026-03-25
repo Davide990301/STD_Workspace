@@ -1,0 +1,19 @@
+﻿TYPE
+    OBJ_Washing_Phase_V100_Type : STRUCT
+        { S7_MLC := "MLC_YU" }
+        x_Start_Ok : Bool;
+        { S7_MLC := "MLC_3DT" }
+        x_EN_Next_Step : Bool;
+        Free04 : Bool;
+        { S7_MLC := "MLC_3bR" }
+        x_Aux_Next_Step_After_Drain : Bool;
+        { S7_MLC := "MLC_3vP" }
+        x_Start_Step_Mngr : Bool;
+        { S7_MLC := "MLC_ra" }
+        x_Stop_Step_Mngr : Bool;
+        { S7_MLC := "MLC_4F8" }
+        x_AppFP_Start : Bool;
+        { S7_MLC := "MLC_vA" }
+        x_Pulse_Start : Bool;
+    END_STRUCT;
+END_TYPE

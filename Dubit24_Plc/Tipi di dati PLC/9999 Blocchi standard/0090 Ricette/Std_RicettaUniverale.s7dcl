@@ -1,0 +1,60 @@
+﻿TYPE
+    Std_RicettaUniverale : STRUCT
+        { S7_Setpoint := "False" }
+        Lavoro : _.Std_RicettaUniverale_Prm;
+        { S7_Setpoint := "False" }
+        Modifica : _.Std_RicettaUniverale_Prm;
+        Originali : _.Std_RicettaUniverale_Prm;
+        { S7_Setpoint := "False" }
+        Archivio : Array[0.._.K_NumRicettaPerMacchina] of _.Std_RicettaUniverale_Prm;
+        Hmi : STRUCT
+            NumDatoRicettaBool : Int;
+            NumDatoRicettaReal : Int;
+            CodiceMacchinario : Int;
+            Indice_Selezionata : Int;
+            Indice_RicettaAttuale : Int;
+            Indice_CopiaDa : Int;
+            Indice_CopiaIn : Int;
+            Esegui_Annulla : Bool;
+            Esegui_Carica : Bool;
+            Esegui_Salva : Bool;
+            Esegui_Copia : Bool;
+            Esegui_ModificaRicettaInLavoro : Bool;
+            Esegui_ModificaRicettaInArchivio : Bool;
+            InCorso_ModificaRicettaInLavoro : Bool;
+            InCorso_ModificaRicettaInArchivio : Bool;
+            Scelta_CopiaDa : Bool;
+            Scelta_CopiaIn : Bool;
+            RichiediSalvataggio : Bool;
+            FocusArchivio : Bool;
+            AvviaCopia : Bool;
+            AbilitaCarica : Bool;
+            AbilitaCopia : Bool;
+            Abilita_ModificaRicettaInLavoro : Bool;
+            Abilita_ModificaRicettaInArchivio : Bool;
+            MemoOldSelezione : Int;
+            MostraOriginali : Bool;
+            Archivio : STRUCT
+                AbilitaIncrementoRicetta : Bool;
+                AbilitaDecrementoRicetta : Bool;
+                IndiceFormatoVisualizzato : Int;
+                IndiceHmi : Array[0.._.K_RicetteAdHmi] of Int;
+                NomeHmi : Array[0.._.K_RicetteAdHmi] of String;
+                SelezioneHmi : Array[0.._.K_RicetteAdHmi] of Bool;
+            END_STRUCT;
+        END_STRUCT;
+        Out : STRUCT
+            ScriviDatiLagica : Bool;
+        END_STRUCT;
+        Allarmi : STRUCT
+            "A" : Array[0.._.K_NumAllarmiPerRicette] of _.Std_PrmAllarmeStd := [
+                3((
+                    Stato := FALSE,
+                    EnWarnHmi := FALSE,
+                    EnCadutaCiclo := FALSE
+                ))
+            ];
+            WordHMI : Word := 16#0000;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

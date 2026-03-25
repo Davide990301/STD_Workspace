@@ -1,0 +1,56 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK Popup
+    VAR RETAIN
+        { S7_Setpoint := "False" }
+        "P" : Array[0.._.K_NumPopup] of _.Std_Popup;
+    END_VAR
+
+    VAR
+        Hmi : STRUCT
+            TriggerPopup : Bool;
+            IndicePopup : Int;
+            ReshowPopUps : Bool;
+        END_STRUCT;
+        Dati : STRUCT
+            NumeroPopUpNonConfermati : Int;
+            NumeroPopUpNonConfermatiMemo : Int;
+            NumeroPopupConfermati_Nack : Int;
+            NumeroPopupConfermati_NackMemo : Int;
+        END_STRUCT;
+        { S7_Setpoint := "False" }
+        TimeOutTrigger : _.Std_stTimer;
+    END_VAR
+
+        "P"[0].RichiestaAperturaPopup := FALSE;
+        "P"[0].RichiestaAperturaPopup_Memo := FALSE;
+        "P"[0].PopupDaConfermare := FALSE;
+        "P"[0].AckOperatore_Inviato := FALSE;
+        "P"[0].AckOperatore_Ricevuto := FALSE;
+        "P"[0].NackOperatore_Inviato := FALSE;
+        "P"[0].NackOperatore_Ricevuto := FALSE;
+        "P"[0].ENO_Blocco := FALSE;
+        "P"[1].RichiestaAperturaPopup := FALSE;
+        "P"[1].RichiestaAperturaPopup_Memo := FALSE;
+        "P"[1].PopupDaConfermare := FALSE;
+        "P"[1].AckOperatore_Inviato := FALSE;
+        "P"[1].AckOperatore_Ricevuto := FALSE;
+        "P"[1].NackOperatore_Inviato := FALSE;
+        "P"[1].NackOperatore_Ricevuto := FALSE;
+        "P"[1].ENO_Blocco := FALSE;
+    Hmi.TriggerPopup := FALSE;
+    Hmi.IndicePopup := 0;
+    Hmi.ReshowPopUps := FALSE;
+    Dati.NumeroPopUpNonConfermati := 0;
+    Dati.NumeroPopUpNonConfermatiMemo := 0;
+    Dati.NumeroPopupConfermati_Nack := 0;
+    Dati.NumeroPopupConfermati_NackMemo := 0;
+        TimeOutTrigger.IN := FALSE;
+        TimeOutTrigger.O := FALSE;
+        TimeOutTrigger.Preset := 0.6;
+        TimeOutTrigger.TempoTrascorso := 0.0;
+
+END_DATA_BLOCK

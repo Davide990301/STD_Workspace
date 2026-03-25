@@ -1,0 +1,11 @@
+﻿MultiLingualTexts:
+  - id: MLC_3ki
+    it-IT: index - editing recipe
+  - id: MLC_3s8
+    it-IT: index - actual recipe
+  - id: MLC_4kt
+    it-IT: index - destination of copy
+  - id: MLC_47b
+    it-IT: condizioni singole per abilitazione cambio ricetta (in popup)
+  - id: MLC_4Cd
+    it-IT: enable "Load_in_Work" function

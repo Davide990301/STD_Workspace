@@ -1,0 +1,54 @@
+﻿TYPE
+    OBJ_Washing_Step_V210_Type : STRUCT
+        {
+            S7_MLC := "MLC_3nq";
+            S7_Setpoint := "True"
+        }
+        "w_Output Working 01" : Word := W#16#0000;
+        {
+            S7_MLC := "MLC_4r2";
+            S7_Setpoint := "True"
+        }
+        "w_Output Working 02" : Word := W#16#0000;
+        {
+            S7_MLC := "MLC_3gT";
+            S7_Setpoint := "True"
+        }
+        "w_Output Working 03" : Word := W#16#0000;
+        {
+            S7_MLC := "MLC_59T";
+            S7_Setpoint := "True"
+        }
+        "w_Output Working 04" : Word := W#16#0000;
+        {
+            S7_MLC := "MLC_47x";
+            S7_Setpoint := "True"
+        }
+        "i_Type Contition" : Int;
+        {
+            S7_MLC := "MLC_3T7";
+            S7_Setpoint := "True"
+        }
+        "w_Waiting Condition" : Word := W#16#0000;
+        {
+            S7_MLC := "MLC_QY";
+            S7_Setpoint := "True"
+        }
+        w_SetPoint : Int;
+        {
+            S7_MLC := "MLC_5CJ";
+            S7_Setpoint := "True"
+        }
+        "w_Timer Jump" : Int;
+        {
+            S7_MLC := "MLC_3MK";
+            S7_Setpoint := "True"
+        }
+        "i_Step Description" : Int;
+        {
+            S7_MLC := "MLC_36W";
+            S7_Setpoint := "True"
+        }
+        "i_Step Image" : Int;
+    END_STRUCT;
+END_TYPE

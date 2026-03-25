@@ -1,0 +1,58 @@
+﻿{
+    S7_Optimized := "FALSE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestComunicazioneSlotVTEM" : Void
+    VAR_INPUT
+        K_UtenzaAttuatore : Int;
+        K_Tipo : Int;
+        NumeroSLOT : Int;
+        RispostaTelegramma : Array[0..23] of Word;
+    END_VAR
+    VAR_OUTPUT
+        InvioTelegramma : Array[0..23] of Word;
+    END_VAR
+    VAR_TEMP
+        NumeroWord0_Telegramma : Int;
+        NumeroWord1_Telegramma : Int;
+        NumeroWord2_Telegramma : Int;
+        ByteW1 : Array[0..1] of Byte;
+        Word1FromByteArray : Word;
+        ByteW2 : Array[0..1] of Byte;
+        Word2FromByteArray : Word;
+        ByteW3 : Array[0..1] of Byte;
+        Word3FromByteArray : Word;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        IF #K_UtenzaAttuatore > 0 AND #K_UtenzaAttuatore <= "K_NumValvolaFestoVTEM" THEN
+            
+            //Calcolo word telegramma da utilizzare
+            #NumeroWord1_Telegramma := #NumeroSLOT * 3 - 2;
+            #NumeroWord0_Telegramma := #NumeroWord1_Telegramma - 1;
+            #NumeroWord2_Telegramma := #NumeroWord1_Telegramma + 1;
+            
+            IF #K_Tipo = "K_TipoSezionePastorizzatore" THEN
+                "ValvolaFesto_VTEM".V[#K_UtenzaAttuatore].Input.wBusDataFromVTEM0 := #RispostaTelegramma[#NumeroWord0_Telegramma];
+                "ValvolaFesto_VTEM".V[#K_UtenzaAttuatore].Input.wBusDataFromVTEM1 := #RispostaTelegramma[#NumeroWord1_Telegramma];
+                "ValvolaFesto_VTEM".V[#K_UtenzaAttuatore].Input.wBusDataFromVTEM2 := #RispostaTelegramma[#NumeroWord2_Telegramma];
+                #InvioTelegramma[#NumeroWord0_Telegramma] := "ValvolaFesto_VTEM".V[#K_UtenzaAttuatore].InOut.wBusDataToVTEM0;
+                #InvioTelegramma[#NumeroWord1_Telegramma] := "ValvolaFesto_VTEM".V[#K_UtenzaAttuatore].InOut.wBusDataToVTEM1;
+                #InvioTelegramma[#NumeroWord2_Telegramma] := "ValvolaFesto_VTEM".V[#K_UtenzaAttuatore].InOut.wBusDataToVTEM2;
+            ELSIF #K_Tipo = "K_TipoAnalogica" THEN
+                //Invio dati parametrizzando lo slot relativo come una comunicazione/Scambio dati
+                #ByteW1[0] := 63;
+                #ByteW1[1] := 89;
+                #ByteW2[0] := 11;
+                #ByteW2[1] := 2; //Dato da andare a leggere (2 = Supply pressure)
+                #InvioTelegramma[#NumeroWord0_Telegramma] := #Word1FromByteArray;
+                #InvioTelegramma[#NumeroWord1_Telegramma] := #Word2FromByteArray;
+                //Lettura dati di risposta
+                #Word3FromByteArray := #RispostaTelegramma[#NumeroWord2_Telegramma];
+                "Analogica".A[#K_UtenzaAttuatore].In.Ew := (INT_TO_WORD(((BYTE_TO_INT(#ByteW3[1]) * 255) + BYTE_TO_INT(#ByteW3[0]))));
+            END_IF;
+        END_IF;
+    END_NETWORK
+END_FUNCTION

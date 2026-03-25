@@ -1,0 +1,10 @@
+﻿TYPE
+    Std_DispositivoProfinet : STRUCT
+        Allarmi : STRUCT
+            { S7_Setpoint := "False" }
+            "A" : Array[0.._.K_NumAllarmiPerDispositivoProfinet] of _.Std_PrmAllarmeStd;
+            { S7_Setpoint := "True" }
+            WordHMI : Word;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

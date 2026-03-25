@@ -1,0 +1,24 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK Screensaver
+    VAR
+        Frameattuale : Int;
+        DecrementaFrame : Bool;
+        { S7_MLC := "MLC_4jx" }
+        TipoScreenSaver : Int;
+        { S7_Setpoint := "False" }
+        DurataFrame : _.Std_stTimer;
+    END_VAR
+
+    Frameattuale := 193;
+    DecrementaFrame := FALSE;
+    TipoScreenSaver := 0;
+        DurataFrame.IN := TRUE;
+        DurataFrame.O := FALSE;
+        DurataFrame.Preset := 0.1;
+        DurataFrame.TempoTrascorso := 0.1143518;
+
+END_DATA_BLOCK

@@ -1,0 +1,22 @@
+﻿TYPE
+    Std_StrutturaRicetta_Spiedinatrice : STRUCT
+        { S7_MLC := "MLC_48V" }
+        NomeFormato : String[20];
+        { S7_MLC := "MLC_nE" }
+        QuotaPrimoInserimentoStecchi : Real;
+        { S7_MLC := "MLC_53T" }
+        DistanzaTraGliStecchi : Real;
+        { S7_MLC := "MLC_hZ" }
+        NumeroFilePerLato : DInt;
+        QuoteFileStecchiNelCubo : Array[0..30] of Real;
+        { S7_MLC := "MLC_39g" }
+        LunghezzaStecco : Real;
+        { S7_MLC := "MLC_4Ft" }
+        LarghezzaStecco : Real;
+        { S7_MLC := "MLC_3JF" }
+        NumeroStecchi : DInt;
+        { S7_MLC := "MLC_37f" }
+        AltezzaTotCubo : DInt;
+        NumeroCicliTaglio : DInt;
+    END_STRUCT;
+END_TYPE

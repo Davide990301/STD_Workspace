@@ -1,0 +1,11 @@
+﻿MultiLingualTexts:
+  - id: MLC_3XP
+    it-IT: 1 = Allarme presente / 0 = Allarme non presente
+  - id: MLC_3rQ
+    it-IT: 1 = Allarme Attivo / 0 = Allarme non attivo
+  - id: MLC_4wE
+    it-IT: 1 = Allarme silenziato / 0 = Allarme non silenziato
+  - id: MLC_4xC
+    it-IT: Abilitazione dell'allarme ad essere mostrato nella lista HMI
+  - id: MLC_4NZ
+    it-IT: Abilitazione dell'allarme a far cadere il ciclo automatico

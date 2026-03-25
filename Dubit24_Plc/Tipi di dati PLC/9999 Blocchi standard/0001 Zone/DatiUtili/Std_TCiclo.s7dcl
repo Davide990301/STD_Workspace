@@ -1,0 +1,8 @@
+﻿TYPE
+    Std_TCiclo : STRUCT
+        { S7_MLC := "MLC_3mw" }
+        Act : LReal;
+        { S7_MLC := "MLC_53F" }
+        PercTciclo : Real;
+    END_STRUCT;
+END_TYPE

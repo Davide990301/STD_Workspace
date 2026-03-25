@@ -1,0 +1,8 @@
+﻿TYPE
+    Std_AllarmeDaUtenza : STRUCT
+        Allarme : Bool;
+        AllarmeSilenziato : Bool;
+        Tipo : Bool;
+        Indice : Bool;
+    END_STRUCT;
+END_TYPE

@@ -1,0 +1,99 @@
+﻿{
+    S7_BlockComment := "MLC_48w";
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestGruppoValvoleFestoVTEM" : Void
+    VAR_INPUT
+        "HW_SUBMODULE" : HW_SUBMODULE;
+        SLOT01_K_Tipo : Int;
+        { S7_MLC := "MLC_4BK" }
+        SLOT01_K_UtenzaAttuatore : Int;
+        { S7_MLC := "MLC_4Vj" }
+        SLOT02_K_Tipo : Int;
+        { S7_MLC := "MLC_4Xr" }
+        SLOT02_K_UtenzaAttuatore : Int;
+        { S7_MLC := "MLC_4Ky" }
+        SLOT03_K_Tipo : Int;
+        { S7_MLC := "MLC_4ST" }
+        SLOT03_K_UtenzaAttuatore : Int;
+        { S7_MLC := "MLC_y5" }
+        SLOT04_K_Tipo : Int;
+        { S7_MLC := "MLC_45i" }
+        SLOT04_K_UtenzaAttuatore : Int;
+        { S7_MLC := "MLC_mY" }
+        SLOT05_K_Tipo : Int;
+        { S7_MLC := "MLC_4As" }
+        SLOT05_K_UtenzaAttuatore : Int;
+        { S7_MLC := "MLC_4kx" }
+        SLOT06_K_Tipo : Int;
+        { S7_MLC := "MLC_4ai" }
+        SLOT06_K_UtenzaAttuatore : Int;
+        { S7_MLC := "MLC_3Ej" }
+        SLOT07_K_Tipo : Int;
+        { S7_MLC := "MLC_3Ju" }
+        SLOT07_K_UtenzaAttuatore : Int;
+        { S7_MLC := "MLC_57Q" }
+        SLOT08_K_Tipo : Int;
+        { S7_MLC := "MLC_Lq" }
+        SLOT08_K_UtenzaAttuatore : Int;
+    END_VAR
+    VAR_TEMP
+        retval_1 : Int;
+        retval_2 : Int;
+        RispostaTelegramma : Array[0..23] of Word;
+        InvioTelegramma : Array[0..23] of Word;
+    END_VAR
+
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_4Cr"
+    }
+    NETWORK
+        #retval_1 := DPRD_DAT(LADDR := #HW_SUBMODULE, RECORD => #RispostaTelegramma);
+        
+        "GestComunicazioneSlotVTEM"(K_UtenzaAttuatore:=#SLOT01_K_UtenzaAttuatore,
+                                    K_Tipo:=#SLOT01_K_Tipo,
+                                    NumeroSLOT:=1,
+                                    RispostaTelegramma:=#RispostaTelegramma,
+                                    InvioTelegramma=>#InvioTelegramma);
+        "GestComunicazioneSlotVTEM"(K_UtenzaAttuatore := #SLOT02_K_UtenzaAttuatore,
+                                    K_Tipo := #SLOT02_K_Tipo,
+                                    NumeroSLOT := 2,
+                                    RispostaTelegramma := #RispostaTelegramma,
+                                    InvioTelegramma => #InvioTelegramma);
+        "GestComunicazioneSlotVTEM"(K_UtenzaAttuatore := #SLOT03_K_UtenzaAttuatore,
+                                    K_Tipo := #SLOT03_K_Tipo,
+                                    NumeroSLOT := 3,
+                                    RispostaTelegramma := #RispostaTelegramma,
+                                    InvioTelegramma => #InvioTelegramma);
+        "GestComunicazioneSlotVTEM"(K_UtenzaAttuatore := #SLOT04_K_UtenzaAttuatore,
+                                    K_Tipo := #SLOT04_K_Tipo,
+                                    NumeroSLOT := 4,
+                                    RispostaTelegramma := #RispostaTelegramma,
+                                    InvioTelegramma => #InvioTelegramma);
+        "GestComunicazioneSlotVTEM"(K_UtenzaAttuatore := #SLOT05_K_UtenzaAttuatore,
+                                    K_Tipo := #SLOT05_K_Tipo,
+                                    NumeroSLOT := 5,
+                                    RispostaTelegramma := #RispostaTelegramma,
+                                    InvioTelegramma => #InvioTelegramma);
+        "GestComunicazioneSlotVTEM"(K_UtenzaAttuatore := #SLOT06_K_UtenzaAttuatore,
+                                    K_Tipo := #SLOT06_K_Tipo,
+                                    NumeroSLOT := 6,
+                                    RispostaTelegramma := #RispostaTelegramma,
+                                    InvioTelegramma => #InvioTelegramma);
+        "GestComunicazioneSlotVTEM"(K_UtenzaAttuatore := #SLOT07_K_UtenzaAttuatore,
+                                    K_Tipo := #SLOT07_K_Tipo,
+                                    NumeroSLOT := 7,
+                                    RispostaTelegramma := #RispostaTelegramma,
+                                    InvioTelegramma => #InvioTelegramma);
+        "GestComunicazioneSlotVTEM"(K_UtenzaAttuatore := #SLOT08_K_UtenzaAttuatore,
+                                    K_Tipo := #SLOT08_K_Tipo,
+                                    NumeroSLOT := 8,
+                                    RispostaTelegramma := #RispostaTelegramma,
+                                    InvioTelegramma => #InvioTelegramma);
+        
+        #retval_2 := DPWR_DAT(LADDR := #HW_SUBMODULE, RECORD := #InvioTelegramma);
+    END_NETWORK
+END_FUNCTION

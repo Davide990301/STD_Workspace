@@ -1,0 +1,87 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK ValvolaFesto_VTEM
+    VAR RETAIN
+        { S7_Setpoint := "False" }
+        V : Array[0.._.K_NumValvolaFestoVTEM] of _.Std_ValvoleVTEM;
+    END_VAR
+
+        V[0].Input.wBusDataFromVTEM0 := 16#0000;
+        V[0].Input.wBusDataFromVTEM1 := 16#0000;
+        V[0].Input.wBusDataFromVTEM2 := 16#0000;
+        V[0].Input.xEnable := FALSE;
+        V[0].Input.bySetValveMode := 16#00;
+        V[0].Input.bySetAppControl := 16#00;
+        V[0].Input.bySetAppOption := 16#00;
+        V[0].Input.iSetpointValue1 := 0;
+        V[0].Input.iSetpointValue2 := 0;
+        V[0].Input.xManualAcknowledge := FALSE;
+        V[0].Output.byActualValveMode := 16#00;
+        V[0].Output.byActualValveState := 16#00;
+        V[0].Output.byActualAppState := 16#00;
+        V[0].Output.iActualValue1 := 0;
+        V[0].Output.iActualValue2 := 0;
+        V[0].Output.iResponseToValveModeSet := 0;
+        V[0].Output.sResponseToValveModeSet := '';
+        V[0].Output.iErrorCode := 0;
+        V[0].InOut.wBusDataToVTEM0 := 16#0000;
+        V[0].InOut.wBusDataToVTEM1 := 16#0000;
+        V[0].InOut.wBusDataToVTEM2 := 16#0000;
+        V[0].Static.aw_OperationCommand[0] := 16#0000;
+        V[0].Static.aw_OperationCommand[1] := 16#0000;
+        V[0].Static.aw_OperationCommand[2] := 16#0000;
+        V[0].Static.iCommandNumber := 0;
+        V[0].Static.iInvalidCommand := 0;
+        V[0].Static.iRecChannel := 0;
+        V[0].Static.iRecTransferCtrl := 0;
+        V[0].Static.iRecAddressedTargetType := 0;
+        V[0].Static.iRecIndex := 0;
+        V[0].Static.iRecTransferValue := 0;
+        V[0].Static.iActualValveMode := 0;
+        V[0].Static.iValveState := 0;
+        V[0].Static.xInvalidInput := FALSE;
+        V[0].Static.xLastManualAcknowledge := FALSE;
+        V[0].Static.xAcknowledging_in_progress := FALSE;
+        V[0].Static.xMalfunctionReading_Done := FALSE;
+        V[0].Static.iMalfunctionListEntry := 0;
+        V[0].Static.iRecMalfunctionCode := 0;
+        V[0].Static.iRecMalfunctionRating := 0;
+        V[0].Static.iActualAppState := 0;
+        V[0].Static.eResponseToValveModeSet.reserved := 0;
+        V[0].Static.eResponseToValveModeSet.invalid_SetValveMode := 1;
+        V[0].Static.eResponseToValveModeSet.invalid_SetAppControl := 2;
+        V[0].Static.eResponseToValveModeSet.invalid_SetAppOption := 3;
+        V[0].Static.eResponseToValveModeSet.invalid_SetPointValue1 := 4;
+        V[0].Static.eResponseToValveModeSet.invalid_SetPointValue2 := 5;
+        V[0].Static.eResponseToValveModeSet.invalid_configuration := 6;
+        V[0].Static.eResponseToValveModeSet.access_denied_WebConfig := 10;
+        V[0].Static.eResponseToValveModeSet.access_denied_saving_parametrisation := 11;
+        V[0].Static.eResponseToValveModeSet.no_license_for_this_MA := 12;
+        V[0].Static.eResponseToValveModeSet.all_licenses_in_use := 13;
+        V[0].Static.eResponseToValveModeSet.invalid_license_file := 14;
+        V[0].Static.eResponseToValveModeSet.no_valve_detected := 15;
+        V[0].Static.eResponseToValveModeSet.valve_self_calibration_running := 16;
+        V[0].Static.eResponseToValveModeSet.no_TransferMode_with_this_FB := 1020;
+        V[0].Static.eResponseToValveModeSet.preparing_for_start := 1031;
+        V[0].Static.eResponseToValveModeSet.starting := 1032;
+        V[0].Static.eResponseToValveModeSet.MA_running := 1033;
+        V[0].Static.eResponseToValveModeSet.Transfermode_running := 1034;
+        V[0].Static.eResponseToValveModeSet.stopping := 1035;
+        V[0].Static.eResponseToValveModeSet.all_MAs_stopped := 1036;
+        V[0].Static.eResponseToValveModeSet.acknowledge_needed := 1037;
+        V[0].Static.eResponseToValveModeSet.failure := 1038;
+        V[0].Static.eResponseToValveModeSet.preparing_for_acknowledge := 1040;
+        V[0].Static.eResponseToValveModeSet.acknowledging := 1041;
+        V[0].Static.eResponseToValveModeSet.all_errors_acknowledged := 1042;
+        V[0].Static.eResponseToValveModeSet.failure_still_active := 1043;
+        V[0].Static.eResponseToValveModeSet.no_Communication := 1050;
+        V[0].Static.eResponseToValveModeSet.FB_not_enabled := 1051;
+        V[0].Static.eValveState.NotReady := 0;
+        V[0].Static.eValveState.Configurable := 1;
+        V[0].Static.eValveState.Running := 2;
+        V[0].Static.eValveState.Failure := 3;
+
+END_DATA_BLOCK

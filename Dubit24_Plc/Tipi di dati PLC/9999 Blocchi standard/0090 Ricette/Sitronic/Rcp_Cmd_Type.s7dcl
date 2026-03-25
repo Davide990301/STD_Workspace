@@ -1,0 +1,20 @@
+﻿TYPE
+    Rcp_Cmd_Type : STRUCT
+        { S7_MLC := "MLC_4ty" }
+        Load_in_Work : Bool;
+        { S7_MLC := "MLC_dK" }
+        Load_in_Edit : Bool;
+        { S7_MLC := "MLC_3s3" }
+        Load_in_Edit_from_work : Bool;
+        { S7_MLC := "MLC_3em" }
+        Save_in_Archive : Bool;
+        { S7_MLC := "MLC_3Zm" }
+        Save_in_Work : Bool;
+        { S7_MLC := "MLC_aL" }
+        Copy : Bool;
+        { S7_MLC := "MLC_4Qy" }
+        Reload_RCP_GEN_List : Bool;
+        { S7_MLC := "MLC_3Tp" }
+        Reset : Bool;
+    END_STRUCT;
+END_TYPE

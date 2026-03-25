@@ -1,0 +1,104 @@
+﻿TYPE
+    OBJ_Encoder_SICK_AFM60_V105_Type : STRUCT
+        IO : STRUCT
+            IN : _.OBJ_IODevice_IN_SICK_AFM60_Tel81_V105_Type;
+            OUT : _.OBJ_IODevice_OUT_SICK_AFM60_Tel81_V105_Type;
+            {
+                S7_Access := "ReadOnly := External";
+                S7_Visibility := "Hidden := External"
+            }
+            App : STRUCT
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Visibility := "Hidden := External"
+                }
+                Req_Writing_Preset : Bool;
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Visibility := "Hidden := External"
+                }
+                P_Write_Done : Bool;
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Visibility := "Hidden := External"
+                }
+                P_Write_Busy : Bool;
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Visibility := "Hidden := External"
+                }
+                P_Write_Error : Bool;
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Visibility := "Hidden := External"
+                }
+                P_Write_Req : Bool;
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Visibility := "Hidden := External"
+                }
+                P_Write_Status : DWord;
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Visibility := "Hidden := External"
+                }
+                Write_Requested : Bool;
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Visibility := "Hidden := External"
+                }
+                Ton : IEC_TIMER;
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Visibility := "Hidden := External"
+                }
+                Toff : IEC_TIMER;
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Setpoint := "True";
+                    S7_Visibility := "Hidden := External"
+                }
+                abil_zero : Bool;
+                {
+                    S7_Access := "ReadOnly := External";
+                    S7_Visibility := "Hidden := External"
+                }
+                set_zero : Bool;
+            END_STRUCT;
+        END_STRUCT;
+        Data : STRUCT
+            HMI : STRUCT
+                "b_PB Zero" : Bool;
+                "r_Actual Pos" : Real;
+            END_STRUCT;
+            CFG : STRUCT
+                b_REQ_Offset : Bool;
+                b_REQ_SetUp : Bool;
+                { S7_Setpoint := "True" }
+                r_ZeroOffset : Real := 600000.0;
+                { S7_Setpoint := "True" }
+                r_Cnt_Turn : Real := 4096.0;
+                { S7_Setpoint := "True" }
+                r_LU_Turn : Real := 1.0;
+                { S7_Setpoint := "True" }
+                r_K_Factor : Real := 2048.0;
+                { S7_Setpoint := "True" }
+                r_EncoderMaxCount : Real;
+            END_STRUCT;
+            SUP : STRUCT
+                r_Raw_Val : Real;
+            END_STRUCT;
+        END_STRUCT;
+        {
+            S7_Access := "ReadOnly := External";
+            S7_Visibility := "Hidden := External"
+        }
+        App : STRUCT
+            {
+                S7_Access := "ReadOnly := External";
+                S7_Visibility := "Hidden := External"
+            }
+            Ton : IEC_TIMER;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

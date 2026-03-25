@@ -1,0 +1,20 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestPid_Comando2Valvole" : Void
+    VAR_INPUT
+        K_Valvola1 : Int;
+        K_Valvola2 : Int;
+        K_TipoAccoppiamentoUscitePid : Int;
+        K_Pid : Int;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        "Pid".P[#K_Pid].In.K_Valvola1 := #K_Valvola1;
+        "Pid".P[#K_Pid].In.K_Valvola2 := #K_Valvola2;
+        "Pid".P[#K_Pid].Prm.K_TipoAccoppiamentoUscitePid := #K_TipoAccoppiamentoUscitePid;
+    END_NETWORK
+END_FUNCTION

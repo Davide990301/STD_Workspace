@@ -1,0 +1,31 @@
+﻿TYPE
+    Std_Sensore : STRUCT
+        In : STRUCT
+            Stato : Bool;
+        END_STRUCT;
+        Prm : STRUCT
+            { S7_Setpoint := "False" }
+            UnitàMisura : _.Std_UnitàDiMisura;
+        END_STRUCT;
+        Hmi : STRUCT
+            ForzaPos : Bool;
+            ForzaNeg : Bool;
+        END_STRUCT;
+        Allarmi : STRUCT
+            { S7_Setpoint := "False" }
+            "A" : Array[0.._.K_NumAllarmiPerSensori] of _.Std_PrmAllarmeStd;
+            WordHMI : Word := 16#0000;
+        END_STRUCT;
+        Out : STRUCT
+            PresProd : Bool;
+            Allarmi : STRUCT
+                { S7_Setpoint := "False" }
+                "A" : Array[0.._.K_NumAllarmiPerMotori] of _.Std_PrmAllarmeStd;
+                WordHMI : Word := 16#0000;
+            END_STRUCT;
+        END_STRUCT;
+        Rif_Inc : STRUCT
+            K_Zona : Int;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

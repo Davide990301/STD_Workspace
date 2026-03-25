@@ -1,0 +1,33 @@
+﻿MultiLingualTexts:
+  - id: MLC_4w4
+    it-IT: Qty of Step on This Recipe
+  - id: MLC_Rx
+    it-IT: Last Step of Washing Recipe
+  - id: MLC_sG
+    it-IT: Timer accumulator
+  - id: MLC_3Y3
+    it-IT: Counter Pitch Accumulator
+  - id: MLC_3MT
+    it-IT: Container Counter Accumulator
+  - id: MLC_4za
+    it-IT: Inlet Temperature>Set Point Temperature
+  - id: MLC_Vn
+    it-IT: Inlet Temperature<Set Point Temperature
+  - id: MLC_3Bh
+    it-IT: Hopper Temperature>Set Point Temperature
+  - id: MLC_39k
+    it-IT: Hopper Temperature<Set Point Temperature
+  - id: MLC_TW
+    it-IT: Volume > Set Point Volume
+  - id: MLC_rg
+    it-IT: Volume < Set Point Volume
+  - id: MLC_478
+    it-IT: Filler position
+  - id: MLC_3rt
+    it-IT: Input State 1
+  - id: MLC_yB
+    it-IT: Input State 2
+  - id: MLC_ic
+    it-IT: Function Step
+  - id: MLC_4pC
+    it-IT: Visualizzo il set point del numero di cicli di FLIP FLOP

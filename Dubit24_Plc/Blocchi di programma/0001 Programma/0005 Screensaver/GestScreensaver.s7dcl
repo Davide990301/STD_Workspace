@@ -1,0 +1,35 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestScreensaver" : Void
+    VAR_TEMP
+        NumeroDiFrame : Int;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        "T_ON"(I_CicloCPU := "CicloScansioneCPU_I".O_rCicloCpu,
+               I_StartConteggio := NOT "Screensaver".DurataFrame.O,
+               IO_DatiTimer := "Screensaver".DurataFrame);
+        
+        #NumeroDiFrame := 199;
+        
+        IF "Screensaver".TipoScreenSaver = 0 THEN
+            IF "Screensaver".DurataFrame.O THEN
+                IF NOT "Screensaver".DecrementaFrame THEN
+                    "Screensaver".Frameattuale += 1;
+                    IF "Screensaver".Frameattuale > #NumeroDiFrame THEN
+                        "Screensaver".DecrementaFrame := True;
+                    END_IF;
+                ELSE
+                    "Screensaver".Frameattuale -= 1;
+                    IF "Screensaver".Frameattuale <= 0 THEN
+                        "Screensaver".DecrementaFrame := False;
+                    END_IF;
+                END_IF;
+            END_IF;
+        END_IF;
+    END_NETWORK
+END_FUNCTION

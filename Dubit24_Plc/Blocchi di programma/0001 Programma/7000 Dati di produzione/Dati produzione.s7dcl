@@ -1,0 +1,74 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK "Dati produzione"
+    VAR RETAIN
+        { S7_Setpoint := "False" }
+        Misuratore : Array[0.._.K_NumPortata] of _.ElencoCampionature;
+        TimerCampionatura : _.Std_stTimer;
+        { S7_Setpoint := "True" }
+        CampionaturaAttuale : Int;
+    END_VAR
+
+    VAR
+        ResetCompleto : Bool;
+    END_VAR
+
+        Misuratore[0].h[1].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[1].MetriCubi := 0.0;
+        Misuratore[0].h[2].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[2].MetriCubi := 0.0;
+        Misuratore[0].h[3].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[3].MetriCubi := 0.0;
+        Misuratore[0].h[4].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[4].MetriCubi := 0.0;
+        Misuratore[0].h[5].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[5].MetriCubi := 0.0;
+        Misuratore[0].h[6].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[6].MetriCubi := 0.0;
+        Misuratore[0].h[7].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[7].MetriCubi := 0.0;
+        Misuratore[0].h[8].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[8].MetriCubi := 0.0;
+        Misuratore[0].h[9].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[9].MetriCubi := 0.0;
+        Misuratore[0].h[10].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[10].MetriCubi := 0.0;
+        Misuratore[0].h[11].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[11].MetriCubi := 0.0;
+        Misuratore[0].h[12].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[12].MetriCubi := 0.0;
+        Misuratore[0].h[13].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[13].MetriCubi := 0.0;
+        Misuratore[0].h[14].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[14].MetriCubi := 0.0;
+        Misuratore[0].h[15].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[15].MetriCubi := 0.0;
+        Misuratore[0].h[16].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[16].MetriCubi := 0.0;
+        Misuratore[0].h[17].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[17].MetriCubi := 0.0;
+        Misuratore[0].h[18].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[18].MetriCubi := 0.0;
+        Misuratore[0].h[19].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[19].MetriCubi := 0.0;
+        Misuratore[0].h[20].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[20].MetriCubi := 0.0;
+        Misuratore[0].h[21].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[21].MetriCubi := 0.0;
+        Misuratore[0].h[22].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[22].MetriCubi := 0.0;
+        Misuratore[0].h[23].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[23].MetriCubi := 0.0;
+        Misuratore[0].h[24].OrarioCampionatura := DT#1990-01-01-00:00:00;
+        Misuratore[0].h[24].MetriCubi := 0.0;
+        TimerCampionatura.IN := TRUE;
+        TimerCampionatura.O := FALSE;
+        TimerCampionatura.Preset := 3600.0;
+        TimerCampionatura.TempoTrascorso := 2926.036;
+    CampionaturaAttuale := 3;
+    ResetCompleto := FALSE;
+
+END_DATA_BLOCK

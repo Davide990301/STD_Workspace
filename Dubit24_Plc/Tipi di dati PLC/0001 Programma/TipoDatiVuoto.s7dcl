@@ -1,0 +1,5 @@
+﻿TYPE
+    TipoDatiVuoto : STRUCT
+        EmptyBool : Bool;
+    END_STRUCT;
+END_TYPE

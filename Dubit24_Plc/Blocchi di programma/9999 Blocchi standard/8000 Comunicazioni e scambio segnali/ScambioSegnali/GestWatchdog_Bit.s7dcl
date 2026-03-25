@@ -1,0 +1,66 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION_BLOCK "GestWatchdog_Bit"
+    VAR_INPUT
+        Watchdog_Recive : Bool;
+        Reset : Bool;
+    END_VAR
+    VAR_OUTPUT
+        Watchdog_Send : Bool;
+    END_VAR
+    VAR_IN_OUT
+        Allarme : Bool;
+    END_VAR
+    VAR
+        Watchdog_Prec : Bool;
+        { S7_Setpoint := "False" }
+        TimerAllarme : _.Std_stTimer;
+    END_VAR
+
+    { S7_Language := "LAD" }
+    NETWORK
+        RUNG wire#powerrail
+            I_Contact( #Watchdog_Recive )
+            Coil( #Watchdog_Send )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( #Watchdog_Recive )
+            Contact( #Watchdog_Prec )
+            wire#w1
+            Coil( #Watchdog_Prec )
+        END_RUNG
+        RUNG wire#powerrail
+            I_Contact( #Watchdog_Recive )
+            I_Contact( #Watchdog_Prec )
+        END_RUNG wire#w1
+        RUNG wire#powerrail
+            "T_ON"(
+                I_CicloCPU := "CicloScansioneCPU_I".O_rCicloCpu,
+                I_StartConteggio := wire#w2,
+                IO_DatiTimer := #TimerAllarme
+            )
+        END_RUNG
+        RUNG wire#powerrail
+            I_Contact( #Reset )
+            Contact( #Watchdog_Prec )
+        END_RUNG wire#w2
+        RUNG wire#powerrail
+            Contact( #TimerAllarme.O )
+            S_SR(
+                operand := #Allarme,
+                r1 := #Reset
+            )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( #Watchdog_Recive )
+            Coil( #Watchdog_Prec )
+        END_RUNG
+    END_NETWORK
+    { S7_Language := "SCL" }
+    NETWORK
+        #TimerAllarme.Preset := 6.0;
+    END_NETWORK
+END_FUNCTION_BLOCK

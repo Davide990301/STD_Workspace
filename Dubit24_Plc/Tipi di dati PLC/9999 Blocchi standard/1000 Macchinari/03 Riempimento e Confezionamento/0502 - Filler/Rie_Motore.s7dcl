@@ -1,0 +1,52 @@
+﻿TYPE
+    Rie_Motore : STRUCT
+        VelAttuale0_100 : Real;
+        Status_da_Inveter : Word;
+        ConsDaVallePerMotore : Bool;
+        ConsDaMontePerMotore : Bool;
+        LogicaMotore : Bool;
+        MotoreInManuale : Bool;
+        MotoreInMarcia : Bool;
+        MotoreReady : Bool;
+        MotoreMaxTorq : Bool;
+        Fault_Inverter : Bool;
+        Stato_Inverter : Word;
+        Controllo_Stato_Inverter : Word;
+        Controllo_Motore : Word;
+        Velocita_Motore : Int;
+        Maschera_HMI : STRUCT
+            Fix_01 : Bool;
+            Fix_02 : Bool;
+            Fix_03 : Bool;
+            Fix_04 : Bool;
+            Fix_05 : Bool;
+            Fix_06 : Bool;
+            Fix_07 : Bool;
+            Fix_08 : Bool;
+            Syncro_01 : Bool;
+            Syncro_02 : Bool;
+            Syncro_03 : Bool;
+            Syncro_04 : Bool;
+            Syncro_05 : Bool;
+            Syncro_06 : Bool;
+            Syncro_07 : Bool;
+            Syncro_08 : Bool;
+        END_STRUCT;
+        { S7_MLC := "MLC_3jk" }
+        CondVelHMI : Int;
+        Cond_Vel : STRUCT
+            Sinc1Motore : Bool;
+            Sinc2Motore : Bool;
+            Sinc3Motore : Bool;
+            Sinc4Motore : Bool;
+            Sinc5Motore : Bool;
+            Fix1Motore : Bool;
+            Fix2Motore : Bool;
+            Fix3Motore : Bool;
+            Fix4Motore : Bool;
+            Fix5Motore : Bool;
+        END_STRUCT;
+        T_Start : IEC_TIMER;
+        T_Stop : IEC_TIMER;
+    END_STRUCT;
+END_TYPE

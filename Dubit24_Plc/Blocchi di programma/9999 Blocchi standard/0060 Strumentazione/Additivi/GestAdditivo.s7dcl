@@ -1,0 +1,128 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestAdditivo" : Void
+    VAR_INPUT
+        { S7_MLC := "MLC_3Qd" }
+        K_Analogica : Int;
+        { S7_MLC := "MLC_4J6" }
+        K_Pid : Int;
+        { S7_MLC := "MLC_wQ" }
+        K_Additivo : Int;
+        { S7_MLC := "MLC_3Hs" }
+        K_Zona : Int;
+    END_VAR
+    VAR_TEMP
+        PortataAdditivoNecessaria : Real;
+        "PortataAttualeTeorica(l/h)" : Real;
+        "PortataAttualeTeorica(ql.i/h)" : Real;
+        K_AnalogicaInt : Int;
+        K_AdditivoInt : Int;
+        K_PidInt : Int;
+        K_ZonaInt : Int;
+        CumulativoAllarme : Bool;
+        IndiceAllarmeAdditivo : Int;
+    END_VAR
+    VAR CONSTANT
+        FrequenzaMinInv : Real := 10.0;
+        FrequenzaMaxInv : Real := 80.0;
+        MassimaPortataPompa : Real := 271.0;
+        MinimaPortataPompa : Real := 30.0;
+    END_VAR
+
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_35n"
+    }
+    NETWORK
+        REGION Diagnostica programmatore
+            (*Passiamo tutte le costanti di accesso agli array in modo da verificarle e controllarle*)
+            "Diagnostica"(K_Attuale_ArrayInCuiAccediamo :=  #"K_Analogica",
+                          K_NumMax_MassimoValoreDellArrayInCuiAccediamo := "K_NumAnalogica",
+                          K_Tipo_ArrayInCuiAccediamo := "K_TipoAnalogica",
+                          K_Attuale_DiChiAccede := #"K_Analogica",
+                          K_Tipo_DiChiAccede := "K_TipoAdditivo",
+                          K_AttualeInterno => #K_AnalogicaInt);
+            
+            "Diagnostica"(K_Attuale_ArrayInCuiAccediamo := #K_Additivo,
+                          K_NumMax_MassimoValoreDellArrayInCuiAccediamo := "K_NumAdditivo",
+                          K_Tipo_ArrayInCuiAccediamo := "K_TipoAdditivo",
+                          K_Attuale_DiChiAccede := #K_Additivo,
+                          K_Tipo_DiChiAccede := "K_TipoAdditivo",
+                          K_AttualeInterno => #K_AdditivoInt);
+            
+            "Diagnostica"(K_Attuale_ArrayInCuiAccediamo := #K_Pid,
+                          K_NumMax_MassimoValoreDellArrayInCuiAccediamo := "K_NumPid",
+                          K_Tipo_ArrayInCuiAccediamo := "K_TipoPid",
+                          K_Attuale_DiChiAccede := #K_Pid,
+                          K_Tipo_DiChiAccede := "K_TipoAdditivo",
+                          K_AttualeInterno => #K_PidInt);
+            
+            "Diagnostica"(K_Attuale_ArrayInCuiAccediamo := #K_Zona,
+                          K_NumMax_MassimoValoreDellArrayInCuiAccediamo := "K_NumZona",
+                          K_Tipo_ArrayInCuiAccediamo := "K_TipoZona",
+                          K_Attuale_DiChiAccede := #K_Zona,
+                          K_Tipo_DiChiAccede := "K_TipoAdditivo",
+                          K_AttualeInterno => #K_ZonaInt);
+        END_REGION ;
+        REGION Calcolo portata acido necessario in quintali/h
+            #"PortataAttualeTeorica(l/h)":=
+            #PortataAdditivoNecessaria := "Analogica".A[#K_AnalogicaInt].Out.AnalogicaAttuale.Valore / 100.0 * "Additivo".A[#K_AdditivoInt].Prm.PercentualeAdditivoRich;
+        END_REGION ;
+        REGION Calcolo e parametrizzo valori PID
+            "Pid".P[#K_Pid].Hmi.SetpointFF := #PortataAdditivoNecessaria;
+            "Pid".P[#K_Pid].Prm.FF.interpolazione[0].Setpoint := #MinimaPortataPompa;
+            "Pid".P[#K_Pid].Prm.FF.interpolazione[0].Valore := #FrequenzaMinInv;
+            "Pid".P[#K_Pid].Prm.FF.interpolazione[1].Setpoint := #MassimaPortataPompa;
+            "Pid".P[#K_Pid].Prm.FF.interpolazione[1].Valore := #FrequenzaMaxInv;
+        END_REGION ;
+        REGION Allarmi
+            IF "Zona".Z[#K_ZonaInt].Gen.Reset THEN
+                FOR #IndiceAllarmeAdditivo := 0 TO "K_NumAllarmiPerAdditivi" DO
+                    "Additivo".A[#K_AdditivoInt].Allarmi.A[#IndiceAllarmeAdditivo].Stato := False;
+                END_FOR;
+            END_IF;
+            IF #PortataAdditivoNecessaria > #MassimaPortataPompa THEN
+                "Additivo".A[#K_AdditivoInt].Allarmi.A["KALLAdditivo_PortataPrincipaleTroppoAlta"].Stato := True;
+                #"PortataAttualeTeorica(l/h)" := #MassimaPortataPompa;
+            END_IF;
+            IF #PortataAdditivoNecessaria < #MinimaPortataPompa THEN
+                "Additivo".A[#K_AdditivoInt].Allarmi.A["KALLAdditivo_PortataPrincipaleTroppoBassa"].Stato := True;
+                #"PortataAttualeTeorica(l/h)" := #MinimaPortataPompa;
+            END_IF;
+            IF "Motore".M["Additivo".A[#K_AdditivoInt].Rif_Inc.K_Motore].Out.Allarme THEN
+                "Additivo".A[#K_AdditivoInt].Allarmi.A["KALLAdditivo_MotoreInAllarme"].Stato := True;
+            END_IF;
+            #CumulativoAllarme := False;
+            FOR #IndiceAllarmeAdditivo := 0 TO "K_NumAllarmiPerAdditivi" DO
+                IF "Additivo".A[#K_AdditivoInt].Allarmi.A[#IndiceAllarmeAdditivo].Stato THEN
+                    #CumulativoAllarme := True;
+                END_IF;
+            END_FOR;
+            "Additivo".A[#K_AdditivoInt].Out.Allarme := #CumulativoAllarme;
+        END_REGION ;
+        REGION Calcolo portata additivo attuale     
+            #"PortataAttualeTeorica(ql.i/h)" := #"PortataAttualeTeorica(l/h)" / 100.0;
+            "Additivo".A[#K_AdditivoInt].Out.AttualeAdditivo := #"PortataAttualeTeorica(ql.i/h)";
+            IF "Pid".P[#K_PidInt].Out.TotaleUscitaAttuale <= 0 THEN
+                "Additivo".A[#K_AdditivoInt].Out.AttualeAdditivo := 0.0;
+            END_IF;
+        END_REGION ;
+        REGION Update zona
+            IF "Zona".Z[#K_ZonaInt].Gen.UpdatePrm THEN
+                "Additivo".A[#K_AdditivoInt].Rif_Inc.K_Zona :=
+                "Additivo".A[#K_AdditivoInt].Rif_Inc.K_Analogica :=
+                "Additivo".A[#K_AdditivoInt].Rif_Inc.K_Pid :=
+                "Additivo".A[#K_AdditivoInt].Rif_Inc.K_Motore := 0;
+            END_IF;
+        END_REGION ;
+        REGION Riferimenti incrociati
+            "Additivo".A[#K_AdditivoInt].Rif_Inc.K_Zona := #K_ZonaInt;
+            "Additivo".A[#K_AdditivoInt].Rif_Inc.K_Analogica := #K_AnalogicaInt;
+            "Additivo".A[#K_AdditivoInt].Rif_Inc.K_Pid := #K_PidInt;
+            "Additivo".A[#K_AdditivoInt].Rif_Inc.K_Motore := "Pid".P[#K_PidInt].Rif_Inc.K_Motore1;
+        END_REGION ;
+    END_NETWORK
+END_FUNCTION

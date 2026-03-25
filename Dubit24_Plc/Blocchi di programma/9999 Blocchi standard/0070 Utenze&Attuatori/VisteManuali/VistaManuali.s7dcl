@@ -1,0 +1,17 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK VistaManuali
+    VAR RETAIN
+        VistaManuale : Array[0.._.K_NumVistaManuale] of STRUCT
+            K_Tipo : Int;
+            K_NumeroUtenza : Int;
+        END_STRUCT;
+    END_VAR
+
+        VistaManuale[0].K_Tipo := 0;
+        VistaManuale[0].K_NumeroUtenza := 0;
+
+END_DATA_BLOCK

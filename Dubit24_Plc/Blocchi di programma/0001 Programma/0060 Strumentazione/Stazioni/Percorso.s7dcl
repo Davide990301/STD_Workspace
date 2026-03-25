@@ -1,0 +1,31 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK Percorso
+    VAR RETAIN
+        Stazione : Array[0.._.K_NumStazione] of _.Std_Stazione;
+    END_VAR
+
+    VAR
+        Funzioni : STRUCT
+            Inizializza : Bool;
+        END_STRUCT;
+        Hmi : STRUCT
+            CaricaInLavoro : Bool;
+            ResettaTuttoOffline : Bool;
+            RipristinaOnline : Bool;
+            CompilaVerificaConflitti : Bool;
+            AggiornaConfigurazione : Bool;
+        END_STRUCT;
+    END_VAR
+
+    Funzioni.Inizializza := FALSE;
+    Hmi.CaricaInLavoro := FALSE;
+    Hmi.ResettaTuttoOffline := FALSE;
+    Hmi.RipristinaOnline := FALSE;
+    Hmi.CompilaVerificaConflitti := FALSE;
+    Hmi.AggiornaConfigurazione := FALSE;
+
+END_DATA_BLOCK

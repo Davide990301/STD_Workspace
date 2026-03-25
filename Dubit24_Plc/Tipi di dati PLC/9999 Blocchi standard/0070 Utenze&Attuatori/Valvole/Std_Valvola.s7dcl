@@ -1,0 +1,118 @@
+﻿TYPE
+    Std_Valvola : STRUCT
+        In : STRUCT
+            RichiestaAutoPos : Bool;
+            RichiestaAutoNeg : Bool;
+            RichiestaAutoFolleScarico : Bool;
+            RichiestaAutoFlipFlop : Bool;
+            RichiestaPressionePos : Real;
+            RichiestaPressioneNeg : Real;
+            RichiestaPortataPos : Real;
+            RichiestaPortataNeg : Real;
+            ConsMovimentoPos : Bool;
+            ConsMovimentoNeg : Bool;
+            Feedback_SensorePos : Bool;
+            Feedback_SensoreNeg : Bool;
+            Feedback_PosizioneAttuale : Real;
+            Feedback_PressionePos : Real;
+            Feedback_PressioneNeg : Real;
+            Feedback_PortataPos : Real;
+            Feedback_PortataNeg : Real;
+            Reset : Bool;
+        END_STRUCT;
+        Prm : STRUCT
+            K_TipoValvola : Int;
+            K_VistaManuale : Int;
+            { S7_Setpoint := "False" }
+            TStartPos : _.Std_stTimer;
+            { S7_Setpoint := "False" }
+            TStopPos : _.Std_stTimer;
+            { S7_Setpoint := "False" }
+            TStartNeg : _.Std_stTimer;
+            { S7_Setpoint := "False" }
+            TStopNeg : _.Std_stTimer;
+            TimeOutPos : _.Std_stTimer;
+            TimeOutNeg : _.Std_stTimer;
+            RitSensPos : _.Std_stTimer;
+            RitSensNeg : _.Std_stTimer;
+            RitFlip : _.Std_stTimer;
+            RitFlop : _.Std_stTimer;
+            { S7_Setpoint := "True" }
+            ComportamentoTimeOut : Int;
+            { S7_Setpoint := "True" }
+            MassimaPressione : Int := 7000;
+            InversioneDirezione : Bool;
+            TogliComandoDopoPos : Bool;
+            SensorLess : Bool;
+            { S7_Setpoint := "False" }
+            UnitàMisura : _.Std_UnitàDiMisura;
+        END_STRUCT;
+        Dati : STRUCT
+            CondPos : Bool;
+            CondNeg : Bool;
+            RealmenteInPos : Bool;
+            RealmenteInNeg : Bool;
+            CmdPos : Bool;
+            CmdNeg : Bool;
+            BloccoRichiamato : Bool;
+            InclusaInUnaSequenza : Bool;
+            FlipFlop : STRUCT
+                NumeroFlip : STRUCT
+                    Preset : Int;
+                    Actual : Int;
+                END_STRUCT;
+                MemoFlip : Bool;
+                CmdFlip : Bool;
+            END_STRUCT;
+        END_STRUCT;
+        Hmi : STRUCT
+            StatoCmd : STRUCT
+                StatoFromHmi : Byte;
+                ManPos : Bool;
+                ManNeg : Bool;
+                ManScarico : Bool;
+                Auto : Bool;
+                Stop : Bool;
+                StatoPrecManPos : Byte;
+                ManPressione : Real;
+                ManPortata : Real;
+            END_STRUCT;
+            Visibilita : STRUCT
+                ModulantePressione : Bool;
+                ModulantePortata : Bool;
+                ManScarico : Bool;
+                ManNegOff : Bool;
+            END_STRUCT;
+            RichiestaAutoPos : Bool;
+            RichiestaAutoNeg : Bool;
+            TipoManuale : Int;
+            SiglaMeccanica : String[6];
+            SiglaElettrica : String[6];
+            BypassSicurezze : Bool;
+        END_STRUCT;
+        Allarmi : STRUCT
+            { S7_Setpoint := "False" }
+            "A" : Array[0.._.K_NumAllarmiPerValvole] of _.Std_PrmAllarmeStd := [
+                (),
+                (),
+                (),
+                ()
+            ];
+            { S7_Setpoint := "True" }
+            WordHMI : Word;
+        END_STRUCT;
+        Out : STRUCT
+            Stato : Int;
+            CmdPos : Bool;
+            CmdNeg : Bool;
+            CmdScarico : Bool;
+            CmdPressione : Real;
+            CmdPortata : Real;
+        END_STRUCT;
+        Rif_Inc : STRUCT
+            K_Zona : Int;
+            K_Sequenza : Array[0.._.K_NumRifIncrociatiSequenza] of Int;
+            K_Pid : Int;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

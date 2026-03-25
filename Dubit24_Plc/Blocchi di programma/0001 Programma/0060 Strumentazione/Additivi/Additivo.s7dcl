@@ -1,0 +1,11 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK Additivo
+    VAR
+        { S7_Setpoint := "False" }
+        "A" : Array[0.._.K_NumAdditivo] of _.Std_Additivo;
+    END_VAR
+END_DATA_BLOCK

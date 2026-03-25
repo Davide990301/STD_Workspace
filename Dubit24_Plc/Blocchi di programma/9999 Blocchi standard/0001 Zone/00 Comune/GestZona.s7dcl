@@ -1,0 +1,241 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestZona" : Void
+    VAR_INPUT
+        Pulsante_StartCiclo : Bool;
+        Pulsante_StopCiclo : Bool;
+        Pulsante_ResetAllarmi : Bool;
+        CentralinaEmergenzeOk : Bool;
+        PressostatoGeneraleOk : Bool;
+        K_Zona : Int;
+        K_ZonaPadre : Int;
+    END_VAR
+    VAR_OUTPUT
+        { S7_MLC := "MLC_Ly" }
+        LampadaPulsante_CicloAttivo : Bool;
+        { S7_MLC := "MLC_3Pz" }
+        LampadaPulsante_ResetAllarmi : Bool;
+        { S7_MLC := "MLC_bi" }
+        Torretta_Sirena : Bool;
+        { S7_MLC := "MLC_4QE" }
+        Torretta_CicloAttivo : Bool;
+        { S7_MLC := "MLC_Yx" }
+        Torretta_Allarme : Bool;
+        { S7_MLC := "MLC_33T" }
+        Torretta_Attesa_Segnalazione : Bool;
+    END_VAR
+    VAR_TEMP
+        AbilitazioneCiclo : Bool;
+        CounterForZone : Int;
+        CounterAllarme : Int;
+        CounterSlotAllarme : Int;
+        NumBit : Int;
+        CondCicloAuto : Bool;
+        CondCicloMan : Bool;
+        StatoZona : Int;
+        K_ZonaInt : Int;
+        K_ZonaPadreInt : Int;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        REGION Diagnostica programmatore
+            (*Passiamo tutte le costanti di accesso agli array in modo da verificarle e controllarle*)
+            "Diagnostica"(K_Attuale_ArrayInCuiAccediamo := #K_Zona,
+                          K_NumMax_MassimoValoreDellArrayInCuiAccediamo := "K_NumZona",
+                          K_Tipo_ArrayInCuiAccediamo := "K_TipoComunicazione",
+                          K_Attuale_DiChiAccede:=#K_Zona,
+                          K_Tipo_DiChiAccede:="K_TipoComunicazione",
+                          K_AttualeInterno => #K_ZonaInt);
+            
+            "Diagnostica"(K_Attuale_ArrayInCuiAccediamo := #K_ZonaPadre,
+                          K_NumMax_MassimoValoreDellArrayInCuiAccediamo := "K_NumZona",
+                          K_Tipo_ArrayInCuiAccediamo := "K_TipoComunicazione",
+                          K_Attuale_DiChiAccede:=#K_Zona,
+                          K_Tipo_DiChiAccede:="K_TipoComunicazione",
+                          K_AttualeInterno => #K_ZonaPadreInt);
+        END_REGION ;
+        REGION Gestione del reset allarmi della zona 
+            "Zona".Z[#K_ZonaInt].Gen.Reset := #Pulsante_ResetAllarmi OR "Zona".Comuni.ResetFromHMI OR "Zona".Z[#K_ZonaInt].Gen.ResetLoc_Hmi;
+        //    "Zona".Zona[#K_ZonaInt].Gen.ResetLoc_Hmi := False;
+        END_REGION
+        REGION Update di zona  
+            IF "Zona".Comuni.UpdateGenerale THEN
+                "Zona".Z[#K_ZonaInt].Gen.UpdatePrm := True;
+            END_IF;
+            "Zona".Comuni.AlmenoUnaZonaInUpdate := False;
+            FOR #CounterForZone := 0 TO "K_NumZona" DO
+                IF "Zona".Z[#CounterForZone].Gen.UpdatePrm THEN
+                    "Zona".Comuni.AlmenoUnaZonaInUpdate := True;
+                END_IF;
+            END_FOR;
+            IF "Zona".Z[#K_ZonaInt].Gen.UpdatePrm AND "Zona".Z[#K_ZonaInt].Gen.UpdatePrm_Mem THEN
+                "Zona".Z[#K_ZonaInt].Gen.UpdatePrm := False;
+            END_IF;
+            "Zona".Z[#K_ZonaInt].Gen.UpdatePrm_Mem := "Zona".Z[#K_ZonaInt].Gen.UpdatePrm;
+        END_REGION
+        REGION Stato del ciclo della zona       
+            "Zona".Z[#K_ZonaInt].Out.CentralinaOk := "Zona".Z[#K_ZonaInt].Prm.CentralinaOkDaTempo.O;
+            "Zona".Z[#K_ZonaInt].Out.Auto := "Zona".Z[#K_ZonaInt].Prm.RitardoCicloAuto.O OR "Zona".Comuni.Simulazione_PLCSim;
+            "Zona".Z[#K_ZonaInt].Out.Man := "Zona".Z[#K_ZonaInt].Prm.RitardoCicloMan.O;
+            "Zona".Z[#K_ZonaInt].Out.Attivo := "Zona".Z[#K_ZonaInt].Out.Auto OR "Zona".Z[#K_ZonaInt].Out.Man;
+            "Zona".Z[#K_ZonaInt].Out.StopDaTempo := "Zona".Z[#K_ZonaInt].Prm.RitardoStopDaTempo.O;
+        END_REGION
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkTitle := "MLC_3t2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "Zona".Z[#K_ZonaInt].Out.CentralinaOk )
+            I_Contact( "Zona".Z[#K_ZonaInt].Out.CumulativoAllarmi )
+            Coil( #AbilitazioneCiclo )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( #Pulsante_StartCiclo )
+            wire#w1
+            Contact( #Pulsante_StopCiclo )
+            Contact( "Zona".Z[#K_ZonaInt].Out.AutoDaHmi )
+            Contact( #AbilitazioneCiclo )
+            Coil( #CondCicloAuto )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( "Zona".Z[#K_ZonaInt].Out.Auto )
+        END_RUNG wire#w1
+        RUNG wire#powerrail
+            Contact( #Pulsante_StartCiclo )
+            wire#w2
+            Contact( #Pulsante_StopCiclo )
+            I_Contact( "Zona".Z[#K_ZonaInt].Out.AutoDaHmi )
+            Contact( #AbilitazioneCiclo )
+            Coil( #CondCicloMan )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( "Zona".Z[#K_ZonaInt].Out.Man )
+        END_RUNG wire#w2
+    END_NETWORK
+    { S7_Language := "SCL" }
+    NETWORK
+        REGION Set allarmi generici della zona
+            IF NOT #CentralinaEmergenzeOk THEN
+                "Zona".Z[#K_ZonaInt].Allarmi.A["KAllZone_CentralinaSicurezza"].Stato := True;
+            END_IF;
+            IF NOT "Zona".Z[#K_ZonaInt].Out.Attivo THEN
+                "Zona".Z[#K_ZonaInt].Allarmi.A["KAllZone_CicloNonInserito"].Stato := True;
+            END_IF;
+            IF NOT #PressostatoGeneraleOk THEN
+                "Zona".Z[#K_ZonaInt].Allarmi.A["KAllZone_PressostatoGenerale"].Stato := True;
+            END_IF;
+        END_REGION ;
+        REGION Timer zona   
+            "Zona".Z[#K_ZonaInt].Prm.RitardoCicloAuto.Preset := 2.0;
+            "Zona".Z[#K_ZonaInt].Prm.RitardoCicloMan.Preset := 2.0;
+            "Zona".Z[#K_ZonaInt].Prm.CentralinaOkDaTempo.Preset := 1.0;
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := #CondCicloAuto,
+                   IO_DatiTimer := "Zona".Z[#K_ZonaInt].Prm.RitardoCicloAuto);
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := #CondCicloMan,
+                   IO_DatiTimer := "Zona".Z[#K_ZonaInt].Prm.RitardoCicloMan);
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := #CentralinaEmergenzeOk AND ("Zona".Z[#K_ZonaPadreInt].Prm.CentralinaOkDaTempo.O OR #K_ZonaPadreInt = 0),
+                   IO_DatiTimer := "Zona".Z[#K_ZonaInt].Prm.CentralinaOkDaTempo);
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := NOT "Zona".Z[#K_ZonaInt].Out.Attivo,
+                   IO_DatiTimer := "Zona".Z[#K_ZonaInt].Prm.RitardoStopDaTempo);
+        END_REGION
+        REGION uscite: lampade sirene
+            #LampadaPulsante_CicloAttivo:="Zona".Z[#K_ZonaInt].Out.Auto OR (("Zona".Z[#K_ZonaInt].Out.Man OR #Pulsante_StartCiclo) AND"Zona".Comuni.Clocks.Clock1Hz);
+            #LampadaPulsante_ResetAllarmi := ("Zona".Z[#K_ZonaInt].Out.CumulativoAllarmi OR "Zona".Z[#K_ZonaInt].In.RichiestaLampadaReset ) AND "Zona".Comuni.Clocks.Clock1Hz;
+            #Torretta_Sirena := (#Pulsante_StartCiclo AND NOT "Zona".Z[#K_ZonaInt].Out.Attivo) OR "Zona".Z[#K_ZonaInt].Out.SirenaSuona;
+            #Torretta_Allarme := #LampadaPulsante_ResetAllarmi;
+            #Torretta_CicloAttivo := #"LampadaPulsante_CicloAttivo";
+        END_REGION
+        REGION Reset delle strutture HMI - Cumulativo - Sirena
+            IF "Zona".Z[#K_ZonaInt].Gen.Reset THEN
+                "Zona".Z[#K_ZonaInt].Allarmi.WordHMI := 0;
+                "Zona".Z[#K_ZonaInt].In.RichiestaLampadaReset :=
+                "Zona".Z[#K_ZonaInt].Out.CumulativoAllarmi :=
+                "Zona".Z[#K_ZonaInt].Out.SirenaSuona := False;
+                REGION Reset degli allarmi utenze            
+                    (* Se impostiamo il parametro "Pulisci storico utenze", al momento della pressione del pulsante di reset tutti gli allarmi verranno
+                    resettati quindi nel ciclo successivo della cpu verranno riscritti NON con priorità temporale ma con priorità dettata 
+                    dalla gerarchia dei richiami siemens *)
+                    IF "Zona".Z[#K_ZonaInt].Allarmi.Prm.PulisciStoricoUtenze THEN
+                        FOR #CounterSlotAllarme := 1 TO "K_NumSlotAllarmiDaUtenze" DO
+                            "Zona".Z[#K_ZonaInt].Allarmi.SlotAllarmeDaUtenze[#CounterSlotAllarme].Allarme :=
+                            "Zona".Z[#K_ZonaInt].Allarmi.SlotAllarmeDaUtenze[#CounterSlotAllarme].AllarmeSilenziato := False;
+                            "Zona".Z[#K_ZonaInt].Allarmi.SlotAllarmeDaUtenze[#CounterSlotAllarme].Indice :=
+                            "Zona".Z[#K_ZonaInt].Allarmi.SlotAllarmeDaUtenze[#CounterSlotAllarme].NumAllarme :=
+                            "Zona".Z[#K_ZonaInt].Allarmi.SlotAllarmeDaUtenze[#CounterSlotAllarme].TipoNum := 0;
+                            "Zona".Z[#K_ZonaInt].Allarmi.SlotAllarmeDaUtenze[#CounterSlotAllarme].TipoNome := '';
+                        END_FOR;
+                    END_IF;
+                END_REGION ;
+            END_IF;
+        END_REGION
+        REGION Scrittura word HMI Allarmi
+            FOR #NumBit := 0 TO "K_NumAllarmiPerZone" DO
+                IF "Zona".Z[#K_ZonaInt].Allarmi.A[#NumBit].Stato THEN
+                    IF "Zona".Z[#K_ZonaInt].Allarmi.A[#NumBit].EnWarnHmi THEN
+                        "ScriviBitNellaWord"(NumBit := #NumBit,
+                                             StatoBit := True,
+                                             "Word" := "Zona".Z[#K_ZonaInt].Allarmi.WordHMI);
+                    END_IF;
+                    IF "Zona".Z[#K_ZonaInt].Allarmi.A[#NumBit].EnCadutaCiclo THEN
+                        "Zona".Z[#K_ZonaInt].Out.CumulativoAllarmi := True;
+                    END_IF;
+                END_IF;
+            END_FOR;
+        END_REGION ;
+        
+        REGION Verifica degli allarmi delle utenze con relativa caduta ciclo e suono sirena
+            FOR #CounterSlotAllarme := 1 TO "K_NumSlotAllarmiDaUtenze" DO
+                IF "Zona".Z[#K_ZonaInt].Allarmi.SlotAllarmeDaUtenze[#CounterSlotAllarme].Allarme THEN
+                    "Zona".Z[#K_ZonaInt].Out.CumulativoAllarmi := True;
+                    IF NOT "Zona".Z[#K_ZonaInt].Allarmi.SlotAllarmeDaUtenze[#CounterSlotAllarme].AllarmeSilenziato THEN
+                        "Zona".Z[#K_ZonaInt].Out.SirenaSuona := True;
+                    END_IF;
+                END_IF;
+            END_FOR;
+        END_REGION ;
+        REGION Reset degli allarmi generici
+            IF "Zona".Z[#K_ZonaInt].Gen.Reset THEN
+                FOR #NumBit := 0 TO "K_NumAllarmiPerZone" DO
+                    "Zona".Z[#K_ZonaInt].Allarmi.A[#NumBit].Stato := False;
+                END_FOR;
+            END_IF;
+        END_REGION
+        REGION Stato della zona
+            #StatoZona := 0;
+            IF "Zona".Z[#K_ZonaInt].Out.Attivo THEN
+                IF "Zona".Z[#K_ZonaInt].Out.Man THEN
+                    #StatoZona := 1;
+                ELSIF "Zona".Z[#K_ZonaInt].Out.Auto THEN
+                    #StatoZona := 2;
+                END_IF;
+                IF "Zona".Z[#K_ZonaInt].Out.Attesa THEN
+                    #StatoZona := 3;
+                END_IF;
+            END_IF;
+            IF "Zona".Z[#K_ZonaInt].Allarmi.WordHMI <> 0 THEN//Da rivedere
+                #StatoZona := 4;
+            END_IF;
+            IF "Zona".Z[#K_ZonaInt].Out.CumulativoAllarmi THEN
+                #StatoZona := 5;
+            END_IF;
+            "Zona".Z[#K_ZonaInt].Out.Stato := #StatoZona;
+        END_REGION ;
+        REGION Riferimenti incrociati
+            "Zona".Z[#K_ZonaInt].Rif_Inc.K_Zona_Padre := #K_ZonaPadreInt;
+        END_REGION ;
+    END_NETWORK
+END_FUNCTION

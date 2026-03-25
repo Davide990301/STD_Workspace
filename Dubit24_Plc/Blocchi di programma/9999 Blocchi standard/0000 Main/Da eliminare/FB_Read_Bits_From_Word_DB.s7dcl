@@ -1,0 +1,14 @@
+﻿{
+    S7_Author := "JEBU";
+    S7_Family := "VTEMdc";
+    S7_Optimized := "FALSE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "1.01"
+}
+DATA_BLOCK FB_Read_Bits_From_Word_DB : FB_Read_Bits_From_Word
+    wData := 16#7510;
+    iStartBit := 0;
+    iEndBit := 15;
+    iValue := 4213;
+    xError := FALSE;
+END_DATA_BLOCK

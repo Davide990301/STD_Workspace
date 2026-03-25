@@ -1,0 +1,10 @@
+﻿TYPE
+    Std_StrutturaRicetta_SterilizzatoreTubo : STRUCT
+        NomeFormato : String[20];
+        Abilitazione_PompaPistoni : Bool;
+        Setpoint_PompaMono : Real;
+        Setpoint_PompaPistoni : Real;
+        Setpoint_Raffreddatore : Real;
+        Setpoint_Sterilizzazione : Real;
+    END_STRUCT;
+END_TYPE

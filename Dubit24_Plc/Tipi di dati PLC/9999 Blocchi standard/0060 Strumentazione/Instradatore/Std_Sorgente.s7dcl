@@ -1,0 +1,6 @@
+﻿TYPE
+    Std_Sorgente : STRUCT
+        { S7_Setpoint := "False" }
+        Sorgente : Array[0..100] of _.Std_Destinazioni;
+    END_STRUCT;
+END_TYPE

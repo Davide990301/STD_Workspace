@@ -1,0 +1,44 @@
+﻿TYPE
+    Std_eResponseTeachInRun : STRUCT
+        TeachInRun_reserved : Int := 0;
+        TeachInRun_unlearned : Int := 1;
+        TeachInRun_check_tubes : Int := 2;
+        TeachInRun_choose_control : Int := 3;
+        TeachInRun_tune_trajectory : Int := 4;
+        TeachInRun_determine_reference_value : Int := 5;
+        TeachInRun_identification : Int := 6;
+        TeachInRun_operable_with_reduced_performance : Int := 10;
+        TeachInRun_completed_with_limitations : Int := 11;
+        TeachInRun_partially_completed_only_2 : Int := 12;
+        TeachInRun_partially_completed_only_4 : Int := 13;
+        TeachInRun_completed : Int := 14;
+        TeachInRun_error : Int := 15;
+        invalid_SetValveMode : Int := 101;
+        invalid_SetAppControl : Int := 102;
+        invalid_SetAppOption : Int := 103;
+        invalid_SetPointValue1 : Int := 104;
+        invalid_SetPointValue2 : Int := 105;
+        invalid_configuration : Int := 106;
+        access_denied_WebConfig : Int := 110;
+        access_denied_saving_parameterisation : Int := 111;
+        no_license_for_this_MA : Int := 112;
+        all_licenses_in_use : Int := 113;
+        invalid_license_file : Int := 114;
+        no_valve_detected : Int := 115;
+        valve_self_calibration_running : Int := 116;
+        idle : Int := 210;
+        storing_first_cycle_input_data : Int := 215;
+        resetting_valve_to_61 : Int := 220;
+        ReadingActiveParameterSet : Int := 230;
+        ChangingActiveParameterSet : Int := 232;
+        writing_parameter_MotionAppToBeToughtIn : Int := 234;
+        running_teachIn_run : Int := 240;
+        teachin_run_completed : Int := 260;
+        error_occured_check_DiagnosticMemory : Int := 270;
+        input_data_invalid : Int := 271;
+        FB_needs_rising_edge_xEnable : Int := 272;
+        acknowledge_needed : Int := 273;
+        Invalid_MotionAppToBeToughtIn : Int := 274;
+        resetting : Int := 300;
+    END_STRUCT;
+END_TYPE

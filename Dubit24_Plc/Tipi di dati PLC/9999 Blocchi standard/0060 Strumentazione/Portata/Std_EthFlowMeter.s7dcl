@@ -1,0 +1,23 @@
+﻿TYPE
+    Std_EthFlowMeter : STRUCT
+        { S7_MLC := "MLC_3sW" }
+        Volume_flow : Real;
+        { S7_MLC := "MLC_4y3" }
+        Mass_Flow : Real;
+        { S7_MLC := "MLC_jt" }
+        Corrected_Volume_Flow : Real;
+        Velocity : Real;
+        { S7_MLC := "MLC_eL" }
+        Totalizer_1 : Real;
+        { S7_MLC := "MLC_4Gy" }
+        Totalizer_2 : Real;
+        { S7_MLC := "MLC_3b4" }
+        Totalizer_3 : Real;
+        { S7_MLC := "MLC_3hE" }
+        ControlTotalizzatore_1 : Byte;
+        { S7_MLC := "MLC_3Cm" }
+        ControlTotalizzatore_2 : Byte;
+        { S7_MLC := "MLC_4Ja" }
+        ControlTotalizzatore_3 : Byte;
+    END_STRUCT;
+END_TYPE

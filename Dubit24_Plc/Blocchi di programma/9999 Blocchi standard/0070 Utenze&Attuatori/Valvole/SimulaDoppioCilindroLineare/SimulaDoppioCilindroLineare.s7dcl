@@ -1,0 +1,53 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "SimulaDoppioCilindroLineare" : Void
+    VAR_INPUT
+        { S7_MLC := "MLC_4Yn" }
+        CorsaCilindroAnteriore : Real;
+        { S7_MLC := "MLC_TD" }
+        CorsaCilindroPosteriore : Real;
+        { S7_MLC := "MLC_yb" }
+        K_Valvola_Anterirore : Int;
+        { S7_MLC := "MLC_4HQ" }
+        K_Valvola_Posteriore : Int;
+        { S7_MLC := "MLC_4xT" }
+        K_Valvola_DoppioEffetto : Int;
+    END_VAR
+    VAR_TEMP
+        QuotaRichiesta : Real;
+        PosizioneAttuale : Real;
+        NumeroValvoleInPos : Byte;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        "Valvola".V[#K_Valvola_DoppioEffetto].Prm.TogliComandoDopoPos := True;
+        
+        
+        #QuotaRichiesta := 0;
+        #PosizioneAttuale := "Valvola".V[#K_Valvola_DoppioEffetto].In.Feedback_PosizioneAttuale;
+        #NumeroValvoleInPos := 0;
+        
+        REGION Calcolo quota di posizionamento
+            IF "Valvola".V[#K_Valvola_Anterirore].Out.CmdPos THEN
+                #QuotaRichiesta += #CorsaCilindroAnteriore;
+                #NumeroValvoleInPos += 1;
+            END_IF;
+            IF "Valvola".V[#K_Valvola_Posteriore].Out.CmdPos THEN
+                #QuotaRichiesta += #CorsaCilindroPosteriore;
+                #NumeroValvoleInPos += 1;
+            END_IF;
+            
+            "PosSenzaDeadBand_DB"(PosRichiesta := #QuotaRichiesta,
+                                  PosAttuale := #PosizioneAttuale,
+                                  ForzaPos := #NumeroValvoleInPos = 2,
+                                  ForzaNeg := #NumeroValvoleInPos = 0,
+                                  Pos => "Valvola".V[#K_Valvola_DoppioEffetto].In.RichiestaAutoPos,
+                                  Neg => "Valvola".V[#K_Valvola_DoppioEffetto].In.RichiestaAutoNeg);
+        END_REGION
+        
+    END_NETWORK
+END_FUNCTION

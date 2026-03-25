@@ -1,0 +1,57 @@
+﻿TYPE
+    Std_Sequenza : STRUCT
+        Prm : STRUCT
+            Passo : Array[0.._.K_NumPassi] of STRUCT
+                Durata : _.Std_stTimer;
+            END_STRUCT;
+        END_STRUCT;
+        Hmi : STRUCT
+            Stato : Int;
+            BloccaAvanzamento : Bool;
+            ArrestaSequenza : Bool;
+            AvviaSequenza : Bool;
+            AvviaSequenzaDisabilitato : Bool;
+            TempoRimanente : Real;
+            SaltaPasso : STRUCT
+                Abilitato : Bool;
+                Richiesto : Bool;
+            END_STRUCT;
+            AttendiAckOpertore : STRUCT
+                AbilitaFunz : Bool;
+                AckOperatore : Bool;
+            END_STRUCT;
+            Diagnostica : STRUCT
+                AttesaValvola : Int;
+                AttesaMotore : Int;
+                AttesaAnalogica : Int;
+                AttesaPortata : Int;
+                AttesaExtCondi : Bool;
+                AttesaTempo : Bool;
+                PassoNonAbilitato : Bool;
+            END_STRUCT;
+        END_STRUCT;
+        Dati : STRUCT
+            PassoAttuale : Int;
+            TutteLeUtenzeInPosizione : Bool;
+            AbilitazionePasso : Bool;
+            TempoRimanente : Real;
+            TempoTerminato_AttesaCondExt : Bool;
+            ResettaTuttiFlipFlop : Bool;
+            MemoPassoAttuale : Int;
+            PrimoGiroPasso : Bool;
+        END_STRUCT;
+        { S7_MLC := "MLC_3ZK" }
+        Allarmi : STRUCT
+            { S7_Setpoint := "False" }
+            "A" : Array[0.._.K_NumAllarmiPerSequenza] of _.Std_PrmAllarmeStd;
+            WordHMI : Word;
+        END_STRUCT;
+        Out : STRUCT
+            SequenzaAvviata : Bool;
+            Passo : Array[0.._.K_NumPassi] of STRUCT
+                { S7_Setpoint := "True" }
+                Attivo : Bool;
+            END_STRUCT;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

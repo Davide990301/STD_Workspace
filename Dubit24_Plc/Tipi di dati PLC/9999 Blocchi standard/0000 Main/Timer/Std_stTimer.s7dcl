@@ -1,0 +1,12 @@
+﻿TYPE
+    Std_stTimer : STRUCT
+        { S7_MLC := "MLC_qZ" }
+        IN : Bool;
+        { S7_MLC := "MLC_3CB" }
+        O : Bool;
+        { S7_MLC := "MLC_389" }
+        Preset : Real;
+        { S7_MLC := "MLC_45t" }
+        TempoTrascorso : Real;
+    END_STRUCT;
+END_TYPE

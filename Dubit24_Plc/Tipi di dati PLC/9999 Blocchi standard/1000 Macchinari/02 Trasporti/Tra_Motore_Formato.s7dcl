@@ -1,0 +1,5 @@
+﻿TYPE
+    Tra_Motore_Formato : STRUCT
+        Formati_Motore : Array[0..10] of _.Tra_Motore_dati;
+    END_STRUCT;
+END_TYPE

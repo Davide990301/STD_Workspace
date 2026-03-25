@@ -1,0 +1,42 @@
+﻿TYPE
+    Std_Get_Put : STRUCT
+        PUT : STRUCT
+            REQ : Bool;
+            DONE : Bool;
+            ERROR : Bool;
+            ERROR_PULSE : Bool;
+            x04 : Bool;
+            x05 : Bool;
+            x06 : Bool;
+            ALLARM : Bool;
+            "ID" : Word;
+            i04 : Int;
+            w06 : Word;
+            w08 : Word;
+            STATUS : Word;
+            ATTEMPTS : Int;
+            STATUS_ARRAY_01 : Word;
+            STATUS_ARRAY_02 : Word;
+            STATUS_ARRAY_03 : Word;
+        END_STRUCT;
+        GET : STRUCT
+            REQ : Bool;
+            NDR : Bool;
+            ERROR : Bool;
+            ERROR_PULSE : Bool;
+            x04 : Bool;
+            x05 : Bool;
+            x06 : Bool;
+            ALLARM : Bool;
+            "ID" : Word;
+            i04 : Int;
+            i06 : Int;
+            STATUS : Word;
+            w10 : Word;
+            ATTEMPTS : Int;
+            STATUS_ARRAY_01 : Word;
+            STATUS_ARRAY_02 : Word;
+            STATUS_ARRAY_03 : Word;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

@@ -1,0 +1,26 @@
+﻿TYPE
+    Std_eSavingResponse : STRUCT
+        { S7_Visibility := "Unlisted := External" }
+        reserved : Int;
+        { S7_Visibility := "Unlisted := External" }
+        saving_in_progress : Int := 1;
+        { S7_Visibility := "Unlisted := External" }
+        saving_successful : Int := 2;
+        { S7_Visibility := "Unlisted := External" }
+        saving_not_possible : Int := 3;
+        { S7_Visibility := "Unlisted := External" }
+        saving_failed : Int := 4;
+        { S7_Visibility := "Unlisted := External" }
+        access_denied_WebConfig : Int := 10;
+        { S7_Visibility := "Unlisted := External" }
+        access_denied_saving : Int := 11;
+        { S7_Visibility := "Unlisted := External" }
+        no_valve_detected : Int := 15;
+        { S7_Visibility := "Unlisted := External" }
+        preparing_to_save : Int := 20;
+        { S7_Visibility := "Unlisted := External" }
+        ready_to_save : Int := 21;
+        { S7_Visibility := "Unlisted := External" }
+        FB_needs_rising_edge_xExecute : Int := 25;
+    END_STRUCT;
+END_TYPE

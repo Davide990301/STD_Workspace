@@ -1,0 +1,15 @@
+﻿TYPE
+    Std_UnitàDiMisura : STRUCT
+        { S7_Setpoint := "False" }
+        In : _.Std_ValoreConUm;
+        Hmi : STRUCT
+            Converti : Bool;
+            Calcola : Bool;
+        END_STRUCT;
+        Dati : STRUCT
+            FattoreDiConversione : Real;
+        END_STRUCT;
+        { S7_Setpoint := "False" }
+        Out : _.Std_ValoreConUm;
+    END_STRUCT;
+END_TYPE

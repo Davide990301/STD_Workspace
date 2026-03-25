@@ -1,0 +1,19 @@
+﻿MultiLingualTexts:
+  - id: MLC_qR
+    it-IT: 0=Olio / 1=Salamoia
+  - id: MLC_42d
+    it-IT: Temperatura richiesta riscaldamento olio
+  - id: MLC_4cn
+    it-IT: Temperatura minima riscaldamento olio
+  - id: MLC_4QX
+    it-IT: Temperatura massima riscaldamento olio
+  - id: MLC_y3
+    it-IT: Temperatura isteresi riscaldamento olio
+  - id: MLC_b4
+    it-IT: Temperatura richiesta riscaldamento salamoia
+  - id: MLC_4pp
+    it-IT: Temperatura minima riscaldamento salamoia
+  - id: MLC_4V3
+    it-IT: Temperatura massima riscaldamento salamoia
+  - id: MLC_4XB
+    it-IT: Temperatura isteresi riscaldamento salamoia

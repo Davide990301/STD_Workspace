@@ -1,0 +1,16 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK PosSenzaDeadBand_DB : PosSenzaDeadBand
+    PosRichiesta := 0.0;
+    PosAttuale := 0.0;
+    ForzaPos := FALSE;
+    ForzaNeg := FALSE;
+    Pos := FALSE;
+    Neg := FALSE;
+    DirezioneAvanti := FALSE;
+    DirezioneIndietro := FALSE;
+    OldPos := 0.0;
+END_DATA_BLOCK

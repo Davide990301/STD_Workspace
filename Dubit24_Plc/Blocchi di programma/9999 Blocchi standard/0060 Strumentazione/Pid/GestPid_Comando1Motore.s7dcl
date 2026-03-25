@@ -1,0 +1,16 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestPid_Comando1Motore" : Void
+    VAR_INPUT
+        K_Motore : Int;
+        K_Pid : Int;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        "Pid".P[#K_Pid].In.K_Motore1 := #K_Motore;
+    END_NETWORK
+END_FUNCTION

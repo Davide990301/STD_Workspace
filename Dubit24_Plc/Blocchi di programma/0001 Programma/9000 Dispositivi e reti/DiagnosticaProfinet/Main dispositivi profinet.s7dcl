@@ -1,0 +1,12 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "Main dispositivi profinet" : Void
+    { S7_Language := "SCL" }
+    NETWORK
+        "GestProfinetDiagnostica"();
+        "GestProfinetAbilitazionedispositivo"();
+    END_NETWORK
+END_FUNCTION

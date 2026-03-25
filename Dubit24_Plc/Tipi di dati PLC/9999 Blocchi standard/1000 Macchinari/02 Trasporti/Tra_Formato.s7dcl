@@ -1,0 +1,16 @@
+﻿TYPE
+    Tra_Formato : STRUCT
+        { S7_Setpoint := "True" }
+        Nome_1 : String[30];
+        {
+            S7_MLC := "MLC_3Y2";
+            S7_Setpoint := "True"
+        }
+        "Diam.Cont.Riemp.1" : Real;
+        {
+            S7_MLC := "MLC_RE";
+            S7_Setpoint := "True"
+        }
+        "Diam.Cont.Riemp.2" : Real;
+    END_STRUCT;
+END_TYPE

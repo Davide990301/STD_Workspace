@@ -1,0 +1,19 @@
+﻿FUNCTION "Main additivi" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP 
+      CounterAdditivo : Int;
+   END_VAR
+
+
+BEGIN
+	REGION Richiamo della gestione additivo 1
+	    "GestAdditivo"(
+	                   K_Analogica := "K_Analogica_Esempio",
+	                   K_Pid := "K_Pid_Esempio",
+	                   K_Additivo := "K_Additivo_Esempio",
+	                   K_Zona := "K_Zona_Esempio");
+	END_REGION ;
+	
+END_FUNCTION
+

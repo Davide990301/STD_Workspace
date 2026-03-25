@@ -1,6 +1,8 @@
 ﻿DocumentHash:
-  - FileName: StrutturaComando.xml
-    Hash: mNrhf/r8TvGNA6kBCRAO2bzPthe7Z9vm3xKmOWHhM8w=
+  - FileName: StrutturaComando.s7dcl
+    Hash: rYNODutJ+ApOjdFsO6Z5cjeE8ZK45Tfe+77grsLsDgo=
+  - FileName: StrutturaComando.s7res
+    Hash: 4fnOCFcVcD2y0+NGapnUglb6TemMIBY8i68876iRmVE=
 LibraryMetaFileHash: nqNWp5fO1RDWDAaOIb1khWte7QozSFWZqo5M44IFud8=
 LibraryVersion:
   Guid: bad2caf1-1d8a-4bd8-8df0-23497fbe088d

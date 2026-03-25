@@ -1,0 +1,25 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK Trend
+    VAR
+        { S7_Setpoint := "False" }
+        "T" : Array[0.._.K_NumTrends] of _.Std_Trend;
+    END_VAR
+
+        "T"[0].Valore1 := 0.0;
+        "T"[0].Valore2 := 0.0;
+        "T"[0].Valore3 := 0.0;
+        "T"[0].Valore4 := 0.0;
+        "T"[0].Valore5 := 0.0;
+        "T"[0].Valore6 := 0.0;
+        "T"[0].Valore7 := 0.0;
+        "T"[0].Valore8 := 0.0;
+        "T"[0].AsseY_SinistroMin := 0;
+        "T"[0].AsseY_SinistroMax := 0;
+        "T"[0].AsseY_DestroMin := 0;
+        "T"[0].AsseY_DestroMax := 0;
+
+END_DATA_BLOCK

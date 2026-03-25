@@ -1,0 +1,54 @@
+﻿TYPE
+    Std_ValvoleVTEM : STRUCT
+        Input : STRUCT
+            wBusDataFromVTEM0 : Word;
+            wBusDataFromVTEM1 : Word;
+            wBusDataFromVTEM2 : Word;
+            xEnable : Bool;
+            bySetValveMode : Byte;
+            bySetAppControl : Byte;
+            bySetAppOption : Byte;
+            iSetpointValue1 : Int;
+            iSetpointValue2 : Int;
+            xManualAcknowledge : Bool;
+        END_STRUCT;
+        Output : STRUCT
+            byActualValveMode : Byte;
+            byActualValveState : Byte;
+            byActualAppState : Byte;
+            iActualValue1 : Int;
+            iActualValue2 : Int;
+            iResponseToValveModeSet : Int;
+            sResponseToValveModeSet : String;
+            iErrorCode : Int;
+        END_STRUCT;
+        InOut : STRUCT
+            wBusDataToVTEM0 : Word;
+            wBusDataToVTEM1 : Word;
+            wBusDataToVTEM2 : Word;
+        END_STRUCT;
+        Static : STRUCT
+            aw_OperationCommand : Array[0..2] of Word;
+            iCommandNumber : Int;
+            iInvalidCommand : Int;
+            iRecChannel : Int;
+            iRecTransferCtrl : Int;
+            iRecAddressedTargetType : Int;
+            iRecIndex : Int;
+            iRecTransferValue : Int;
+            iActualValveMode : Int;
+            iValveState : Int;
+            xInvalidInput : Bool;
+            xLastManualAcknowledge : Bool;
+            xAcknowledging_in_progress : Bool;
+            xMalfunctionReading_Done : Bool;
+            iMalfunctionListEntry : Int;
+            iRecMalfunctionCode : Int;
+            iRecMalfunctionRating : Int;
+            iActualAppState : Int;
+            { S7_Setpoint := "False" }
+            eResponseToValveModeSet : _.Std_eResponseToValveModeSet;
+            eValveState : _.Std_eValveState;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

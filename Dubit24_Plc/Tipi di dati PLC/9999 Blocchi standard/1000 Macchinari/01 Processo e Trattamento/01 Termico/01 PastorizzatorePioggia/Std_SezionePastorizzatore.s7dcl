@@ -1,0 +1,5 @@
+﻿TYPE
+    Std_SezionePastorizzatore : STRUCT
+        Spare : Bool;
+    END_STRUCT;
+END_TYPE

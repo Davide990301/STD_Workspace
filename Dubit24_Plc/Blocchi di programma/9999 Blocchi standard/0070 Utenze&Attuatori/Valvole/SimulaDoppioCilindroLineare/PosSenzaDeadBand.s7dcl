@@ -1,0 +1,47 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION_BLOCK "PosSenzaDeadBand"
+    VAR_INPUT
+        PosRichiesta : Real;
+        PosAttuale : Real;
+        ForzaPos : Bool;
+        ForzaNeg : Bool;
+    END_VAR
+    VAR_OUTPUT
+        Pos : Bool;
+        Neg : Bool;
+    END_VAR
+    VAR
+        DirezioneAvanti : Bool;
+        DirezioneIndietro : Bool;
+        OldPos : Real;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        IF #OldPos <> #PosRichiesta THEN
+            IF #PosAttuale > #PosRichiesta THEN
+                #DirezioneAvanti := False;
+                #DirezioneIndietro := True;
+            ELSE
+                #DirezioneAvanti := True;
+                #DirezioneIndietro := False;
+            END_IF;
+            #OldPos :=  #PosRichiesta;
+        END_IF;
+        
+        IF #DirezioneAvanti AND #PosAttuale >= #PosRichiesta THEN
+            #DirezioneAvanti := False;
+        END_IF;
+        
+        IF #DirezioneIndietro AND #PosAttuale <= #PosRichiesta THEN
+            #DirezioneIndietro := False;
+        END_IF;
+        
+        #Pos := (#DirezioneAvanti OR #ForzaPos) AND NOT #Neg;
+        #Neg := (#DirezioneIndietro OR #ForzaNeg) AND NOT #Pos;
+    END_NETWORK
+END_FUNCTION_BLOCK

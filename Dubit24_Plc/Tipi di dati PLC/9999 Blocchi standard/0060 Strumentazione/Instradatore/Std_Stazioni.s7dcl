@@ -1,0 +1,15 @@
+﻿TYPE
+    Std_Stazioni : STRUCT
+        IN : STRUCT
+            Possibile : Bool;
+            Selezionato : Bool;
+            Attivo : Bool;
+        END_STRUCT;
+        Prm : STRUCT
+            { S7_Setpoint := "False" }
+            PrioritaInvioProdotto : _.Std_Priorità;
+            { S7_Setpoint := "False" }
+            PrioritaRicezioneProdotto : _.Std_Priorità;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

@@ -1,0 +1,14 @@
+﻿TYPE
+    Std_eMA10OperatingMedium : STRUCT
+        Dry_air_CDA_at_0C : Int := 1;
+        Dry_air_CDA_at_20C : Int := 2;
+        Argon_AR_at_0C : Int := 3;
+        Argon_AR_at_20C : Int := 4;
+        Nitrogen_N2_at_0C : Int := 5;
+        Nitrogen_N2_at_20C : Int := 6;
+        Carbon_dioxide_CO2_at_0C : Int := 7;
+        Carbon_dioxide_CO2_at_20C : Int := 8;
+        Oxygen_O2_at_0C : Int := 9;
+        Oxygen_O2_at_20C : Int := 10;
+    END_STRUCT;
+END_TYPE

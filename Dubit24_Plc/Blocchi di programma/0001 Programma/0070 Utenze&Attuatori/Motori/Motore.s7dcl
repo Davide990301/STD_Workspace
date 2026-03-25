@@ -1,0 +1,24 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK Motore
+    VAR RETAIN
+        { S7_Setpoint := "False" }
+        "M" : Array[0.._.K_NumMotore] of _.Std_stMotore;
+    END_VAR
+
+    VAR
+        Funzioni : STRUCT
+            DefaultPrm : Bool;
+            TuttiInAutoMode : Bool;
+        END_STRUCT;
+    END_VAR
+
+        "M"[0].HMI.STW1 := 16#0000;
+        "M"[0].HMI.CTW1 := 16#0000;
+    Funzioni.DefaultPrm := FALSE;
+    Funzioni.TuttiInAutoMode := FALSE;
+
+END_DATA_BLOCK

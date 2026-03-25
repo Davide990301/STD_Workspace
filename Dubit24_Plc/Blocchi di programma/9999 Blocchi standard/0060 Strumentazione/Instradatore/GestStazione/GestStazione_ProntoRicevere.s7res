@@ -1,0 +1,39 @@
+﻿MultiLingualTexts:
+  - id: MLC_hB
+    it-IT: La stazione è pronta a chiamare ma manca il feedback
+  - id: MLC_fm
+    it-IT: Gestione della chiamata della stazione
+  - id: MLC_3SX
+    it-IT: La stazione è pronta a chiamare
+  - id: MLC_3Ws
+    it-IT: |-
+      AlmenoUnaDestInChiamata = Significa che è presente una destinazione e che mi sta chiamando oppure ho attivo il parametro che mi permette di non aspettare la chiamata della destinazione.
+
+      AttivaChiamata = Questo parametro viene passato da fuori com ingresso del blocco, se le condizioni sono valide, la stazione chiama.
+
+      Struct.Hmi.Abilita = ON/OFF presente su matrice che permette / abilita la chiamata.
+
+      ProntaAChiamare = La stazione è pronta a chiamare per quanto la riguarda.
+  - id: MLC_4FP
+    it-IT: Tutti i riferimenti sono pronti a partire
+  - id: MLC_kT
+    it-IT: La stazione sta chiamando prodotto
+  - id: MLC_4Gk
+    it-IT: |-
+      Se la stazione è  pronta a chiamare verifico le condizioni per l'eventuale stazione additivo.
+      La stazione additivo può essere sia la stazione attuale che la stazione con cui fare il riferimento.
+      In entrambi i casi aspetto la stazione partner. Partner può essere la stazione additivo che manda o la stazione master a cui faccio riferimento per mandare.
+
+      Il ramo in parallelo con il pronta a chiamare serve per quando abilitiamo il parametro di run anche dopo il timeout, se abbiamo questo parametro infatti dobbiamo tenere alta l'uscita.
+      Si utiliza solitamente se la stazione ha dei consensi di feedback di marcia e ha possibilità di fermarsi in autonomia e non c'è quindi il segnale di allarme.
+  - id: MLC_46x
+    it-IT: Diagnostica
+  - id: MLC_aP
+    it-IT: |-
+      Se la stazione è  pronta a chiamare verifico le condizioni per l'eventuale stazione additivo.
+      La stazione additivo può essere sia la stazione attuale che la stazione con cui fare il riferimento.
+      In entrambi i casi aspetto la stazione partner. Partner può essere la stazione additivo che manda o la stazione master a cui faccio riferimento per mandare.
+  - id: MLC_3Mm
+    it-IT: Pulisco la memoria dopo averla letta
+  - id: MLC_3UT
+    it-IT: Riferimenti incrociati

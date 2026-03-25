@@ -1,0 +1,7 @@
+﻿TYPE
+    Std_Lpf : STRUCT
+        Setpoint : Real;
+        FattoreFiltro : Real;
+        ValoreFiltrato : Real;
+    END_STRUCT;
+END_TYPE

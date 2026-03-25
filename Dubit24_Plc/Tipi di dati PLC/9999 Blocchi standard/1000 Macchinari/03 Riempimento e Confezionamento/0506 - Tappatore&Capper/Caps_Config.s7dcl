@@ -1,0 +1,62 @@
+﻿TYPE
+    Caps_Config : STRUCT
+        "@_HMI" : STRUCT
+            { S7_Setpoint := "True" }
+            s_Name : String;
+        END_STRUCT;
+        "@_CFG" : STRUCT
+            { S7_Setpoint := "True" }
+            x_CapsFeeder : Bool;
+            { S7_Setpoint := "True" }
+            x_CapsFeederReverse : Bool;
+            { S7_Setpoint := "True" }
+            x_CheckCapsFeederRotation : Bool;
+            { S7_Setpoint := "True" }
+            x_CapsFeederAlwaysRunning : Bool;
+            { S7_Setpoint := "True" }
+            x_CapsFeederChangeSpeed : Bool;
+            { S7_Setpoint := "True" }
+            x_VacuumPump : Bool;
+            { S7_Setpoint := "True" }
+            x_CheckCapInverted : Bool;
+            { S7_Setpoint := "True" }
+            x_LightUV : Bool;
+            { S7_Setpoint := "True" }
+            x_EmptyChannel : Bool;
+            { S7_Setpoint := "True" }
+            x_CapsElevator : Bool;
+            { S7_Setpoint := "True" }
+            x_CapsBelt : Bool;
+            { S7_Setpoint := "True" }
+            x_NBNC : Bool;
+            { S7_Setpoint := "True" }
+            x_HeadRot : Bool;
+            { S7_Setpoint := "True" }
+            x_AntirotationBelt : Bool;
+            { S7_Setpoint := "True" }
+            i_NrChannel : Int;
+            { S7_Setpoint := "True" }
+            f_KFactor : Real;
+            { S7_Setpoint := "True" }
+            PT : Array[0..19] of Time := [
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                ()
+            ];
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

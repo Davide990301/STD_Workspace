@@ -1,0 +1,10 @@
+﻿TYPE
+    OBJ_Fw_Error_V200_Type : STRUCT
+        { S7_Visibility := "Unlisted := External" }
+        f32_KP_FollowError : Real;
+        { S7_Visibility := "Unlisted := External" }
+        f32_LastPosition : Real;
+        { S7_Visibility := "Unlisted := External" }
+        f32_LastFollowError : Real;
+    END_STRUCT;
+END_TYPE

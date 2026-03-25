@@ -1,0 +1,33 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "T_PausaLavoro" : Void
+    VAR_IN_OUT
+        PausaLavoro : _.Std_PausaLavoro;
+    END_VAR
+
+    { S7_Language := "LAD" }
+    NETWORK
+        RUNG wire#powerrail
+            "T_ON"(
+                I_CicloCPU := "CicloScansioneCPU_I".O_rCicloCpu,
+                I_StartConteggio := wire#w1,
+                IO_DatiTimer := #PausaLavoro.DurataLavoro
+            )
+            "T_OFF"(
+                I_CicloCPU := "CicloScansioneCPU_I".O_rCicloCpu,
+                I_StartConteggio := #PausaLavoro.DurataLavoro.O,
+                IO_DatiTimer := #PausaLavoro.DurataPausa
+            )
+        END_RUNG
+        RUNG wire#powerrail
+            I_Contact( #PausaLavoro.DurataPausa.O )
+        END_RUNG wire#w1
+    END_NETWORK
+    { S7_Language := "SCL" }
+    NETWORK
+        ENO := NOT #PausaLavoro.DurataPausa.O OR NOT #PausaLavoro.Abilitazione;
+    END_NETWORK
+END_FUNCTION

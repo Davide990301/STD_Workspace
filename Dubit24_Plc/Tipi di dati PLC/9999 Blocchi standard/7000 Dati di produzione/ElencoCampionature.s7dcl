@@ -1,0 +1,5 @@
+﻿TYPE
+    ElencoCampionature : STRUCT
+        h : Array[1..24] of _.Campionatura;
+    END_STRUCT;
+END_TYPE

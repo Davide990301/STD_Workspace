@@ -1,0 +1,127 @@
+﻿{
+    S7_BlockTitle := "MLC_pj";
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+ORGANIZATION_BLOCK "Main Richiamo"
+    VAR_TEMP
+        TempoEsecuzione : LReal;
+        TempoEsecuzioneTotale : LReal;
+        "Counter" : Int;
+        AppoTemp : DInt;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni[0].Appo) * 1000.0;
+        REGION Richiamo base software
+            "GestDatiUtili"();
+            
+            IF "K_NumZona" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoZona"].Appo) * 1000.0;
+                "Main zone"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoZona"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoZona"].Appo) * 1000.0;
+            END_IF;
+            
+            
+            "LogoCliente".K_LogoCliente_1 := "K_LogoCliente_Brain";
+            "LogoCliente".K_LogoCliente_2 := "K_LogoCliente_Dubit";
+            
+            // "LogoCliente".K_LogoCliente_1 := "K_LogoCliente_Brain";
+            // "LogoCliente".K_LogoCliente_2 := "K_LogoCliente_Greci";
+            
+            //"GestTema"();
+            //"GestLogin"();
+            //"GestScreensaver"();
+        END_REGION ;
+        REGION 0040 Sequenze
+            IF "K_NumSequenza" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoSequenza"].Appo) * 1000.0;
+                "Main sequenze"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoSequenza"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoSequenza"].Appo) * 1000.0;
+            END_IF;
+        END_REGION ;
+        REGION 0060 Strumentazione
+            IF "K_NumAnalogica" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoAnalogica"].Appo) * 1000.0;
+                "Main analogiche"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoAnalogica"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoAnalogica"].Appo) * 1000.0;
+            END_IF;
+            IF "K_NumPid" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoPid"].Appo) * 1000.0;
+                "Main pid"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoPid"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoPid"].Appo) * 1000.0;
+            END_IF;
+            IF "K_NumPortata" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoPortata"].Appo) * 1000.0;
+                "Main Portate"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoPortata"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoPortata"].Appo) * 1000.0;
+            END_IF;
+            IF "K_NumTrends" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoTrend"].Appo) * 1000.0;
+                "Main trends"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoTrend"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoTrend"].Appo) * 1000.0;
+            END_IF;
+            IF "K_NumStazione" > 1 THEN
+                "Main stazioni"();
+            END_IF;
+        END_REGION ;
+        REGION 0070 Utenze/Attuatori
+            IF "K_NumMotore" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoMotore"].Appo) * 1000.0;
+                "Main motori"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoMotore"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoMotore"].Appo) * 1000.0;
+            END_IF;
+            IF "K_NumParatia" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoParatia"].Appo) * 1000.0;
+                "Main paratie"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoParatia"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoParatia"].Appo) * 1000.0;
+            END_IF;
+            IF "K_NumValvola" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoValvola"].Appo) * 1000.0;
+                "Main valvole"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoValvola"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoValvola"].Appo) * 1000.0;
+            END_IF;
+        END_REGION
+        REGION 0090 Ricette
+            IF "K_NumMacchinaARicetta" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoRicetta"].Appo) * 1000.0;
+                "Main ricette"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoRicetta"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoRicetta"].Appo) * 1000.0;
+            END_IF;
+        END_REGION ;
+        REGION Macchinari
+            "GestioneMacchina_010102"();
+        END_REGION ;
+        REGION 8000 Segnali macchina
+            IF "K_NumSegnaleMacchina" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoSegnaliMacchine"].Appo) * 1000.0;
+                "Main SegnaliMacchina"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoSegnaliMacchine"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoSegnaliMacchine"].Appo) * 1000.0;
+            END_IF;
+        END_REGION ;
+        REGION 9000 Comunicazione
+            IF "K_NumComunicazioneS7" > 0 THEN
+                #TempoEsecuzione := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoComunicazione"].Appo) * 1000.0;
+                "GetPut"();
+                "TempoCiclo".TempoEsecuzioneSezioni["K_TipoComunicazione"].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni["K_TipoComunicazione"].Appo) * 1000.0;
+            END_IF;
+        END_REGION ;
+        "TempoCiclo".TempoEsecuzioneSezioni[0].Actual := RUNTIME("TempoCiclo".TempoEsecuzioneSezioni[0].Appo) * 1000.0;
+        REGION Esecuzione totale
+            REGION CalcoloTempoEsecuzioneTotale
+                #TempoEsecuzioneTotale := 0;
+                FOR #Counter := 1 TO "K_NumKTipo" DO
+                    #TempoEsecuzioneTotale += "TempoCiclo".TempoEsecuzioneSezioni[#Counter].Actual;
+                END_FOR;
+                "TempoCiclo".TempoEsecuzioneTotale := #TempoEsecuzioneTotale;
+            END_REGION ;
+            REGION Calcolo percentuale di incisione percentuale
+                FOR #Counter := 0 TO "K_NumKTipo" DO
+                    "TempoCiclo".TempoEsecuzioneSezioni[#Counter].Perc := LREAL_TO_REAL("TempoCiclo".TempoEsecuzioneSezioni[#Counter].Actual / "TempoCiclo".TempoEsecuzioneTotale * 100.0);
+                END_FOR;
+            END_REGION ;
+        END_REGION ;
+    END_NETWORK
+END_ORGANIZATION_BLOCK

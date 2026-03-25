@@ -1,0 +1,28 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestStazione_ProntoInviare" : Void
+    VAR_INPUT
+        ProntoAdInviare : Bool;
+        K_Stazione : Int;
+    END_VAR
+    VAR_TEMP
+        DestinazioneAttuale : Int;
+    END_VAR
+
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_39h"
+    }
+    NETWORK
+        FOR #DestinazioneAttuale := 0 TO "K_NumStazione" DO //Sfoglio tutte le stazioni
+            IF "Percorso".Stazione[#K_Stazione].Destinazione[#DestinazioneAttuale].IN.Attivo THEN   //Se la strada verso la destinazione è attiva (quindi selezionata e caricata in lavoro)
+                IF NOT #ProntoAdInviare THEN                                                             //E ho il parametro in ingresso che chiede di fermare la destinazione
+                    "Percorso".Stazione[#DestinazioneAttuale].IN.SorgenteNonPronta := True;             //Fermo la destinazione
+                END_IF;
+            END_IF;
+        END_FOR;
+    END_NETWORK
+END_FUNCTION

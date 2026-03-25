@@ -1,0 +1,38 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestStazione_Additivo" : Void
+    VAR_INPUT
+        K_Stazione : Int;
+        K_Additivo : Int;
+        AttendiFlowmeter : Bool;
+    END_VAR
+    VAR_TEMP
+        MinimaPortataRaggiunta : Bool;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        REGION Abilitazione additivo
+            //La pompa acido diventa una stazione additiva quando viene legata alla destinazine con altre pompe
+            REGION Parametri
+                //Parametro per rendere la stazione una stazione additiva.
+                //(Una stazione è additiva quando deve "addizionare" del prodotto additivo (Salamoia-acido-concentrato) con una mandata principale)
+                "Percorso".Stazione[#K_Stazione].Dati.InvioAdditivo.Abilitazione := True;
+            END_REGION ;
+        END_REGION ;
+        REGION Richiamo gestione chiamata stazione
+            "GestStazione_ProntoRicevere"(AttivaChiamata := NOT "Additivo".A[#K_Additivo].Out.Allarme,
+                                          K_Stazione := #K_Stazione);
+        END_REGION ;
+        REGION Pronta ad inviare
+            //Impostiamo che la stazione non è pronta ad inviare perchè manca il minimo flusso della salamoia se ho abilitato il flowmeter
+            //Se non è abilitato il flowmeter marcia sempre
+            #MinimaPortataRaggiunta := "Analogica".A["Additivo".A[#K_Additivo].Rif_Inc.K_Analogica].Out.SogliaIntMin;
+            "GestStazione_ProntoInviare"(ProntoAdInviare := NOT #AttendiFlowmeter OR (#AttendiFlowmeter AND #MinimaPortataRaggiunta),
+                                         K_Stazione := #K_Stazione);
+        END_REGION ;
+    END_NETWORK
+END_FUNCTION

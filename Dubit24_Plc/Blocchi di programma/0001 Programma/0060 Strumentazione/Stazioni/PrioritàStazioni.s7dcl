@@ -1,0 +1,42 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK PrioritàStazioni
+    VAR RETAIN
+        {
+            S7_MLC := "MLC_4ac";
+            S7_Setpoint := "True"
+        }
+        K_StazioneVisualizzata : Int;
+        { S7_Setpoint := "True" }
+        K_StazioniConPriorità : Array[0.._.K_NumStazione] of Int;
+        {
+            S7_MLC := "MLC_4Lq";
+            S7_Setpoint := "True"
+        }
+        K_StazioniSorgenti : Array[0.._.K_NumStazione] of Int;
+        {
+            S7_MLC := "MLC_4ZD";
+            S7_Setpoint := "True"
+        }
+        K_StazioniDestinazioni : Array[0.._.K_NumStazione] of Int;
+        StazioniSorgenti_PrioritàHmi : Array[0.._.K_NumStazione] of _.Priorità;
+        StazioniDestinazioni_PrioritàHmi : Array[0.._.K_NumStazione] of _.Priorità;
+        Old_StazioniSorgenti_PrioritàHmi : Array[0.._.K_NumStazione] of _.Priorità;
+        Old_StazioniDestinazioni_PrioritàHmi : Array[0.._.K_NumStazione] of _.Priorità;
+        { S7_Setpoint := "True" }
+        Old_K_StazioneVisualizzata : Int;
+    END_VAR
+
+    K_StazioneVisualizzata := 16;
+        K_StazioniConPriorità[0] := 16;
+        K_StazioniConPriorità[1] := 18;
+        K_StazioniSorgenti[0] := 48;
+        K_StazioniSorgenti[1] := 49;
+        K_StazioniDestinazioni[0] := 1;
+        K_StazioniDestinazioni[1] := 2;
+    Old_K_StazioneVisualizzata := 16;
+
+END_DATA_BLOCK

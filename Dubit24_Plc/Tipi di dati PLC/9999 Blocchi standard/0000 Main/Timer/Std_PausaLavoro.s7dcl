@@ -1,0 +1,20 @@
+﻿TYPE
+    Std_PausaLavoro : STRUCT
+        { S7_Setpoint := "True" }
+        Abilitazione : Bool;
+        { S7_Setpoint := "False" }
+        DurataLavoro : _.Std_stTimer := (
+            IN := FALSE,
+            O := FALSE,
+            Preset := 0.0,
+            TempoTrascorso := 0.0
+        );
+        { S7_Setpoint := "False" }
+        DurataPausa : _.Std_stTimer := (
+            IN := FALSE,
+            O := FALSE,
+            Preset := 0.0,
+            TempoTrascorso := 0.0
+        );
+    END_STRUCT;
+END_TYPE

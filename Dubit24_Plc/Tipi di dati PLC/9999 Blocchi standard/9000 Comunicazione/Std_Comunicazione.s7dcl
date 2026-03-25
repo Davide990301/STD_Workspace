@@ -1,0 +1,47 @@
+﻿TYPE
+    Std_Comunicazione : STRUCT
+        Prm : STRUCT
+            PutEnabled : Bool;
+            GetEnabled : Bool;
+            "Timer" : STRUCT
+                { S7_Setpoint := "False" }
+                PutTimeOut : _.Std_stTimer;
+                PutExecuteDelay : _.Std_stTimer;
+                GetTimeOut : _.Std_stTimer;
+                GetExecuteDelay : _.Std_stTimer;
+            END_STRUCT;
+        END_STRUCT;
+        Hmi : STRUCT
+            Diagnostica : STRUCT
+                "0-" : Bool;
+                "1-" : Bool;
+                "2-" : Bool;
+                "3-" : Bool;
+                "4-" : Bool;
+                "5-" : Bool;
+                "6-" : Bool;
+                "7-" : Bool;
+                "8-" : Bool;
+                "9-" : Bool;
+            END_STRUCT;
+        END_STRUCT;
+        Dati : _.Std_DatiGetPut;
+        Allarmi : STRUCT
+            { S7_Setpoint := "False" }
+            TimeOutCom : _.Std_stTimer;
+            Stato : STRUCT
+                PUT_Alarm : Bool;
+                Get_Alarm : Bool;
+                PUT_AlarmCode : Word;
+                Get_AlarmCode : Word;
+                Watchdog : Bool;
+            END_STRUCT;
+            EnCadutaCiclo : STRUCT
+                PUT_Alarm : Bool;
+                Get_Alarm : Bool;
+                Watchdog : Bool;
+            END_STRUCT;
+            WordHMI : Word;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

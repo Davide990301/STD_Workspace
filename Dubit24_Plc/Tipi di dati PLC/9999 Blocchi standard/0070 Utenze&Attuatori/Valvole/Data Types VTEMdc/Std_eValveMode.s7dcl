@@ -1,0 +1,36 @@
+﻿TYPE
+    Std_eValveMode : STRUCT
+        { S7_Visibility := "Unlisted := External" }
+        MA01_Directional_control_valve_functions : Int := 1;
+        { S7_Visibility := "Unlisted := External" }
+        MA02_Proportional_directional_control_valve : Int := 2;
+        { S7_Visibility := "Unlisted := External" }
+        MA03_Proportional_pressure_regulation : Int := 3;
+        { S7_Visibility := "Unlisted := External" }
+        MA04_Modelbased_proportional_pressure_regulation : Int := 4;
+        { S7_Visibility := "Unlisted := External" }
+        MA05_Supply_and_exhaust_air_flow_control : Int := 5;
+        { S7_Visibility := "Unlisted := External" }
+        MA06_ECO_drive : Int := 6;
+        { S7_Visibility := "Unlisted := External" }
+        MA07_Presetting_of_travel_time : Int := 7;
+        { S7_Visibility := "Unlisted := External" }
+        MA08_Selectable_pressure_level_ECO : Int := 8;
+        { S7_Visibility := "Unlisted := External" }
+        MA10_Flow_control : Int := 10;
+        { S7_Visibility := "Unlisted := External" }
+        MA11_Soft_stop : Int := 11;
+        { S7_Visibility := "Unlisted := External" }
+        MA12_Leakage_diagnostics : Int := 12;
+        { S7_Visibility := "Unlisted := External" }
+        MA32_Positioning_and_Force : Int := 32;
+        { S7_Visibility := "Unlisted := External" }
+        MA33_Positioning : Int := 33;
+        { S7_Visibility := "Unlisted := External" }
+        VM60_TeachIn_run : Int := 60;
+        { S7_Visibility := "Unlisted := External" }
+        VM61_Inactive : Int := 61;
+        { S7_Visibility := "Unlisted := External" }
+        VM63_Transfermode : Int := 63;
+    END_STRUCT;
+END_TYPE

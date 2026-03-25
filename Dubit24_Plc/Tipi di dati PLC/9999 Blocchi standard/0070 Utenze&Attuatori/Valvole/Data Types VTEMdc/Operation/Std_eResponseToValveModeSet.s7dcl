@@ -1,0 +1,62 @@
+﻿TYPE
+    Std_eResponseToValveModeSet : STRUCT
+        { S7_Visibility := "Unlisted := External" }
+        reserved : Int;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_SetValveMode : Int := 1;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_SetAppControl : Int := 2;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_SetAppOption : Int := 3;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_SetPointValue1 : Int := 4;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_SetPointValue2 : Int := 5;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_configuration : Int := 6;
+        { S7_Visibility := "Unlisted := External" }
+        access_denied_WebConfig : Int := 10;
+        { S7_Visibility := "Unlisted := External" }
+        access_denied_saving_parametrisation : Int := 11;
+        { S7_Visibility := "Unlisted := External" }
+        no_license_for_this_MA : Int := 12;
+        { S7_Visibility := "Unlisted := External" }
+        all_licenses_in_use : Int := 13;
+        { S7_Visibility := "Unlisted := External" }
+        invalid_license_file : Int := 14;
+        { S7_Visibility := "Unlisted := External" }
+        no_valve_detected : Int := 15;
+        { S7_Visibility := "Unlisted := External" }
+        valve_self_calibration_running : Int := 16;
+        { S7_Visibility := "Unlisted := External" }
+        no_TransferMode_with_this_FB : Int := 1020;
+        { S7_Visibility := "Unlisted := External" }
+        preparing_for_start : Int := 1031;
+        { S7_Visibility := "Unlisted := External" }
+        starting : Int := 1032;
+        { S7_Visibility := "Unlisted := External" }
+        MA_running : Int := 1033;
+        { S7_Visibility := "Unlisted := External" }
+        Transfermode_running : Int := 1034;
+        { S7_Visibility := "Unlisted := External" }
+        stopping : Int := 1035;
+        { S7_Visibility := "Unlisted := External" }
+        all_MAs_stopped : Int := 1036;
+        { S7_Visibility := "Unlisted := External" }
+        acknowledge_needed : Int := 1037;
+        { S7_Visibility := "Unlisted := External" }
+        failure : Int := 1038;
+        { S7_Visibility := "Unlisted := External" }
+        preparing_for_acknowledge : Int := 1040;
+        { S7_Visibility := "Unlisted := External" }
+        acknowledging : Int := 1041;
+        { S7_Visibility := "Unlisted := External" }
+        all_errors_acknowledged : Int := 1042;
+        { S7_Visibility := "Unlisted := External" }
+        failure_still_active : Int := 1043;
+        { S7_Visibility := "Unlisted := External" }
+        no_Communication : Int := 1050;
+        { S7_Visibility := "Unlisted := External" }
+        FB_not_enabled : Int := 1051;
+    END_STRUCT;
+END_TYPE

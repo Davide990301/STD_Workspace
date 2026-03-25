@@ -1,0 +1,64 @@
+﻿TYPE
+    OBJ_Washing_Recipe_v100_Type : STRUCT
+        { S7_MLC := "MLC_4w4" }
+        "i_Index Limit" : Int;
+        { S7_MLC := "MLC_Rx" }
+        "i_Pos End Recipe" : Int;
+        { S7_MLC := "MLC_sG" }
+        DW0 : Int;
+        { S7_MLC := "MLC_3Y3" }
+        DW1 : Int;
+        { S7_MLC := "MLC_3MT" }
+        DW2 : Int;
+        DW3 : Int;
+        DW4 : Int;
+        { S7_MLC := "MLC_4za" }
+        DW5 : Int;
+        { S7_MLC := "MLC_Vn" }
+        DW6 : Int;
+        { S7_MLC := "MLC_3Bh" }
+        DW7 : Int;
+        { S7_MLC := "MLC_39k" }
+        DW8 : Int;
+        { S7_MLC := "MLC_TW" }
+        DW9 : Int;
+        { S7_MLC := "MLC_rg" }
+        DW10 : Int;
+        { S7_MLC := "MLC_478" }
+        DW11 : Int;
+        DW12 : Int;
+        DW13 : Int;
+        { S7_MLC := "MLC_3rt" }
+        DW14 : Int;
+        { S7_MLC := "MLC_yB" }
+        DW15 : Int;
+        DW16 : Int;
+        DW17 : Int;
+        DW18 : Int;
+        DW19 : Int;
+        DW20 : Int;
+        DW21 : Int := 16;
+        DW22 : Int;
+        DW23 : Int;
+        "@_StepOnWork" : _.OBJ_Washing_Step_V210_Type;
+        { S7_MLC := "MLC_ic" }
+        DW31 : Int;
+        DW32 : Int := 10;
+        DW33 : Word;
+        { S7_MLC := "MLC_4pC" }
+        DW34 : Word;
+        DW35 : Word;
+        DW36 : Int;
+        DW37 : DWord;
+        DW39 : DWord;
+        DW41 : Word;
+        DW42 : Int := 110;
+        DW43 : Word;
+        DW44 : Word;
+        DW45 : Word;
+        DW46 : DInt;
+        DW48 : Word;
+        i_Type_Of_Wash : Int;
+        "@_Step" : Array[0..100] of _.OBJ_Washing_Step_V210_Type;
+    END_STRUCT;
+END_TYPE

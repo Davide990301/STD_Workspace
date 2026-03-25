@@ -1,0 +1,95 @@
+﻿TYPE
+    Std_Stazione : STRUCT
+        IN : STRUCT
+            SorgenteNonPronta : Bool;
+            LivelloSorgenteInferiorePriorità : Bool;
+            LivelloDestinazioneSuperiorePriorità : Bool;
+            DestinazioneNonPronta : Bool;
+            Feedback_Run : Bool;
+        END_STRUCT;
+        Hmi : STRUCT
+            Abilita : Bool;
+            Diagnostica : STRUCT
+                StazioneAMonteNonPronta : Bool;
+                PrioritàLivelloDestinazione : Bool;
+                PrioritàLivelloSorgente : Bool;
+                PercorsoNonAttivo : Bool;
+                DestinazioneNonPronta : Bool;
+                MancaAttivazioneDaHmi : Bool;
+                AttesaAdditivoPronto : Bool;
+                AttesaPompaMandata : Bool;
+                NessunaDestinazioneAttiva : Bool;
+                TroppoPieno : Bool;
+                AttesaFeedbackRun : Bool;
+            END_STRUCT;
+        END_STRUCT;
+        Prm : STRUCT
+            ByPassChiamataDestinazione : Bool;
+            FeedbackRun : STRUCT
+                Abilitazione : Bool;
+                ChiamaAncheDopoTimeot : Bool;
+                Attesa : _.Std_stTimer;
+            END_STRUCT;
+            AbilitazionePriorità : STRUCT
+                SugliArrivi : Bool;
+                SuEstrazioni : Bool;
+            END_STRUCT;
+            IgnoraDestinazione : Bool;
+            FunzionamentoBatch : Bool;
+        END_STRUCT;
+        Allarmi : STRUCT
+            Stato : STRUCT
+                ConflittoMultiDest : Bool;
+                AlmenoUnaDiagnosticaAttiva : Bool;
+                TimeoutRun : Bool;
+            END_STRUCT;
+            EnWarnHmi : STRUCT
+                ConflittoMultiDest : Bool;
+                AlmenoUnaDiagnosticaAttiva : Bool;
+                TimeoutRun : Bool;
+            END_STRUCT;
+            WordHMI : Word;
+        END_STRUCT;
+        Destinazione : Array[0.._.K_NumStazione] of _.Std_Stazioni := [
+            (),
+            ()
+        ];
+        Dati : STRUCT
+            RicezioneAdditivo : STRUCT
+                Attiva : Bool;
+                K_StazioneRiferimento : Int;
+            END_STRUCT;
+            InvioAdditivo : STRUCT
+                Abilitazione : Bool;
+                Attiva : Bool;
+                TuttiRiferimentiOk : Bool;
+                K_StazioneRiferimento1 : Int;
+                K_StazioneRiferimento2 : Int;
+            END_STRUCT;
+            DestAttivaPresente : Bool;
+            K_StazioneDestinazione : Int;
+            SorgAttivaPresente : Bool;
+            AlmenoUnaSorgenteProgettata : Bool;
+            AlmenoUnaDestinazioneProgettata : Bool;
+            IntMinLivelloTank_DaSorgente : Bool;
+            IntMinLivelloTank_PerMotore : Bool;
+            LivelloTank_DaSorgente : Real;
+            LivelloTank_PerMotore : Real;
+            GestionePrioritàAttiva : STRUCT
+                DaDestinazione : Bool;
+                DaSorgente : Bool;
+            END_STRUCT;
+        END_STRUCT;
+        OUT : STRUCT
+            ProntaAChiamare : Bool;
+            Chiamata : Bool;
+        END_STRUCT;
+        Rif_Inc : STRUCT
+            K_Analogica : Int;
+            K_Paratia : Int;
+            K_Motore : Int;
+            K_Pompa : Int;
+            K_Stazione : Int;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

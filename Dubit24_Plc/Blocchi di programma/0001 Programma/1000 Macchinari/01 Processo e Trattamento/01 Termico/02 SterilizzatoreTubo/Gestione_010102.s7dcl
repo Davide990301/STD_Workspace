@@ -1,0 +1,36 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_StandardRetain := "FALSE";
+    S7_Version := "0.1"
+}
+DATA_BLOCK Gestione_010102
+    VAR RETAIN
+        ComandoRecupero_MemoPulsante : Bool;
+        ComandoRecupero_Stato : Bool;
+        RichiestaProdotto_Mostra : Bool;
+        RichiestaProdotto_ConfermataHmi : Bool;
+        RichiestaProdotto_Out : Bool;
+        AbilitazioneProduzione : Bool;
+        TerminaProduzione : Bool;
+        TerminaProduzione_Mostra : Bool;
+        MetricubiTubazioneRiempimento : Real;
+        MetricubiTubazioneSvuotamento : Real;
+    END_VAR
+
+    VAR
+        AperturaContropressioneFiltri : Real;
+    END_VAR
+
+    ComandoRecupero_MemoPulsante := FALSE;
+    ComandoRecupero_Stato := TRUE;
+    RichiestaProdotto_Mostra := TRUE;
+    RichiestaProdotto_ConfermataHmi := TRUE;
+    RichiestaProdotto_Out := TRUE;
+    AbilitazioneProduzione := TRUE;
+    TerminaProduzione := FALSE;
+    TerminaProduzione_Mostra := TRUE;
+    MetricubiTubazioneRiempimento := 1.0;
+    MetricubiTubazioneSvuotamento := 0.9;
+    AperturaContropressioneFiltri := 100.0;
+
+END_DATA_BLOCK

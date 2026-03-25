@@ -1,0 +1,10 @@
+﻿TYPE
+    Rcp_V100_Type : STRUCT
+        RecipeName : _.Rcp_Name_Type;
+        General : _.Rcp_Generale;
+        Filler : _.Rcp_Filler;
+        VacuumFiller : _.Rcp_VacuumFiller;
+        Capper : _.Rcp_Capper;
+        "Blower / Rinser" : _."Rcp_Blower&Rinser";
+    END_STRUCT;
+END_TYPE

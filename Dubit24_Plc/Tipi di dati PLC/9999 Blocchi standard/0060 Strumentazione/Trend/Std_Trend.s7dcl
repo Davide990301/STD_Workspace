@@ -1,0 +1,16 @@
+﻿TYPE
+    Std_Trend : STRUCT
+        Valore1 : Real;
+        Valore2 : Real;
+        Valore3 : Real;
+        Valore4 : Real;
+        Valore5 : Real;
+        Valore6 : Real;
+        Valore7 : Real;
+        Valore8 : Real;
+        AsseY_SinistroMin : Int;
+        AsseY_SinistroMax : Int;
+        AsseY_DestroMin : Int;
+        AsseY_DestroMax : Int;
+    END_STRUCT;
+END_TYPE

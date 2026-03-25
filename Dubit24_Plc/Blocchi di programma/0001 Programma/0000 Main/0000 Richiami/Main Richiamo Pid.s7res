@@ -1,0 +1,25 @@
+﻿MultiLingualTexts:
+  - id: MLC_4qN
+    it-IT: ' "Cyclic Interrupt"'
+  - id: MLC_4n8
+    it-IT: Bits 0-3 = 1 (Coming event), Bits 4-7 = 1 (Event class 1)
+  - id: MLC_3qh
+    it-IT: '16#36 (OB 35 has started)'
+  - id: MLC_3du
+    it-IT: 11 (Priority of 1 is lowest)
+  - id: MLC_52n
+    it-IT: 35 (Organization block 35, OB35)
+  - id: MLC_3B7
+    it-IT: Reserved for system
+  - id: MLC_3Hk
+    it-IT: Reserved for system
+  - id: MLC_57k
+    it-IT: Phase offset (msec)
+  - id: MLC_39W
+    it-IT: Reserved for system
+  - id: MLC_4wg
+    it-IT: Frequency of execution (msec)
+  - id: MLC_Us
+    it-IT: Date and time OB35 started
+  - id: MLC_4J8
+    it-IT: CALL PID

@@ -1,0 +1,17 @@
+﻿TYPE
+    "Cambio Altezza" : STRUCT
+        { S7_MLC := "MLC_3HE" }
+        Abilitato : Bool;
+        "Seq." : STRUCT
+            Step0 : Bool;
+            Step1 : Bool;
+            Step2 : Bool;
+            Step3 : Bool;
+            Step4 : Bool;
+        END_STRUCT;
+        { S7_MLC := "MLC_43n" }
+        x_ENPopUpConferma : Bool;
+        { S7_MLC := "MLC_38x" }
+        x_PBConferma : Bool;
+    END_STRUCT;
+END_TYPE

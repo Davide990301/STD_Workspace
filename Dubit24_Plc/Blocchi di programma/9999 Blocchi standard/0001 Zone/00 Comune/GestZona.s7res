@@ -1,0 +1,15 @@
+﻿MultiLingualTexts:
+  - id: MLC_Ly
+    it-IT: Pulsante bianco ciclo
+  - id: MLC_3Pz
+    it-IT: Pulsante blu reset
+  - id: MLC_bi
+    it-IT: Torretta sirena acustica
+  - id: MLC_4QE
+    it-IT: Torretta verde
+  - id: MLC_Yx
+    it-IT: Torretta rossa
+  - id: MLC_33T
+    it-IT: Torretta gialla
+  - id: MLC_3t2
+    it-IT: Condizioni ciclo automatico e manuale

@@ -1,0 +1,12 @@
+﻿TYPE
+    StrutturaComando : STRUCT
+        { S7_MLC := "MLC_58x" }
+        Selezione : Int;
+        { S7_MLC := "MLC_b5" }
+        Stato : Int;
+        Man : Bool;
+        Auto : Bool;
+        OFF : Bool;
+        "ON" : Bool;
+    END_STRUCT;
+END_TYPE

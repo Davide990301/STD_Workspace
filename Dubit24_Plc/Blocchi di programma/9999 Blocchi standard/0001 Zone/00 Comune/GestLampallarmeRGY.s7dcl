@@ -1,0 +1,99 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestLampallarmeRGY" : Void
+    VAR_INPUT
+        K_Zona : Int;
+    END_VAR
+    VAR_OUTPUT
+        { S7_MLC := "MLC_4a8" }
+        R : Bool;
+        { S7_MLC := "MLC_4wT" }
+        G : Bool;
+        { S7_MLC := "MLC_VE" }
+        Y : Bool;
+    END_VAR
+    VAR_TEMP
+        LampeggioVerde : Bool;
+        VerdeFisso : Bool;
+        LampeggioRosso : Bool;
+        GialloLampeggiante : Bool;
+        GialloFisso : Bool;
+        UtenzeInMan : Bool;
+        CounterUtenze : Int;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        #UtenzeInMan := False;
+        FOR #CounterUtenze := 0 TO "K_NumValvola" DO
+            IF "Valvola".V[#CounterUtenze].Rif_Inc.K_Zona = #K_Zona THEN
+                IF NOT ("Valvola".V[#CounterUtenze].Out.Stato = 0 OR "Valvola".V[#CounterUtenze].Out.Stato = 2) THEN
+                    #UtenzeInMan := True;
+                END_IF;
+            END_IF;
+        END_FOR;
+        FOR #CounterUtenze := 0 TO "K_NumMotore" DO
+            IF "Motore".M[#CounterUtenze].Rif_Inc.K_Zona = #K_Zona THEN
+                IF NOT ("Motore".M[#CounterUtenze].HMI.Stato = 0 OR "Valvola".V[#CounterUtenze].Out.Stato = 1) THEN
+                    #UtenzeInMan := True;
+                END_IF;
+            END_IF;
+        END_FOR;
+        
+        #LampeggioRosso := "Zona".Z[#K_Zona].Out.CumulativoAllarmi;
+        #VerdeFisso := "Zona".Z[#K_Zona].Out.Auto;
+        #LampeggioVerde := ("Zona".Z[#K_Zona].Out.Man OR #UtenzeInMan) OR (#VerdeFisso AND #LampeggioRosso);
+        #GialloFisso := "Zona".Z[#K_Zona].Out.Attesa;
+        #GialloLampeggiante := #GialloFisso AND #LampeggioRosso;
+        
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkTitle := "MLC_Nj"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #LampeggioRosso )
+            Contact( "Zona".Comuni.Clocks.Clock1Hz )
+            Coil( #R )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( #GialloLampeggiante )
+            I_Contact( "Zona".Comuni.Clocks.Clock1Hz )
+            wire#w1
+            Coil( #Y )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( #GialloFisso )
+            I_Contact( #GialloLampeggiante )
+        END_RUNG wire#w1
+        RUNG wire#powerrail
+            Contact( #LampeggioVerde )
+            wire#w2
+            Contact( #LampeggioRosso )
+            I_Contact( #GialloLampeggiante )
+            I_Contact( #GialloFisso )
+            I_Contact( "Zona".Comuni.Clocks.Clock1Hz )
+            wire#w3
+            Coil( #G )
+        END_RUNG
+        RUNG wire#w2
+            I_Contact( #LampeggioRosso )
+            Contact( "Zona".Comuni.Clocks.Clock1Hz )
+        END_RUNG wire#w3
+        RUNG wire#powerrail
+            Contact( #VerdeFisso )
+            I_Contact( #LampeggioRosso )
+            I_Contact( #GialloFisso )
+            I_Contact( #LampeggioVerde )
+        END_RUNG wire#w3
+    END_NETWORK
+    { S7_Language := "LAD" }
+    NETWORK
+        RUNG wire#powerrail
+        END_RUNG
+    END_NETWORK
+END_FUNCTION

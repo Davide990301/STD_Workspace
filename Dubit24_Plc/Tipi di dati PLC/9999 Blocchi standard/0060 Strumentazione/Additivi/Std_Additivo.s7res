@@ -1,0 +1,11 @@
+﻿MultiLingualTexts:
+  - id: MLC_4MT
+    it-IT: Percentuale di additivo richiesto
+  - id: MLC_3aJ
+    it-IT: PortataPrincipaleTroppoBassa
+  - id: MLC_hm
+    it-IT: PortataPrincipaleTroppoAlta
+  - id: MLC_MX
+    it-IT: MotoreInAllarme
+  - id: MLC_3iZ
+    it-IT: PortataAttualeTeorica(ql.i/h)

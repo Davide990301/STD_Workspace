@@ -1,0 +1,12 @@
+﻿TYPE
+    Std_stTransferPackage : STRUCT
+        { S7_Visibility := "Unlisted := External" }
+        iChannel : Int;
+        { S7_Visibility := "Unlisted := External" }
+        iAddressedTarget : Int;
+        { S7_Visibility := "Unlisted := External" }
+        iIndex : Int;
+        { S7_Visibility := "Unlisted := External" }
+        iTransferValue : Int;
+    END_STRUCT;
+END_TYPE

@@ -1,0 +1,40 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION_BLOCK "Main GetPut"
+    VAR
+        "C" : Array[0.._.K_NumComunicazioneS7] of _.GestGestPut;
+    END_VAR
+    VAR_TEMP
+        Reset : Bool;
+        Update : Bool;
+        CounterComunicazione : Int;
+        CounterZone : Int;
+        Temp_1 : String;
+        Temp_2 : String;
+    END_VAR
+
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_v2"
+    }
+    NETWORK
+        #Reset := False;
+        FOR #CounterZone := 0 TO "K_NumZona" DO
+            IF "Zona".Z[#CounterZone].Gen.Reset THEN
+                #Reset := True;
+            END_IF;
+            IF "Zona".Z[#CounterZone].Gen.UpdatePrm THEN
+                #Update := True;
+            END_IF;
+        END_FOR;
+        FOR #CounterComunicazione := 0 TO "K_NumComunicazioneS7" DO
+            #C[#CounterComunicazione].Reset := #Reset;
+            IF #Update THEN
+                #C[#CounterComunicazione].K_SegnaleMacchina := 0;
+            END_IF;
+        END_FOR;
+    END_NETWORK
+END_FUNCTION_BLOCK

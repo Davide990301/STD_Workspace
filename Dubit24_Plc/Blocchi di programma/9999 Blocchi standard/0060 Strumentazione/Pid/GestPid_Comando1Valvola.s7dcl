@@ -1,0 +1,23 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestPid_Comando1Valvola" : Void
+    VAR_INPUT
+        K_Valvola : Int;
+        K_Pid : Int;
+        K_TipoOutValvola : Int;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        "Pid".P[#K_Pid].In.K_Valvola1 := #K_Valvola;
+        IF #K_TipoOutValvola = "K_TipoOutValvola_Portata" THEN
+            "Valvola".V[#K_Valvola].Hmi.Visibilita.ModulantePortata := True;
+        END_IF;
+        IF #K_TipoOutValvola = "K_TipoOutValvola_Pressione" THEN
+            "Valvola".V[#K_Valvola].Hmi.Visibilita.ModulantePressione := True;
+        END_IF;
+    END_NETWORK
+END_FUNCTION

@@ -1,0 +1,8 @@
+﻿TYPE
+    OBJ_IODevice_OUT_SICK_AFM60_Tel81_V105_Type : STRUCT
+        { S7_MLC := "MLC_N5" }
+        STW2_ENC : Word;
+        { S7_MLC := "MLC_zS" }
+        G1_STW : Word;
+    END_STRUCT;
+END_TYPE

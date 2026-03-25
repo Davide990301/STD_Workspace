@@ -1,0 +1,12 @@
+﻿TYPE
+    SafetyPLCSignal : STRUCT
+        { S7_MLC := "MLC_3vH" }
+        "Circuito sicurezze Ok" : Bool;
+        { S7_MLC := "MLC_3EW" }
+        "Circuito sicurezze Ritardate Ok" : Bool;
+        { S7_MLC := "MLC_4Fk" }
+        "Richiesta di reset" : Bool;
+        { S7_MLC := "MLC_iJ" }
+        "Errore FBK" : Bool;
+    END_STRUCT;
+END_TYPE

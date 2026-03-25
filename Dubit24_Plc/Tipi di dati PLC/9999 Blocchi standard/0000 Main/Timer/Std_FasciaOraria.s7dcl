@@ -1,0 +1,6 @@
+﻿TYPE
+    Std_FasciaOraria : STRUCT
+        OrarioPartenza : Time_Of_Day := TOD#10:30:00;
+        OrarioArresto : Time_Of_Day := TOD#10:35:00;
+    END_STRUCT;
+END_TYPE

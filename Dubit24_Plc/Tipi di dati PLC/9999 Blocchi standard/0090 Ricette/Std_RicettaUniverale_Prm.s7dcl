@@ -1,0 +1,7 @@
+﻿TYPE
+    Std_RicettaUniverale_Prm : STRUCT
+        NomeFormato : String[20];
+        DatoReal : Array[0.._.K_NumDatiReal_Ricetta] of Real;
+        DatoBool : Array[0.._.K_NumDatiBool_Ricetta] of Bool;
+    END_STRUCT;
+END_TYPE

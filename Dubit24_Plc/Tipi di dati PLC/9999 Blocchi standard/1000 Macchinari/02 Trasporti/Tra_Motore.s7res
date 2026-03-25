@@ -1,0 +1,7 @@
+﻿MultiLingualTexts:
+  - id: MLC_4M2
+    it-IT: Condizioni per automatico motore
+  - id: MLC_UB
+    it-IT: Fisse (1-5)   Sincro 6-10)
+  - id: MLC_4dU
+    it-IT: '[1-%]  / [2-mm/sec] / [3-giri/min] / [4-Cont/h]'

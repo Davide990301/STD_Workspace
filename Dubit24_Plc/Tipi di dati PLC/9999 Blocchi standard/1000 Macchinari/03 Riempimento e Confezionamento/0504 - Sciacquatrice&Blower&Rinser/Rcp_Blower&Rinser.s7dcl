@@ -1,0 +1,6 @@
+﻿TYPE
+    "Rcp_Blower&Rinser" : STRUCT
+        AltezzaCarosello : Real;
+        Abilitazione1Trattamento : Bool;
+    END_STRUCT;
+END_TYPE

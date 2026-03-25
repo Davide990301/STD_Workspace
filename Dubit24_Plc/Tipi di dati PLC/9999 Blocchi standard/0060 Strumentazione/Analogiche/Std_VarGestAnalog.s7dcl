@@ -1,0 +1,155 @@
+﻿TYPE
+    Std_VarGestAnalog : STRUCT
+        In : STRUCT
+            "Ew" : Word;
+            ProfinetHwSubModule : HW_SUBMODULE;
+            SondeDigitali : STRUCT
+                Sonda_1Min : Bool;
+                Sonda_2Med : Bool;
+                Sonda_3Max : Bool;
+            END_STRUCT;
+            ActualValue_S7 : Real;
+        END_STRUCT;
+        Scalatura : STRUCT
+            IngressoAnalogico : Real;
+            OutMin : Real;
+            OutMax : Real := 100.0;
+            InMin : Real;
+            InMax : Real := 27648.0;
+            InMin_Leggi : Bool;
+            InMax_Leggi : Bool;
+        END_STRUCT;
+        Prm : STRUCT
+            K_TipoAnalogica : Int;
+            Inversione : Bool;
+            PresetSoglia : Array[1..4] of Real := [
+                (),
+                (),
+                (),
+                ()
+            ];
+            Isteresi : Array[1..4] of Real := [
+                (),
+                (),
+                (),
+                ()
+            ];
+            RitSogliaOn : Array[1..4] of _.Std_stTimer := [
+                (),
+                (),
+                (),
+                ()
+            ];
+            RitSogliaOf : Array[1..4] of _.Std_stTimer := [
+                (),
+                (),
+                (),
+                ()
+            ];
+            ModoSetAllarmeHmi : Array[1..4] of Bool := [
+                (),
+                (),
+                (),
+                ()
+            ];
+            ModoResetAllarmeHmi : Array[1..4] of Bool := [
+                (),
+                (),
+                (),
+                ()
+            ];
+            { S7_Setpoint := "False" }
+            UnitàMisura : _.Std_UnitàDiMisura := (
+                In := (
+                    UmCode := 40505
+                ),
+                Out := (
+                    UmCode := 40505
+                )
+            );
+            FiltroUscita : _.Std_Lpf := (
+                FattoreFiltro := 0.5
+            );
+        END_STRUCT;
+        Hmi : STRUCT
+            ParatiaPresente : Bool;
+            Simulazione : STRUCT
+                Attiva : Bool;
+                { S7_MLC := "MLC_5Ag" }
+                Valore : Int;
+                AbilitaTimeout : Bool := True;
+                { S7_Setpoint := "False" }
+                Timeout : _.Std_stTimer := (
+                    Preset := 300.0
+                );
+            END_STRUCT;
+            PopupSceltaVista : STRUCT
+                { S7_MLC := "MLC_4pz" }
+                TipoVista1 : Int;
+                { S7_MLC := "MLC_3CK" }
+                TipoVista2 : Int;
+                { S7_MLC := "MLC_32k" }
+                TipoVista3 : Int;
+                { S7_MLC := "MLC_3Sq" }
+                TipoVista4 : Int;
+            END_STRUCT;
+            UnitaMisura : STRUCT
+                Converti : Bool;
+                Calcola : Bool;
+            END_STRUCT;
+            NomeSoglia : Array[1..4] of String[18] := [
+                'massima',
+                'intermedia massima',
+                'intermedia minima',
+                'minima'
+            ];
+            { S7_MLC := "MLC_3U2" }
+            AbilitaVistaSogliaHmi : Array[1..4] of Bool := [
+                { S7_MLC := "MLC_4xa" }
+                True,
+                { S7_MLC := "MLC_42K" }
+                True,
+                { S7_MLC := "MLC_55b" }
+                True,
+                { S7_MLC := "MLC_4Ld" }
+                True
+            ];
+        END_STRUCT;
+        Dati : STRUCT
+            PreOutSoglia : Array[1..4] of Bool;
+        END_STRUCT;
+        Allarmi : STRUCT
+            "A" : Array[0.._.K_NumAllarmiPerAnalogiche] of _.Std_PrmAllarmeStd := [
+                (),
+                { S7_MLC := "MLC_hK" }
+                (),
+                { S7_MLC := "MLC_p6" }
+                (),
+                { S7_MLC := "MLC_4UW" }
+                (),
+                { S7_MLC := "MLC_3Vh" }
+                (),
+                { S7_MLC := "MLC_3ZB" }
+                ()
+            ];
+            WordHMI : Word;
+        END_STRUCT;
+        Out : STRUCT
+            { S7_Setpoint := "False" }
+            AnalogicaAttuale : _.Std_ValoreConUm;
+            SogliaMaxi : Bool;
+            SogliaIntMax : Bool;
+            SogliaIntMin : Bool;
+            SogliaMini : Bool;
+        END_STRUCT;
+        { S7_MLC := "MLC_3Z7" }
+        Rif_Inc : STRUCT
+            K_Portata : Int;
+            K_Pid_Uscita : Int;
+            K_Pid_Ingresso : Int;
+            K_Trend : Int;
+            K_Paratia : Int;
+            K_Analogica : Int;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

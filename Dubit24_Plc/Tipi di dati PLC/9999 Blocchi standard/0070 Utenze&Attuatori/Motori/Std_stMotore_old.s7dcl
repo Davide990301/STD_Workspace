@@ -1,0 +1,157 @@
+﻿TYPE
+    Std_stMotore_old : STRUCT
+        { S7_MLC := "MLC_wP" }
+        In : STRUCT
+            FbDigitali : STRUCT
+                WarningInverter : Bool;
+                SezMotoreAperto : Bool;
+                Sovracorrente : Bool;
+                CoppiaSuperata : Bool;
+                FaultInverter : Bool;
+                FeedbackMarcia : Bool;
+                TermicoIntervenuto : Bool;
+                TermicoServoventilazione : Bool;
+                PulsantieraLocale : STRUCT
+                    Auto : Bool;
+                    Stop : Bool;
+                    ManPos : Bool;
+                    ManNeg : Bool;
+                    StatoFromPuls : Int;
+                END_STRUCT;
+            END_STRUCT;
+            Reset : Bool;
+            ProfinetHwSubModule : HW_SUBMODULE;
+            CmdPosRich : Bool;
+            CmdNegRich : Bool;
+            CmdVelocitaRich : Real;
+            CmdPosizioneRich : Real;
+            ConsMovimentoPos : Bool;
+            ConsMovimentoNeg : Bool;
+        END_STRUCT;
+        { S7_MLC := "MLC_k7" }
+        Prm : STRUCT
+            Generali : STRUCT
+                TStart : _.Std_stTimer;
+                Tstop : _.Std_stTimer;
+                TimeOutMarcia : _.Std_stTimer;
+                TStopServoventola : _.Std_stTimer;
+                { S7_Setpoint := "True" }
+                MassimaFrequenza : Real;
+                MinimaFrequenza : Real;
+                Accellerazione : Real;
+                Decellerazione : Real;
+                InversioneRotazione : Bool;
+                K_Analogica : Int;
+                K_TipoMotore : Int;
+                K_VistaManuale : Int;
+                Inverter : STRUCT
+                    MinimaFreqDel_Inv : Real;
+                    MassimaFreqDel_Inv : Real;
+                    Presente : Bool;
+                END_STRUCT;
+                Feedbackspeed_Virtuale : Bool;
+            END_STRUCT;
+            Abilitazioni : STRUCT
+                Servoventilazione : Bool;
+            END_STRUCT;
+            Posizionatore : STRUCT
+                KConv_HzSpeed : Real;
+                DeadBand_InPosition : Real;
+                LimiteFisicoPos : Real;
+                LimiteFisicoNeg : Real;
+            END_STRUCT;
+            Quote : Array[0.._.K_NumCamma] of Real;
+            { S7_Setpoint := "False" }
+            UnitàMisura : _.Std_UnitàDiMisura;
+        END_STRUCT;
+        { S7_MLC := "MLC_qL" }
+        Hmi : STRUCT
+            STW1 : Word;
+            CTW1 : Word;
+            TipoManuale : Int;
+            StatoCmd : STRUCT
+                StatoFromHmi : Byte;
+                Auto : Bool;
+                Stop : Bool;
+                ManPos : Bool;
+                ManNeg : Bool;
+                TestServoVentola : Bool;
+            END_STRUCT;
+            StatoMotore : Int;
+            VelManuale : Real;
+            Visibilita : STRUCT
+                VelManuale : Bool;
+                Posizioni : Bool;
+                Servoventola : Bool;
+            END_STRUCT;
+            EseguiHomingAsse : Bool;
+            CmdPosRich : Bool;
+            CmdNegRich : Bool;
+            BypassSicurezze : Bool;
+        END_STRUCT;
+        Dati : STRUCT
+            Feedback_Speed : Real;
+            Feedback_Marcia : Bool;
+            WarningInverter : Bool;
+            SensoMarciaPos : Bool;
+            SensoMarciaNeg : Bool;
+            Abilita : Bool;
+            RetVal_Read_Inv : Int;
+            RetVal_SCR_Inv : Int;
+            PosRich_old : DInt;
+            StatoMotoreOld : Int;
+            PulsantieraLocalePresente : Bool;
+            BloccoRichiamato : Bool;
+            VelocitàDaInverter : DInt;
+            FrequenzaRichiesta : Real;
+            InclusoInUnaSequenza : Bool;
+        END_STRUCT;
+        { S7_MLC := "MLC_V7" }
+        Allarmi : STRUCT
+            { S7_Setpoint := "False" }
+            "A" : Array[0.._.K_NumAllarmiPerMotori] of _.Std_PrmAllarmeStd := [
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                ()
+            ];
+            WordHMI : Word;
+        END_STRUCT;
+        { S7_MLC := "MLC_4vz" }
+        Out : STRUCT
+            Pronto : Bool;
+            Allarme : Bool;
+            Avviso : Bool;
+            InMarcia : Bool;
+            CmdPosMotore : Bool;
+            CmdNegMotore : Bool;
+            CmdPosServoVentola : Bool;
+            InMarciaRifRag : Bool;
+            PosiRichiestaRaggiunta : Bool;
+            "Paw" : Word;
+            PosAttuale : Real;
+            ErrCom : Int;
+            CodiceAllarmeInv : DInt;
+            CodiceWarningInv : DInt;
+            CorrenteAtt : Real;
+            InPosQuota : Array[0.._.K_NumCamma] of Bool;
+        END_STRUCT;
+        { S7_MLC := "MLC_43T" }
+        Rif_Inc : STRUCT
+            K_Pid : Int;
+            K_Zona : Int := 0;
+            K_Analogica : Int;
+            K_Sequenza : Array[0.._.K_NumRifIncrociatiSequenza] of Int;
+        END_STRUCT;
+    END_STRUCT;
+END_TYPE

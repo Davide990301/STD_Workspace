@@ -1,0 +1,57 @@
+﻿{
+    S7_BlockTitle := "MLC_4qN";
+    S7_Optimized := "FALSE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+ORGANIZATION_BLOCK "Main Richiamo Pid"
+    VAR_TEMP
+        { S7_MLC := "MLC_4n8" }
+        OB35_EV_CLASS : Byte;
+        { S7_MLC := "MLC_3qh" }
+        OB35_STRT_INF : Byte;
+        { S7_MLC := "MLC_3du" }
+        OB35_PRIORITY : Byte;
+        { S7_MLC := "MLC_52n" }
+        OB35_OB_NUMBR : Byte;
+        { S7_MLC := "MLC_3B7" }
+        OB35_RESERVED_1 : Byte;
+        { S7_MLC := "MLC_3Hk" }
+        OB35_RESERVED_2 : Byte;
+        { S7_MLC := "MLC_57k" }
+        OB35_PHASE_OFFSET : Word;
+        { S7_MLC := "MLC_39W" }
+        OB35_RESERVED_3 : Int;
+        { S7_MLC := "MLC_4wg" }
+        OB35_EXC_FREQ : Int;
+        { S7_MLC := "MLC_Us" }
+        OB35_DATE_TIME : Date_And_Time;
+        LMN_ABS : Real;
+        Appo : Real;
+        FLD_ACT_ENG : Real;
+        Appo_PID : Real;
+        Appo_OUT : Real;
+        Reset : Bool;
+        "PEW" : Word;
+        "PAW" : Int;
+        OUT_INT : Int;
+        OUT_REAL : Real;
+        MinLimit : Bool;
+        MaxLimit : Bool;
+        "Appo Pew pid4" : Word;
+        SogliaImpostataCorrettamente : Bool;
+        DA_inserire : _.Std_VarGestAnalog;
+        VelrichiestaMotore : Int;
+    END_VAR
+    VAR CONSTANT
+        Isteresi : Int;
+    END_VAR
+
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_4J8"
+    }
+    NETWORK
+        
+    END_NETWORK
+END_ORGANIZATION_BLOCK
