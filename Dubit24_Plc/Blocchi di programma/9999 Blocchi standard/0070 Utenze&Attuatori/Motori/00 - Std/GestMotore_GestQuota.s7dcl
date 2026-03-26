@@ -8,12 +8,12 @@ FUNCTION "GestMotore_GestQuota" : Void
         K_Quota : Int;
         K_Motore : Int;
         CondizioniQuota : Bool;
-        Quota : DInt;
+        Quota : Real;
     END_VAR
     VAR_TEMP
-        FinestraInPosizione_Pos : DInt;
-        FinestraInPosizione_Neg : DInt;
-        PosAttualeMotore : DInt;
+        FinestraInPosizione_Pos : Real;
+        FinestraInPosizione_Neg : Real;
+        PosAttualeMotore : Real;
     END_VAR
 
     {
@@ -49,12 +49,12 @@ FUNCTION "GestMotore_GestQuota" : Void
     }
     NETWORK
         RUNG wire#powerrail
-            { S7_Templates := "SrcType := DInt" }
+            { S7_Templates := "SrcType := Real" }
             LE_Contact(
                 in1 := "Motore".M[#K_Motore].Out.PosAttuale,
                 in2 := #FinestraInPosizione_Pos
             )
-            { S7_Templates := "SrcType := DInt" }
+            { S7_Templates := "SrcType := Real" }
             GE_Contact(
                 in1 := "Motore".M[#K_Motore].Out.PosAttuale,
                 in2 := #FinestraInPosizione_Neg

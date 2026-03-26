@@ -25,8 +25,8 @@ BEGIN
 	                 "Motore".M[#CounterMotori].Allarmi.A[#CounterAllarmi].EnCadutaCiclo := False;
 	                 "Motore".M[#CounterMotori].Allarmi.A[#CounterAllarmi].EnWarnHmi := True;
 	             END_FOR;
-	             "Motore".M[#CounterMotori].Allarmi.A["KAllMot_Termico"].EnCadutaCiclo := True;
-	             "Motore".M[#CounterMotori].Allarmi.A["KAllMot_Termico"].EnWarnHmi := True;
+	             "Motore".M[#CounterMotori].Allarmi.A["KAllMotore_Termico"].EnCadutaCiclo := True;
+	             "Motore".M[#CounterMotori].Allarmi.A["KAllMotore_Termico"].EnWarnHmi := True;
 	             //Parametrizzazione Motore
 	              "Motore".M[#CounterMotori].Prm.Generali.TStart.Preset := 1;
 	              "Motore".M[#CounterMotori].Prm.Generali.Tstop.Preset := 1;

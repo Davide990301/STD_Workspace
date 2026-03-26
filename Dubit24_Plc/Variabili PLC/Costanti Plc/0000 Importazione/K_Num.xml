@@ -268,7 +268,7 @@
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
           <Name>K_NumMotore</Name>
-          <Value>7</Value>
+          <Value>2</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="2C" CompositionName="Comment">
