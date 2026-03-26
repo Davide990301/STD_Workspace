@@ -5,6 +5,16 @@
     S7_Version := "0.1"
 }
 ORGANIZATION_BLOCK "Main Richiamo Pid"
+    VAR_TEMP
+        "Nop" : Bool;
+    END_VAR
+
+    { S7_Language := "LAD" }
+    NETWORK
+        RUNG wire#powerrail
+            Coil( #"Nop" )
+        END_RUNG
+    END_NETWORK
     {
         S7_Language := "SCL";
         S7_NetworkTitle := "MLC_4J8"

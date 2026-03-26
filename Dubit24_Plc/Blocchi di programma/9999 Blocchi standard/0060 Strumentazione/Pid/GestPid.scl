@@ -173,7 +173,7 @@ BEGIN
 	    #OggettoTecnologicoPID.ManualEnable := NOT #CicloAutomatico OR #ForzaManuale OR #ManualeDaEquilibriumSeeking;           //Passo lo stato nel oggetto tecncologico 
 	END_REGION ;
 	REGION Unità di misura
-	    "GestUnitàMisura"("Pid".P[#K_PidInt].Prm.UnitàMisura);                                                                  //Gestione dell'unità di misura, scalature codice etc.
+	    "GestUnitaMisura"("Pid".P[#K_PidInt].Prm.UnitaMisura);                                                                  //Gestione dell'unità di misura, scalature codice etc.
 	END_REGION ;
 	REGION Set valore di apertura del pid in manuale
 	    IF #OggettoTecnologicoPID.ManualEnable THEN                                                                             //Se ho il pid in manuale
@@ -465,7 +465,7 @@ BEGIN
 	    #OggettoTecnologicoPID.Config.InputLowerLimit := "Analogica".A[#K_AnalogicaInt].Scalatura.OutMin;
 	    #OggettoTecnologicoPID.Config.InputUpperLimit := "Analogica".A[#K_AnalogicaInt].Scalatura.OutMax;
 	    #OggettoTecnologicoPID.Input := "Analogica".A[#K_AnalogicaInt].Out.AnalogicaAttuale.Valore;                  //Passo al pid l'attuale valore dell'analogica da mantenere.
-	    "Pid".P[#K_PidInt].Prm.UnitàMisura.In.UmCode := "Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura.Out.UmCode;   //Per visualizzare sul popup del PID l'unità di misura corretta lo passo dall'analogica.
+	    "Pid".P[#K_PidInt].Prm.UnitaMisura.In.UmCode := "Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura.Out.UmCode;   //Per visualizzare sul popup del PID l'unità di misura corretta lo passo dall'analogica.
 	    
 	    "Pid".P[#K_PidInt].Hmi.Diagnostica."8-LimiteMinimaUscitaPIDRichiestaPlc" := FALSE;                       //Pulisco il valore prima di scriverlo successivamente
 	    "Pid".P[#K_PidInt].Hmi.Diagnostica."9-LimiteMassimaUscitaPIDRichiestaPlc" := FALSE;                       //Pulisco il valore prima di scriverlo successivamente
@@ -524,7 +524,7 @@ BEGIN
 	        // END_IF;
 	        IF "Pid".P[#K_PidInt].In.K_Valvola1 > 0 THEN
 	                    //Se l'unità di misura è una pressione scrivo la locazione della pressione
-	            IF "GestUnitàMisura_IdentificaGrandezza"(UmCode := "Pid".P[#K_PidInt].Prm.UnitàMisura.Out.UmCode) = "Um_Grandezza_Pressione" THEN
+	            IF "GestUnitaMisura_IdentificaGrandezza"(UmCode := "Pid".P[#K_PidInt].Prm.UnitaMisura.Out.UmCode) = "Um_Grandezza_Pressione" THEN
 	                "Valvola".V["Pid".P[#K_PidInt].In.K_Valvola1].In.RichiestaPressionePos := #StatoUscitaPid;
 	            ELSE    //in tutti gli altri casi scrivo la portata
 	                "Valvola".V["Pid".P[#K_PidInt].In.K_Valvola1].In.RichiestaPortataPos := #StatoUscitaPid;
@@ -541,7 +541,7 @@ BEGIN
 	        END_IF;
 	        IF "Pid".P[#K_PidInt].In.K_Valvola2 > 0 THEN
 	            //Se l'unità di misura è una pressione scrivo la locazione della pressione
-	            IF "GestUnitàMisura_IdentificaGrandezza"(UmCode := "Pid".P[#K_PidInt].Prm.UnitàMisura.Out.UmCode) = "Um_Grandezza_Pressione" THEN
+	            IF "GestUnitaMisura_IdentificaGrandezza"(UmCode := "Pid".P[#K_PidInt].Prm.UnitaMisura.Out.UmCode) = "Um_Grandezza_Pressione" THEN
 	                "Valvola".V["Pid".P[#K_PidInt].In.K_Valvola1].In.RichiestaPressionePos := #StatoUscitaPid;
 	            ELSE    //in tutti gli altri casi scrivo la portata
 	                "Valvola".V["Pid".P[#K_PidInt].In.K_Valvola1].In.RichiestaPortataPos := #StatoUscitaPid;
@@ -575,7 +575,7 @@ BEGIN
 	    END_IF;
 	    //Possibilità di apoggiare l'uscita pid su un valore analogico
 	    IF "Pid".P[#K_PidInt].In.K_Analogica_Uscita <> 0 THEN
-	        "Analogica".A["Pid".P[#K_PidInt].In.K_Analogica_Uscita].Prm.UnitàMisura.In.UmCode := "Pid".P[#K_PidInt].Prm.UnitàMisura.Out.UmCode; //Passo unità di misura
+	        "Analogica".A["Pid".P[#K_PidInt].In.K_Analogica_Uscita].Prm.UnitaMisura.In.UmCode := "Pid".P[#K_PidInt].Prm.UnitaMisura.Out.UmCode; //Passo unità di misura
 	        "Analogica".A["Pid".P[#K_PidInt].In.K_Analogica_Uscita].Prm.K_TipoAnalogica := "K_TipoAnalogicaViaReteS7";                          //Utilizzo questo tipo di analogica
 	        "Analogica".A["Pid".P[#K_PidInt].In.K_Analogica_Uscita].In.ActualValue_S7 := #StatoUscitaPid;                            //Passo uscita PID
 	        REGION Disabilito scalatura e la imposto come da uscita PID 

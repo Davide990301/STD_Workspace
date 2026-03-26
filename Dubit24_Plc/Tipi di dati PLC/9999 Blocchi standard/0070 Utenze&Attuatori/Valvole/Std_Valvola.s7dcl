@@ -45,7 +45,7 @@
             TogliComandoDopoPos : Bool;
             SensorLess : Bool;
             { S7_Setpoint := "False" }
-            UnitàMisura : _.Std_UnitàDiMisura;
+            UnitàMisura : _.Std_UnitaDiMisura;
         END_STRUCT;
         Dati : STRUCT
             CondPos : Bool;

@@ -12,7 +12,7 @@
         Prm : STRUCT
             IsteresiComando : Real;
             { S7_Setpoint := "False" }
-            UnitaMisura : _.Std_UnitàDiMisura;
+            UnitaMisura : _.Std_UnitaDiMisura;
             { S7_Setpoint := "True" }
             AbilitazioneInterpolazione : Bool := False;
             Interpolazione : Array[0..5] of STRUCT

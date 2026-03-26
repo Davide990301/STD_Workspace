@@ -40,7 +40,7 @@ FUNCTION "GestAnalogica_Media" : Void
         //Ritestare questo blocco è stato migrato e mai testato inoltre successivamente modificata la questione dell'unità di misura!!!!
         //Unità di misura
         //Forzo l'unità di misura in percentuale per scalare ma poi alla fine del blocco la metto giusta
-        "Analogica".A[#K_AnalogMedia].Prm.UnitàMisura.In.UmCode := "Um_Codice_Percentuale";
+        "Analogica".A[#K_AnalogMedia].Prm.UnitaMisura.In.UmCode := "Um_Codice_Percentuale";
         //Max e min
         #MaxScalaturaTraLedue := MAX(IN1 := "Analogica".A[#K_Analog1].Scalatura.OutMax, IN2 := "Analogica".A[#K_Analog2].Scalatura.OutMax); //Cerco la scalatura max più alta
         #MinScalaturaTraLedue := MIN(IN1 := "Analogica".A[#K_Analog1].Scalatura.OutMin, IN2 := "Analogica".A[#K_Analog2].Scalatura.OutMin); //Cerco la scalatura min più bassa
@@ -72,6 +72,6 @@ FUNCTION "GestAnalogica_Media" : Void
         
         "Analogica".A[#K_AnalogMedia].Allarmi.A[#OutOfRange].Stato := #PrmMediaAnalog.RitardoOutOfRange.O;
         
-        "Analogica".A[#K_AnalogMedia].Prm.UnitàMisura := "Analogica".A[#K_Analog1].Prm.UnitàMisura;
+        "Analogica".A[#K_AnalogMedia].Prm.UnitaMisura := "Analogica".A[#K_Analog1].Prm.UnitaMisura;
     END_NETWORK
 END_FUNCTION

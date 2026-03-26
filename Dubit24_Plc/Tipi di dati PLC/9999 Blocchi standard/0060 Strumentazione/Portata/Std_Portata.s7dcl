@@ -8,7 +8,7 @@
             Setpoint_Parziale : Real;
             LitriInVolo : Real;
             { S7_Setpoint := "False" }
-            UnitàMisura : _.Std_UnitàDiMisura;
+            UnitàMisura : _.Std_UnitaDiMisura;
         END_STRUCT;
         Hmi : STRUCT
             ResetTotalizzatoreTotale : Bool;

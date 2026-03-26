@@ -104,31 +104,31 @@ BEGIN
 	        "Analogica".A[#K_AnalogicaInt].Scalatura.IngressoAnalogico := "Analogica".A[#K_AnalogicaInt].Scalatura.InMax - "Analogica".A[#K_AnalogicaInt].Scalatura.IngressoAnalogico + "Analogica".A[#K_AnalogicaInt].Scalatura.InMin;
 	    END_IF;
 	    
-	    IF "Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura.In.UmCode = "Um_Codice_°C" THEN
+	    IF "Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura.In.UmCode = "Um_Codice_°C" THEN
 	        IF "Analogica".A[#K_AnalogicaInt].Rif_Inc.K_Pid_Ingresso = 0 THEN   //Anche se si tratta di una temperatura non vado ad eseguire la scalatura perchè viene passata da un PID
 	            "Analogica".A[#K_AnalogicaInt].Scalatura.IngressoAnalogico := "Analogica".A[#K_AnalogicaInt].Scalatura.IngressoAnalogico * 18.432;
 	        END_IF;
 	    END_IF;
 	    
-	    "Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura.In.Valore := ("Analogica".A[#K_AnalogicaInt].Scalatura.IngressoAnalogico - "Analogica".A[#K_AnalogicaInt].Scalatura.InMin) *
+	    "Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura.In.Valore := ("Analogica".A[#K_AnalogicaInt].Scalatura.IngressoAnalogico - "Analogica".A[#K_AnalogicaInt].Scalatura.InMin) *
 	    ("Analogica".A[#K_AnalogicaInt].Scalatura.OutMax - "Analogica".A[#K_AnalogicaInt].Scalatura.OutMin) /
 	    ("Analogica".A[#K_AnalogicaInt].Scalatura.InMax - "Analogica".A[#K_AnalogicaInt].Scalatura.InMin) +
 	    ("Analogica".A[#K_AnalogicaInt].Scalatura.OutMin);
-	    IF "Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura.In.Valore < "Analogica".A[#K_AnalogicaInt].Scalatura.OutMin THEN
-	        "Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura.In.Valore := "Analogica".A[#K_AnalogicaInt].Scalatura.OutMin;
+	    IF "Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura.In.Valore < "Analogica".A[#K_AnalogicaInt].Scalatura.OutMin THEN
+	        "Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura.In.Valore := "Analogica".A[#K_AnalogicaInt].Scalatura.OutMin;
 	    END_IF;
-	    IF "Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura.In.Valore > "Analogica".A[#K_AnalogicaInt].Scalatura.OutMax THEN
-	        "Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura.In.Valore := "Analogica".A[#K_AnalogicaInt].Scalatura.OutMax;
+	    IF "Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura.In.Valore > "Analogica".A[#K_AnalogicaInt].Scalatura.OutMax THEN
+	        "Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura.In.Valore := "Analogica".A[#K_AnalogicaInt].Scalatura.OutMax;
 	    END_IF;
-	    "Filtro"(Setpoint := "Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura.In.Valore,
+	    "Filtro"(Setpoint := "Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura.In.Valore,
 	             IO_DatiFiltro := "Analogica".A[#K_AnalogicaInt].Prm.FiltroUscita);
-	    "Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura.In.Valore := "Analogica".A[#K_AnalogicaInt].Prm.FiltroUscita.ValoreFiltrato;
+	    "Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura.In.Valore := "Analogica".A[#K_AnalogicaInt].Prm.FiltroUscita.ValoreFiltrato;
 	END_REGION
 	REGION Unità di misura
-	    "GestUnitaMisura"("Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura);
+	    "GestUnitaMisura"("Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura);
 	END_REGION ;
 	REGION Uscita
-	    "Analogica".A[#K_AnalogicaInt].Out.AnalogicaAttuale := "Analogica".A[#K_AnalogicaInt].Prm.UnitàMisura.Out;
+	    "Analogica".A[#K_AnalogicaInt].Out.AnalogicaAttuale := "Analogica".A[#K_AnalogicaInt].Prm.UnitaMisura.Out;
 	END_REGION ;
 	REGION Allarmi 
 	    REGION Reset allarmi
