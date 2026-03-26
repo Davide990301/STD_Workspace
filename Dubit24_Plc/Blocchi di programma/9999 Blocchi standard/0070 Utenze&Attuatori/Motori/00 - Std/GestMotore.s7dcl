@@ -1,0 +1,746 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_PreferredLanguage := "LAD";
+    S7_Version := "0.1"
+}
+FUNCTION "GestMotore" : Void
+    VAR_INPUT
+        { S7_MLC := "MLC_56y" }
+        K_Motore : Int;
+        K_TipoMotore : Int;
+        { S7_MLC := "MLC_4dq" }
+        K_Zona : Int;
+    END_VAR
+    VAR_TEMP
+        Velocità_Percentuale : Real;
+        StartMarcia : Bool;
+        AllarmeComunicazioneInv : Bool;
+        { S7_MLC := "MLC_4dd" }
+        PI_Mitsubishi : STRUCT
+            "STW" : Word;
+            ActualSpeed : DInt;
+            Current : DInt;
+            DCBus : DInt;
+            AlarmCode : DInt;
+            CurrentPeak : DInt;
+            DCBusPeak : DInt;
+            Appo7 : DInt;
+            Appo8 : DInt;
+            Appo9 : DInt;
+            Appo10 : DInt;
+            Appo11 : DInt;
+            Appo12 : DInt;
+            Appo13 : DInt;
+            Appo14 : DInt;
+        END_STRUCT;
+        { S7_MLC := "MLC_Ly" }
+        PO_Mitsubishi : STRUCT
+            CTW : Word;
+            Speed_SP : DInt;
+            Acc : DInt;
+            Dec : DInt;
+            FStart : DInt;
+            Appo5 : DInt;
+            Appo6 : DInt;
+            Appo7 : DInt;
+            Appo8 : DInt;
+            Appo9 : DInt;
+            Appo10 : DInt;
+        END_STRUCT;
+        { S7_MLC := "MLC_4z8" }
+        PI_Siemens : STRUCT
+            "STW" : Word;
+            ActualSpeed : Int;
+            ActualCurrent : Int;
+            ActualTorque : Int;
+            WarningCode : Int;
+            FaultCode : Int;
+        END_STRUCT;
+        { S7_MLC := "MLC_55F" }
+        PO_Siemens : STRUCT
+            CTW : Word;
+            Speed : Int;
+            Spare01 : Int;
+            Spare02 : Int;
+            Spare03 : Int;
+            Spare04 : Int;
+        END_STRUCT;
+        { S7_MLC := "MLC_3Sx" }
+        PI_Schneider : STRUCT
+            "STW" : Word;
+            ActualSpeed : Int;
+            Enrgy : Int;
+            Segnalaz_Code : Int;
+            Spare_01 : Int;
+            Spare_02 : Int;
+        END_STRUCT;
+        { S7_MLC := "MLC_4tJ" }
+        PO_Schneider : STRUCT
+            CTW : Word;
+            Speed_SP : Int;
+            Acc_SP : Int;
+            Dec_SP : Int;
+            Spare_01 : Int;
+            Spare_02 : Int;
+        END_STRUCT;
+        { S7_MLC := "MLC_PU" }
+        PI_Movimot : STRUCT
+            STW1 : Word;
+            OutputCurrent : Word;
+            STW2 : Word;
+        END_STRUCT;
+        { S7_MLC := "MLC_zK" }
+        PO_Movimot : STRUCT
+            CTW : Word;
+            Speed : Int;
+            AccRich : Int;
+        END_STRUCT;
+        { S7_MLC := "MLC_39p" }
+        PI_MoviGear : STRUCT
+            "STW" : Word;
+            Actual_Speed : Int;
+            Status_Fault : Int;
+            Actual_Torque : Int;
+            "DI" : Word;
+        END_STRUCT;
+        { S7_MLC := "MLC_j2" }
+        PO_MoviGear : STRUCT
+            CTW : Word;
+            Target_Speed : Int;
+            Acceleration : Int;
+            Deceleration : Int;
+            "DO" : Word;
+        END_STRUCT;
+        { S7_MLC := "MLC_3Ac" }
+        PI_Danfoss : STRUCT
+            "STW" : Word;
+            ActualSpeed : Int;
+            CodAllarme_W1 : Int;
+            CodAllarme_W2 : Int;
+            CodWarning_W1 : Int;
+            CodWarning_W2 : Int;
+        END_STRUCT;
+        { S7_MLC := "MLC_Xx" }
+        PO_Danfoss : STRUCT
+            CTW : Word;
+            Speed : Int;
+            AccRich : Int;
+            DecRich : Int;
+            PCD_Spare01 : Int;
+            PCD_Spare02 : Int;
+        END_STRUCT;
+        { S7_MLC := "MLC_54D" }
+        PI_INVT : STRUCT
+            PKW01 : Word;
+            PKW02 : Word;
+            PKW03 : Word;
+            PKW04 : Word;
+            "STW" : Word;
+            ActualSpeed : Int;
+            BusVoltage : Int;
+            OutputCurrent : Int;
+            FaultCode : Int;
+            Sapre1 : Int;
+            Sapre2 : Int;
+            Sapre3 : Int;
+        END_STRUCT;
+        { S7_MLC := "MLC_3Tb" }
+        PO_INVT : STRUCT
+            PKW01 : Word;
+            PKW02 : Word;
+            PKW03 : Word;
+            PKW04 : Word;
+            CTW : Word;
+            Speed : Int;
+            Spare1 : Int;
+            Spare2 : Int;
+            Spare3 : Int;
+            Spare4 : Int;
+            Spare5 : Int;
+            Spare6 : Int;
+        END_STRUCT;
+        { S7_MLC := "MLC_43m" }
+        PI_Movitrac : STRUCT
+            STW1 : Word;
+            ActualSpeed : Int;
+            ActualCurrent : Word;
+        END_STRUCT;
+        { S7_MLC := "MLC_4UJ" }
+        PO_MoviTrac : STRUCT
+            CTW : Word;
+            Speed : Int;
+            Reserved : Int;
+        END_STRUCT;
+        FinestraInPosizione_Pos : DInt;
+        FinestraInPosizione_Neg : DInt;
+        PosAttualeMotore : DInt;
+        StatoFromHmi : Int;
+        StatoFromPulsantieraLocale : Int;
+        PulsantieraLocalePresente : Bool;
+        CounterAllarme : Int;
+        AllarmePresente : Bool;
+        { S7_MLC := "MLC_4MS" }
+        K_MotoreInt : Int;
+        { S7_MLC := "MLC_3Jy" }
+        K_ZonaInt : Int;
+        Timeout_Comando : Bool;
+        CounterSlot : Int;
+    END_VAR
+
+    { S7_Language := "SCL" }
+    NETWORK
+        REGION Diagnostica programmatore
+            (*Passiamo tutte le costanti di accesso agli array in modo da verificarle e controllarle*)
+            "Diagnostica"(K_Attuale_ArrayInCuiAccediamo := #K_Motore,
+                          K_NumMax_MassimoValoreDellArrayInCuiAccediamo := "K_NumMotore",
+                          K_Tipo_ArrayInCuiAccediamo := "K_TipoMotore",
+                          K_Attuale_DiChiAccede := #K_Motore,
+                          K_Tipo_DiChiAccede := "K_TipoMotore",
+                          K_AttualeInterno => #K_MotoreInt);
+            
+            "Diagnostica"(K_Attuale_ArrayInCuiAccediamo := #K_Zona,
+                          K_NumMax_MassimoValoreDellArrayInCuiAccediamo := "K_NumZona",
+                          K_Tipo_ArrayInCuiAccediamo := "K_TipoComunicazione",
+                          K_Attuale_DiChiAccede := #K_Motore,
+                          K_Tipo_DiChiAccede := "K_TipoMotore",
+                          K_AttualeInterno => #K_ZonaInt);
+        END_REGION ;
+        REGION Vista manuale
+            "Motore".M[#K_MotoreInt].Prm.Generali.K_TipoMotore := #K_TipoMotore;
+            IF "Motore".M[#K_MotoreInt].Prm.Generali.K_VistaManuale <> "K_VistaManuale_NessunaVista" THEN
+                "VistaManuali".VistaManuale["Motore".M[#K_MotoreInt].Prm.Generali.K_VistaManuale].K_NumeroUtenza := #K_MotoreInt;
+                "VistaManuali".VistaManuale["Motore".M[#K_MotoreInt].Prm.Generali.K_VistaManuale].K_Tipo := #K_TipoMotore;
+            END_IF;
+        END_REGION ;
+        REGION Abilitaizoni sulla base del tipo motore
+            CASE "Motore".M[#K_MotoreInt].Prm.Generali.K_TipoMotore OF
+                "K_TipoMotore_Teleruttore1Dir".."K_TipoMotore_Teleruttore2Dir":
+                    "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.Presente := False;
+                "K_TipoMotore_InverterSiemens":
+                    "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.Presente := True;
+                "K_TipoMotore_InverterKEB":
+                    "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.Presente := True;
+                "K_TipoMotore_AzionamentoFesto_CMMT-ST":
+                    "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.Presente := True;
+                    "Motore".M[#K_MotoreInt].Hmi.Visibilita.Posizioni := True;
+            END_CASE;
+            "Motore".M[#K_MotoreInt].Hmi.Visibilita.VelManuale := "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.Presente ;
+        END_REGION ;
+        REGION Lettura dati inverter
+            
+            CASE "Motore".M[#K_MotoreInt].Prm.Generali.K_TipoMotore OF
+                "K_TipoMotore_InverterSiemens":
+                    REGION Inverter Siemens
+                        (*
+                        Definizione Parola di Stato:
+                        Bit 00: Drive PI: Ready TO Switch "ON"
+                        Bit 01: Drive PI: Ready TO Operate
+                        Bit 02: Drive PI: Operation Enabled. The Drive Follows the Setpoint
+                        Bit 03: Drive PI: Fault
+                        Bit 04: Drive PI: Coast Stop (OFF2) command is NOT Active
+                        Bit 05: Drive PI: Quick Stop (OFF3) command is NOT Active
+                        Bit 06: Drive PI: Switching on inhibited
+                        Bit 07: Drive PI: Warning
+                        Bit 08: Drive PI: Setpoint/Actual Value deviation within tolerance range.
+                        Bit 09: Drive PI: Master control requested
+                        Bit 10: Drive PI: Maximum frequency reached OR exceeded
+                        Bit 11: Drive PI: Motor at Current/Torque limit
+                        Bit 12: Drive PI: Motor Holding Brake Open
+                        Bit 13: Drive PI: Motor Overload
+                        Bit 14: Drive PI: Motor Rotation (1 = CW; 0 = CCW).
+                        Bit 15: Drive PI: Inverter Overload
+                        *)
+                        "Motore".M[#K_MotoreInt].Dati.RetVal_Read_Inv := DPRD_DAT(LADDR := "Motore".M[#K_MotoreInt].In.ProfinetHwSubModule, RECORD => #PI_Siemens);
+                        #AllarmeComunicazioneInv := ("Motore".M[#K_MotoreInt].Dati.RetVal_Read_Inv OR "Motore".M[#K_MotoreInt].Dati.RetVal_SCR_Inv) <> 0;
+                        IF NOT #AllarmeComunicazioneInv THEN
+                            (*Appoggio la Status Word per HMI*)
+                            "Motore".M[#K_MotoreInt].Hmi.STW1 := #PI_Siemens.STW;
+                            (*Controllo se l'inverter è in Fault e relativo Codice*)
+                            "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_DriveInAllarme"].Stato := "Zona".Z[#K_ZonaInt].Prm.CentralinaOkDaTempo.O AND (#PI_Siemens.STW.%X3 OR NOT #PI_Siemens.STW.%X9);
+                            IF "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_DriveInAllarme"].Stato THEN
+                                "Motore".M[#K_MotoreInt].Out.CodiceAllarmeInv := #PI_Siemens.FaultCode;
+                            END_IF;
+                            (*Controllo se l'inverter è in Warning e relativo Codice*)
+                            "Motore".M[#K_MotoreInt].Dati.WarningInverter := "Zona".Z[#K_ZonaInt].Prm.CentralinaOkDaTempo.O AND #PI_Siemens.STW.%X7;
+                            IF "Motore".M[#K_MotoreInt].Dati.WarningInverter THEN
+                                "Motore".M[#K_MotoreInt].Out.CodiceWarningInv := #PI_Siemens.WarningCode;
+                            END_IF;
+                            (* Calcolo La velocità letta dall'inverter *)
+                            "Motore".M[#K_MotoreInt].Dati.VelocitàDaInverter := #PI_Siemens.ActualSpeed * 10000 / 16384;
+                            (* Assegno il segnale di Inverter RUN *)
+                            "Motore".M[#K_MotoreInt].Dati.Feedback_Marcia := #PI_Siemens.STW.%X2;
+                        ELSE
+                            (* In caso di mancanza Comunicazione, Azzero i dati *)
+                            "Motore".M[#K_MotoreInt].Dati.VelocitàDaInverter := 0;
+                            "Motore".M[#K_MotoreInt].Dati.Feedback_Marcia := "Motore".M[#K_MotoreInt].Dati.WarningInverter := false;
+                        END_IF;
+                    END_REGION
+                "K_TipoMotore_Teleruttore1Dir".."K_TipoMotore_Teleruttore2Dir":
+                    "Motore".M[#K_MotoreInt].Dati.WarningInverter := "Motore".M[#K_MotoreInt].In.FbDigitali.WarningInverter;
+                    "Motore".M[#K_MotoreInt].Dati.Feedback_Marcia := "Motore".M[#K_MotoreInt].In.FbDigitali.FeedbackMarcia;
+                "K_TipoMotore_InverterKEB":
+                    "Motore".M[#K_MotoreInt].Dati.WarningInverter := "Motore".M[#K_MotoreInt].In.FbDigitali.WarningInverter;
+                    "Motore".M[#K_MotoreInt].Dati.Feedback_Marcia := "Motore".M[#K_MotoreInt].In.FbDigitali.FeedbackMarcia;
+            END_CASE;
+        END_REGION
+        REGION Appoggio visualizzazione HMI 
+            "Motore".M[#K_MotoreInt].Hmi.CmdPosRich := "Motore".M[#K_MotoreInt].In.CmdPosRich;
+            "Motore".M[#K_MotoreInt].Hmi.CmdNegRich := "Motore".M[#K_MotoreInt].In.CmdNegRich;
+        END_REGION ;
+        REGION BypassFinecorsa
+            IF "Zona".Z[#K_ZonaInt].Out.Auto THEN
+                "Motore".M[#K_MotoreInt].Hmi.BypassSicurezze := False;
+            END_IF;
+        END_REGION ;
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkTitle := "MLC_3Kj"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "Zona".Z[#K_ZonaInt].Out.Attivo )
+            wire#w1
+            Contact( "Motore".M[#K_MotoreInt].In.ConsMovimentoPos )
+            wire#w2
+            Coil( "Motore".M[#K_MotoreInt].Dati.Abilita )
+        END_RUNG
+        RUNG wire#w1
+            Contact( "Motore".M[#K_MotoreInt].In.ConsMovimentoNeg )
+        END_RUNG wire#w2
+        RUNG wire#w1
+            Contact( "Motore".M[#K_MotoreInt].Hmi.BypassSicurezze )
+        END_RUNG wire#w2
+        RUNG wire#powerrail
+            Contact( "Zona".Z[#K_ZonaInt].Out.Auto )
+            Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Auto )
+            wire#w3
+            Contact( "Motore".M[#K_MotoreInt].In.FbDigitali.PulsantieraLocale.Auto )
+            wire#w4
+            Contact( "Motore".M[#K_MotoreInt].In.CmdPosRich )
+            wire#w5
+            I_Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Stop )
+            wire#w7
+            I_Contact( "Motore".M[#K_MotoreInt].In.FbDigitali.PulsantieraLocale.Stop )
+            wire#w8
+            Contact( "Motore".M[#K_MotoreInt].In.ConsMovimentoPos )
+            wire#w9
+            I_Contact( "Motore".M[#K_MotoreInt].Dati.SensoMarciaNeg )
+            Coil( "Motore".M[#K_MotoreInt].Dati.SensoMarciaPos )
+        END_RUNG
+        RUNG wire#w3
+            I_Contact( "Motore".M[#K_MotoreInt].Dati.PulsantieraLocalePresente )
+        END_RUNG wire#w4
+        RUNG wire#powerrail
+            Contact( "Zona".Z[#K_ZonaInt].Out.Attivo )
+            wire#w6
+            Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.ManPos )
+        END_RUNG wire#w5
+        RUNG wire#w6
+            Contact( "Motore".M[#K_MotoreInt].Dati.PulsantieraLocalePresente )
+            Contact( "Motore".M[#K_MotoreInt].In.FbDigitali.PulsantieraLocale.ManPos )
+        END_RUNG wire#w5
+        RUNG wire#w7
+            I_Contact( "Motore".M[#K_MotoreInt].Dati.PulsantieraLocalePresente )
+        END_RUNG wire#w8
+        RUNG wire#w8
+            Contact( "Motore".M[#K_MotoreInt].Hmi.BypassSicurezze )
+        END_RUNG wire#w9
+        RUNG wire#powerrail
+            Contact( "Zona".Z[#K_ZonaInt].Out.Auto )
+            Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Auto )
+            wire#w10
+            Contact( "Motore".M[#K_MotoreInt].In.FbDigitali.PulsantieraLocale.Auto )
+            wire#w11
+            Contact( "Motore".M[#K_MotoreInt].In.CmdNegRich )
+            wire#w12
+            I_Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Stop )
+            wire#w14
+            I_Contact( "Motore".M[#K_MotoreInt].In.FbDigitali.PulsantieraLocale.Stop )
+            wire#w15
+            Contact( "Motore".M[#K_MotoreInt].In.ConsMovimentoNeg )
+            wire#w16
+            I_Contact( "Motore".M[#K_MotoreInt].Dati.SensoMarciaPos )
+            Coil( "Motore".M[#K_MotoreInt].Dati.SensoMarciaNeg )
+        END_RUNG
+        RUNG wire#w10
+            I_Contact( "Motore".M[#K_MotoreInt].Dati.PulsantieraLocalePresente )
+        END_RUNG wire#w11
+        RUNG wire#powerrail
+            Contact( "Zona".Z[#K_ZonaInt].Out.Attivo )
+            wire#w13
+            Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.ManNeg )
+        END_RUNG wire#w12
+        RUNG wire#w13
+            Contact( "Motore".M[#K_MotoreInt].Dati.PulsantieraLocalePresente )
+            Contact( "Motore".M[#K_MotoreInt].In.FbDigitali.PulsantieraLocale.ManNeg )
+        END_RUNG wire#w12
+        RUNG wire#w14
+            I_Contact( "Motore".M[#K_MotoreInt].Dati.PulsantieraLocalePresente )
+        END_RUNG wire#w15
+        RUNG wire#w15
+            Contact( "Motore".M[#K_MotoreInt].Hmi.BypassSicurezze )
+        END_RUNG wire#w16
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkTitle := "MLC_3bs"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "Motore".M[#K_MotoreInt].Out.CmdPosMotore )
+            wire#w1
+            I_Contact( "Motore".M[#K_MotoreInt].Dati.Feedback_Marcia )
+            wire#w2
+            Coil( #Timeout_Comando )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( "Motore".M[#K_MotoreInt].Out.CmdNegMotore )
+            Contact( False )
+        END_RUNG wire#w1
+        RUNG wire#powerrail
+            I_Contact( "Motore".M[#K_MotoreInt].Out.CmdNegMotore )
+            I_Contact( "Motore".M[#K_MotoreInt].Out.CmdPosMotore )
+            Contact( "Motore".M[#K_MotoreInt].Dati.Feedback_Marcia )
+        END_RUNG wire#w2
+    END_NETWORK
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_3vB"
+    }
+    NETWORK
+        REGION Reset allarmi motore
+            "Motore".M[#K_MotoreInt].In.Reset := "Zona".Z[#K_ZonaInt].Gen.Reset;
+            IF "Motore".M[#K_MotoreInt].In.Reset THEN
+                FOR #CounterAllarme := 1 TO "K_NumAllarmiPerMotori" DO
+                    "Motore".M[#K_MotoreInt].Allarmi.A[#CounterAllarme].Stato := False;
+                END_FOR;
+            END_IF;
+        END_REGION
+        REGION Set allarmi motore 
+            IF "Motore".M[#K_MotoreInt].Hmi.EseguiHomingAsse THEN
+                "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_RichiestaAzzeramento"].Stato := False;
+            END_IF;
+            IF "Motore".M[#K_MotoreInt].In.FbDigitali.FaultInverter THEN
+                "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_DriveInAllarme"].Stato := True;
+            END_IF;
+            IF "Motore".M[#K_MotoreInt].In.FbDigitali.Sovracorrente THEN
+                "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_Sovracorrente"].Stato := True;
+            END_IF;
+            IF "Motore".M[#K_MotoreInt].In.FbDigitali.CoppiaSuperata THEN
+                "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_Coppia"].Stato := True;
+            END_IF;
+            IF "Motore".M[#K_MotoreInt].In.FbDigitali.TermicoIntervenuto THEN
+                "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_Termico"].Stato := True;
+            END_IF;
+            IF "Motore".M[#K_MotoreInt].In.FbDigitali.SezMotoreAperto THEN
+                "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_SezMotoreAperto"].Stato := True;
+            END_IF;
+            IF "Motore".M[#K_MotoreInt].In.FbDigitali.TermicoServoventilazione THEN
+                "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_ScattoTermicoServoventola"].Stato := True;
+            END_IF;
+            IF "Motore".M[#K_MotoreInt].Prm.Generali.TimeOutMarcia.O THEN
+                "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_TimeOutMarcia"].Stato := True;
+            END_IF;
+            // IF NOT "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Auto THEN
+            //     "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_MotoreNonInAutoDaHmi"].Stato := True;
+            // END_IF;
+            // IF NOT "Motore".M[#K_MotoreInt].In.FbDigitali.PulsantieraLocale.Auto THEN
+            //     "Motore".M[#K_MotoreInt].Allarmi.A["KAllMot_MotoreNonInAutoDaPulsLoc"].Stato := True;
+            // END_IF;
+            
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := #Timeout_Comando,
+                   IO_DatiTimer := "Motore".M[#K_MotoreInt].Prm.Generali.TimeOutMarcia);
+        END_REGION
+        REGION Caduta ciclo automatico della zona di riferimento 
+            FOR #CounterAllarme := 1 TO "K_NumAllarmiPerMotori" DO
+                "GestSlotAllarmeUtenze"(K_NumAllarme := #CounterAllarme,
+                                        Allarme := "Motore".M[#K_MotoreInt].Allarmi.A[#CounterAllarme],
+                                        K_Zona := #K_ZonaInt,
+                                        K_Indice := #K_MotoreInt,
+                                        K_Tipo := "K_TipoMotore");
+            END_FOR;
+        END_REGION ;
+        REGION Cumulativo degli allarmi 
+            #AllarmePresente := False;
+            FOR #CounterAllarme := 1 TO "K_NumAllarmiPerMotori" DO
+                IF "Motore".M[#K_MotoreInt].Allarmi.A[#CounterAllarme].Stato THEN
+                    #AllarmePresente := True;
+                END_IF;
+            END_FOR;
+            "Motore".M[#K_MotoreInt].Out.Allarme := #AllarmePresente;
+        END_REGION ;
+        REGION Stato motore per hmi
+            
+            #StatoFromHmi := "Motore".M[#K_MotoreInt].Hmi.StatoCmd.StatoFromHmi;
+            #StatoFromPulsantieraLocale := "Motore".M[#K_MotoreInt].In.FbDigitali.PulsantieraLocale.StatoFromPuls;
+            #PulsantieraLocalePresente := "Motore".M[#K_MotoreInt].Dati.PulsantieraLocalePresente;
+            
+            "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Auto := #StatoFromHmi = 1 AND (#StatoFromPulsantieraLocale = 1 OR NOT #PulsantieraLocalePresente);
+            "Motore".M[#K_MotoreInt].Hmi.StatoCmd.ManPos := #StatoFromHmi = 2 OR (#StatoFromPulsantieraLocale = 2 AND #PulsantieraLocalePresente);
+            "Motore".M[#K_MotoreInt].Hmi.StatoCmd.ManNeg := #StatoFromHmi = 3 OR (#StatoFromPulsantieraLocale = 3 AND #PulsantieraLocalePresente);
+            "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Stop := #StatoFromHmi = 0 OR (#StatoFromPulsantieraLocale = 0 AND #PulsantieraLocalePresente);
+            
+            IF "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Auto THEN
+                IF "Motore".M[#K_MotoreInt].Out.InMarcia THEN
+                    "Motore".M[#K_MotoreInt].Hmi.StatoMotore := 1; //Automatico in marcia
+                ELSE
+                    "Motore".M[#K_MotoreInt].Hmi.StatoMotore := 0; //Automatico fermo
+                END_IF;
+            ELSE
+                IF "Motore".M[#K_MotoreInt].Out.InMarcia THEN
+                    "Motore".M[#K_MotoreInt].Hmi.StatoMotore := 3; //Sono in manuale
+                ELSE
+                    "Motore".M[#K_MotoreInt].Hmi.StatoMotore := 2; //Sono in stop
+                END_IF;
+            END_IF;
+            IF "Motore".M[#K_MotoreInt].Out.Allarme THEN
+                "Motore".M[#K_MotoreInt].Hmi.StatoMotore := 4;
+            END_IF;
+        END_REGION
+        REGION Scrittura word HMI
+            FOR #CounterAllarme := 1 TO "K_NumAllarmiPerMotori" DO
+                "GestAllarme_Std"(GestioneSirena := True,
+                                  Allarme := "Motore".M[#K_MotoreInt].Allarmi.A[#CounterAllarme],
+                                  NumAllarme := #CounterAllarme,
+                                  K_Zona := #K_ZonaInt,
+                                  WordHmi := "Motore".M[#K_MotoreInt].Allarmi.WordHMI);
+            END_FOR;
+        END_REGION ;
+        REGION Motore pronto alla marcia
+            "Motore".M[#K_MotoreInt].Out.Pronto := "Motore".M[#K_MotoreInt].Dati.Abilita AND NOT "Motore".M[#K_MotoreInt].Out.Allarme;
+        END_REGION ;
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkTitle := "MLC_3YZ"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "Motore".M[#K_MotoreInt].Out.Pronto )
+            Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Auto )
+            wire#w1
+            Contact( "Motore".M[#K_MotoreInt].Dati.SensoMarciaPos )
+            I_Contact( "Motore".M[#K_MotoreInt].In.CmdNegRich )
+            wire#w2
+            Coil( #StartMarcia )
+        END_RUNG
+        RUNG wire#w1
+            Contact( "Motore".M[#K_MotoreInt].Dati.SensoMarciaNeg )
+            I_Contact( "Motore".M[#K_MotoreInt].In.CmdPosRich )
+        END_RUNG wire#w2
+    END_NETWORK
+    {
+        S7_Language := "SCL";
+        S7_NetworkTitle := "MLC_4Bb"
+    }
+    NETWORK
+        REGION Marcia motore con TStart e TStop    
+            "T_ON"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                   I_StartConteggio := #StartMarcia,
+                   IO_DatiTimer := "Motore".M[#K_MotoreInt].Prm.Generali.TStart);
+            "T_OFF"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                    I_StartConteggio := "Motore".M[#K_MotoreInt].Prm.Generali.TStart.O,
+                    IO_DatiTimer := "Motore".M[#K_MotoreInt].Prm.Generali.Tstop);
+            "T_OFF"(I_CicloCPU := "Zona".Comuni.TempoCicloCpu_r,
+                    I_StartConteggio := "Motore".M[#K_MotoreInt].Out.InMarcia ,
+                    IO_DatiTimer := "Motore".M[#K_MotoreInt].Prm.Generali.TStopServoventola);
+        END_REGION
+    END_NETWORK
+    {
+        S7_Language := "LAD";
+        S7_NetworkTitle := "MLC_hj"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "Motore".M[#K_MotoreInt].Out.Pronto )
+            wire#w1
+            Contact( "Motore".M[#K_MotoreInt].Dati.SensoMarciaPos )
+            wire#w2
+            Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Auto )
+            Contact( "Motore".M[#K_MotoreInt].Prm.Generali.Tstop.O )
+            wire#w3
+            I_Contact( "Motore".M[#K_MotoreInt].Out.CmdNegMotore )
+            Coil( "Motore".M[#K_MotoreInt].Out.CmdPosMotore )
+        END_RUNG
+        RUNG wire#w2
+            Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.ManPos )
+        END_RUNG wire#w3
+        RUNG wire#w1
+            Contact( "Motore".M[#K_MotoreInt].Dati.SensoMarciaNeg )
+            wire#w4
+            Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Auto )
+            Contact( "Motore".M[#K_MotoreInt].Prm.Generali.Tstop.O )
+            wire#w5
+            I_Contact( "Motore".M[#K_MotoreInt].Out.CmdPosMotore )
+            Coil( "Motore".M[#K_MotoreInt].Out.CmdNegMotore )
+        END_RUNG
+        RUNG wire#w4
+            Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.ManNeg )
+        END_RUNG wire#w5
+        RUNG wire#w1
+            Contact( "Motore".M[#K_MotoreInt].Out.CmdPosMotore )
+            wire#w6
+            Coil( "Motore".M[#K_MotoreInt].Out.InMarcia )
+        END_RUNG
+        RUNG wire#w1
+            Contact( "Motore".M[#K_MotoreInt].Out.CmdNegMotore )
+        END_RUNG wire#w6
+        RUNG wire#w1
+            Contact( "Motore".M[#K_MotoreInt].Prm.Generali.TStopServoventola.O )
+            wire#w7
+            Coil( "Motore".M[#K_MotoreInt].Out.CmdPosServoVentola )
+        END_RUNG
+        RUNG wire#w1
+            Contact( "Motore".M[#K_MotoreInt].Hmi.StatoCmd.TestServoVentola )
+        END_RUNG wire#w7
+    END_NETWORK
+    { S7_Language := "SCL" }
+    NETWORK
+        REGION Gestione limiti frequenza inverter
+            IF "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.Presente THEN
+                IF "Motore".M[#K_MotoreInt].Prm.Generali.MassimaFrequenza > "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.MassimaFreqDel_Inv THEN
+                    "Motore".M[#K_MotoreInt].Prm.Generali.MassimaFrequenza := "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.MassimaFreqDel_Inv;
+                END_IF;
+                IF "Motore".M[#K_MotoreInt].Prm.Generali.MinimaFrequenza < "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.MinimaFreqDel_Inv THEN
+                    "Motore".M[#K_MotoreInt].Prm.Generali.MinimaFrequenza := "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.MinimaFreqDel_Inv;
+                END_IF;
+        
+                IF "Motore".M[#K_MotoreInt].In.CmdVelocitaRich > "Motore".M[#K_MotoreInt].Prm.Generali.MassimaFrequenza THEN
+                    "Motore".M[#K_MotoreInt].In.CmdVelocitaRich := "Motore".M[#K_MotoreInt].Prm.Generali.MassimaFrequenza;
+                END_IF;
+                IF "Motore".M[#K_MotoreInt].In.CmdVelocitaRich < "Motore".M[#K_MotoreInt].Prm.Generali.MinimaFrequenza THEN
+                    "Motore".M[#K_MotoreInt].In.CmdVelocitaRich := "Motore".M[#K_MotoreInt].Prm.Generali.MinimaFrequenza;
+                END_IF;
+                IF "Motore".M[#K_MotoreInt].Hmi.VelManuale > "Motore".M[#K_MotoreInt].Prm.Generali.MassimaFrequenza THEN
+                    "Motore".M[#K_MotoreInt].Hmi.VelManuale := "Motore".M[#K_MotoreInt].Prm.Generali.MassimaFrequenza;
+                END_IF;
+                IF "Motore".M[#K_MotoreInt].Hmi.VelManuale < "Motore".M[#K_MotoreInt].Prm.Generali.MinimaFrequenza THEN
+                    "Motore".M[#K_MotoreInt].Hmi.VelManuale := "Motore".M[#K_MotoreInt].Prm.Generali.MinimaFrequenza;
+                END_IF;
+                IF "Motore".M[#K_MotoreInt].Hmi.StatoCmd.Auto THEN
+                    "Motore".M[#K_MotoreInt].Dati.FrequenzaRichiesta := "Motore".M[#K_MotoreInt].In.CmdVelocitaRich;
+                ELSIF "Motore".M[#K_MotoreInt].Hmi.StatoCmd.ManPos OR "Motore".M[#K_MotoreInt].Hmi.StatoCmd.ManNeg THEN
+                    "Motore".M[#K_MotoreInt].Dati.FrequenzaRichiesta := "Motore".M[#K_MotoreInt].Hmi.VelManuale;
+                ELSE
+                    "Motore".M[#K_MotoreInt].Dati.FrequenzaRichiesta := 0.0;
+                END_IF;
+            END_IF;
+        END_REGION ;
+        REGION Feedback speed motore
+            IF "Motore".M[#K_MotoreInt].Rif_Inc.K_Analogica <> 0 THEN
+                "Motore".M[#K_MotoreInt].Dati.Feedback_Speed := "Analogica".A["Motore".M[#K_MotoreInt].Rif_Inc.K_Analogica].Out.AnalogicaAttuale.Valore;
+                "Motore".M[#K_MotoreInt].Prm.UnitaMisura.Out := "Analogica".A["Motore".M[#K_MotoreInt].Rif_Inc.K_Analogica].Out.AnalogicaAttuale;
+                "Motore".M[#K_MotoreInt].Prm.Generali.Feedbackspeed_Virtuale := False;
+            ELSIF "Motore".M[#K_MotoreInt].Prm.Generali.Feedbackspeed_Virtuale THEN
+                "Motore".M[#K_MotoreInt].Dati.Feedback_Speed := "Motore".M[#K_MotoreInt].Dati.FrequenzaRichiesta * "Motore".M[#K_MotoreInt].Prm.Posizionatore.KConv_HzSpeed;
+            ELSE
+                "Motore".M[#K_MotoreInt].Dati.Feedback_Speed := 0;
+            END_IF;
+        END_REGION ;
+        REGION Velocità richiesta motore
+            //Scalatura basata sulle reali frequenze dell'inverter
+            "Scala"(ValoreIn := "Motore".M[#K_MotoreInt].Dati.FrequenzaRichiesta ,
+                    MaxLimitInput := "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.MassimaFreqDel_Inv,
+                    MinLimitInput := "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.MinimaFreqDel_Inv,
+                    MaxLimitOut := 100.0,
+                    MinLimitOut := 0.0,
+                    ValoreOut := #Velocità_Percentuale);
+            
+            "Motore".M[#K_MotoreInt].Out.Paw := INT_TO_WORD(REAL_TO_INT(#Velocità_Percentuale * 276.48));
+        END_REGION
+        REGION Motore in posizione
+            #FinestraInPosizione_Pos := "Motore".M[#K_MotoreInt].In.CmdPosizioneRich + "Motore".M[#K_MotoreInt].Prm.Posizionatore.DeadBand_InPosition;
+            #FinestraInPosizione_Neg := "Motore".M[#K_MotoreInt].In.CmdPosizioneRich - "Motore".M[#K_MotoreInt].Prm.Posizionatore.DeadBand_InPosition;
+            #PosAttualeMotore := "Motore".M[#K_MotoreInt].Out.PosAttuale;
+            "Motore".M[#K_MotoreInt].Out.PosiRichiestaRaggiunta := (#PosAttualeMotore <= #FinestraInPosizione_Pos AND #PosAttualeMotore >= #FinestraInPosizione_Neg) OR "Zona".Comuni.Simulazione_PLCSim;
+        END_REGION ;
+        REGION Srittura dati inverter
+            CASE "Motore".M[#K_MotoreInt].Prm.Generali.K_TipoMotore OF
+                "K_TipoMotore_InverterSiemens":
+                    REGION PN Siemens
+                        (* Struttura Control Word
+                        Bit 00: Drive PO: Run = 1/Stop = 0
+                        Bit 01: Drive PO: Pulse Enable = 1/Pulse Disable = 0
+                        Bit 02: Drive PO: No Quick Stop = 1/Quick Stop = 0
+                        Bit 03: Drive PO: Enable = 1/Disable = 0
+                        Bit 04: Drive PO: Ramp Generator Enable = 1/Disable = 0
+                        Bit 05: Drive PO: Ramp Generator Unfreeze = 1/Freeze = 0
+                        Bit 06: Drive PO: Setpoint Enable = 1/ Disable = 0
+                        Bit 07: Drive PO: Faults/Warnings Acknowledge
+                        Bit 08: Drive PO: Reserved
+                        Bit 09: Drive PO: Reserved
+                        Bit 10: Drive PO: PLC Control
+                        Bit 11: Drive PO: Setpoint Reverse
+                        Bit 12: Drive PO: Reserved
+                        Bit 13: Drive PO: Motor Potentiometer Up
+                        Bit 14: Drive PO: Motor Potentiometer Down
+                        Bit 15: Drive PO: Reserved
+                        *)
+                        #PO_Siemens.CTW := w#16#47f;
+                        #PO_Siemens.CTW.%X0 := "Motore".M[#K_MotoreInt].Out.CmdPosMotore OR "Motore".M[#K_MotoreInt].Out.CmdNegMotore;
+                        #PO_Siemens.CTW.%X11 := "Motore".M[#K_MotoreInt].Out.CmdNegMotore;
+                        #PO_Siemens.CTW.%X7 := "Zona".Z[#K_ZonaInt].Gen.Reset;
+                        #PO_Siemens.Speed := REAL_TO_INT(#Velocità_Percentuale * 163.84);
+                        "Motore".M[#K_MotoreInt].Dati.RetVal_SCR_Inv := DPWR_DAT(LADDR := "Motore".M[#K_MotoreInt].In.ProfinetHwSubModule, RECORD := #PO_Siemens);
+                        "Motore".M[#K_MotoreInt].Hmi.CTW1 := #PO_Siemens.CTW;
+                    END_REGION
+            END_CASE;
+        END_REGION
+        REGION Unità di misura 
+            "GestUnitaMisura"("Motore".M[#K_MotoreInt].Prm.UnitaMisura,
+                              UnitàMisura:=_std_unitadimisura_inout_);
+        END_REGION ;
+        REGION Riferimenti incrociati
+            "Motore".M[#K_MotoreInt].Rif_Inc.K_Analogica := "Motore".M[#K_MotoreInt].Prm.Generali.K_Analogica;
+        END_REGION ;
+        REGION Update generale motore
+            IF "Zona".Z[#K_ZonaInt].Gen.UpdatePrm THEN
+                "Motore".M[#K_MotoreInt].In.CmdNegRich :=
+                "Motore".M[#K_MotoreInt].In.CmdPosRich :=
+                "Motore".M[#K_MotoreInt].In.FbDigitali.FeedbackMarcia :=
+                "Motore".M[#K_MotoreInt].In.Reset :=
+                "Motore".M[#K_MotoreInt].In.FbDigitali.WarningInverter :=
+                "Motore".M[#K_MotoreInt].In.FbDigitali.CoppiaSuperata :=
+                "Motore".M[#K_MotoreInt].In.FbDigitali.FaultInverter :=
+                "Motore".M[#K_MotoreInt].In.FbDigitali.SezMotoreAperto :=
+                "Motore".M[#K_MotoreInt].In.FbDigitali.Sovracorrente :=
+                "Motore".M[#K_MotoreInt].Hmi.Visibilita.Posizioni :=
+                "Motore".M[#K_MotoreInt].Hmi.Visibilita.VelManuale :=
+                "Motore".M[#K_MotoreInt].Hmi.Visibilita.Servoventola :=
+                "Motore".M[#K_MotoreInt].Hmi.BypassSicurezze :=
+                "Motore".M[#K_MotoreInt].Dati.PulsantieraLocalePresente :=
+                "Motore".M[#K_MotoreInt].Prm.Generali.Inverter.Presente :=
+                "Motore".M[#K_MotoreInt].In.FbDigitali.TermicoIntervenuto := False;
+                
+                "Motore".M[#K_MotoreInt].In.ConsMovimentoPos := True;
+                "Motore".M[#K_MotoreInt].In.ConsMovimentoNeg := True;
+                
+                "Motore".M[#K_MotoreInt].Rif_Inc.K_Pid :=
+                "Motore".M[#K_MotoreInt].Prm.Generali.K_VistaManuale := 0;
+                
+                "Motore".M[#K_MotoreInt].In.CmdPosizioneRich := 0;
+                
+                "Motore".M[#K_MotoreInt].In.CmdVelocitaRich := 0.0;
+                
+                "Motore".M[#K_MotoreInt].Prm.Generali.K_Analogica := 0;
+                "Motore".M[#K_MotoreInt].Rif_Inc.K_Zona := #K_ZonaInt;
+                REGION Sequenza
+                    "Motore".M[#K_MotoreInt].Dati.InclusoInUnaSequenza := False;
+                    FOR #CounterSlot := 0 TO "K_NumRifIncrociatiSequenza" DO
+                        IF "Motore".M[#K_MotoreInt].Rif_Inc.K_Sequenza[#CounterSlot] <> 0 THEN
+                            "Motore".M[#K_MotoreInt].Dati.InclusoInUnaSequenza := True;
+                        END_IF;
+                    END_FOR;
+                END_REGION ;
+            END_IF;
+        END_REGION ;
+        REGION Pulisco i comandi della sequenza
+            IF "Motore".M[#K_MotoreInt].Dati.InclusoInUnaSequenza THEN
+                "Motore".M[#K_MotoreInt].In.CmdPosRich :=
+                "Motore".M[#K_MotoreInt].In.CmdNegRich := False;
+            END_IF;
+        END_REGION ;
+    END_NETWORK
+END_FUNCTION

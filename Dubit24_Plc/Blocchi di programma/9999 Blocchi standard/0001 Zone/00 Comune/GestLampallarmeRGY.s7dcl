@@ -37,7 +37,7 @@ FUNCTION "GestLampallarmeRGY" : Void
         END_FOR;
         FOR #CounterUtenze := 0 TO "K_NumMotore" DO
             IF "Motore".M[#CounterUtenze].Rif_Inc.K_Zona = #K_Zona THEN
-                IF NOT ("Motore".M[#CounterUtenze].HMI.Stato = 0 OR "Valvola".V[#CounterUtenze].Out.Stato = 1) THEN
+                IF NOT ("Motore".M[#CounterUtenze].Hmi.StatoMotore = 0 OR "Valvola".V[#CounterUtenze].Out.Stato = 1) THEN
                     #UtenzeInMan := True;
                 END_IF;
             END_IF;

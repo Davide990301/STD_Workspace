@@ -1,508 +1,155 @@
 ﻿TYPE
     Std_stMotore : STRUCT
+        { S7_MLC := "MLC_wP" }
         In : STRUCT
-            Setup : Bool;
+            FbDigitali : STRUCT
+                WarningInverter : Bool;
+                SezMotoreAperto : Bool;
+                Sovracorrente : Bool;
+                CoppiaSuperata : Bool;
+                FaultInverter : Bool;
+                FeedbackMarcia : Bool;
+                TermicoIntervenuto : Bool;
+                TermicoServoventilazione : Bool;
+                PulsantieraLocale : STRUCT
+                    Auto : Bool;
+                    Stop : Bool;
+                    ManPos : Bool;
+                    ManNeg : Bool;
+                    StatoFromPuls : Int;
+                END_STRUCT;
+            END_STRUCT;
+            Reset : Bool;
+            ProfinetHwSubModule : HW_SUBMODULE;
             CmdPosRich : Bool;
             CmdNegRich : Bool;
-            Positioning : Bool;
-            PosRelativo : Bool;
-            CambioVelDaPunto : Bool;
+            CmdVelocitaRich : Real;
+            CmdPosizioneRich : Real;
             ConsMovimentoPos : Bool;
             ConsMovimentoNeg : Bool;
-            Premagnetizza : Bool;
-            PremagnetizzaPos : Bool;
-            PremagnetizzaNeg : Bool;
-            ForzaEndLessPos : Bool;
-            ForzaEndLessNeg : Bool;
-            ForzaEndLessBreve : Bool;
-            AttivaLimVarPos : Bool;
-            AttivaLimVarNeg : Bool;
-            MotoreRun : Bool;
-            FrenoSganciato : Bool;
-            AnticadutaON : Bool;
-            AnticadutaOFF : Bool;
-            CinghiaRotta : Bool;
-            { S7_MLC := "MLC_3iR" }
-            CoppiaSuperata : Bool;
-            { S7_MLC := "MLC_SV" }
-            SezAperto : Bool;
-            { S7_MLC := "MLC_m9" }
-            TerMotoreOff : Bool;
-            { S7_MLC := "MLC_tf" }
-            TerVentolaOff : Bool;
-            { S7_MLC := "MLC_p7" }
-            DriverFault : Bool;
-            DriverWarning : Bool;
-            NoComunInv : Bool;
-            NoComunEnc : Bool;
-            SensAzz : Bool;
-            SpinaSicNoInPos : Bool;
-            IngInv01 : Bool;
-            IngInv02 : Bool;
-            IngInv03 : Bool;
-            IngInv04 : Bool;
-            IngInv05 : Bool;
-            IngInv06 : Bool;
-            IngInv07 : Bool;
-            IngInv08 : Bool;
-            PercentualeRichiesta : Int := 100;
-            TrgPos : DInt;
-            TrgPosRel : DInt;
-            CmdVelocitaRich : DInt;
-            Acc : DInt;
-            Dec : DInt;
-            PosCambioVel : DInt;
-            VelCambioVel : DInt;
-            LimiteVarPos : DInt;
-            LimiteVarNeg : DInt;
-            ValoSetupEnc : DInt;
         END_STRUCT;
-        HW : STRUCT
-            TipoCollInverter : Int;
-            HWIO_Inverter : HW_IO;
-            HWIO_Parametri : HW_IO;
-            HWIO_Inverter_Out : HW_IO;
-            HWIO_Parametri_Out : HW_IO;
-            TipoEncoder : Int;
-            HWIO_Encoder : HW_IO;
-            HWIO_PrmEncoder : HW_IO;
-        END_STRUCT;
+        { S7_MLC := "MLC_k7" }
         Prm : STRUCT
+            Generali : STRUCT
+                TStart : _.Std_stTimer;
+                Tstop : _.Std_stTimer;
+                TimeOutMarcia : _.Std_stTimer;
+                TStopServoventola : _.Std_stTimer;
+                { S7_Setpoint := "True" }
+                MassimaFrequenza : Real;
+                MinimaFrequenza : Real;
+                Accellerazione : Real;
+                Decellerazione : Real;
+                InversioneRotazione : Bool;
+                K_Analogica : Int;
+                K_TipoMotore : Int;
+                K_VistaManuale : Int;
+                Inverter : STRUCT
+                    MinimaFreqDel_Inv : Real;
+                    MassimaFreqDel_Inv : Real;
+                    Presente : Bool;
+                END_STRUCT;
+                Feedbackspeed_Virtuale : Bool;
+            END_STRUCT;
+            Abilitazioni : STRUCT
+                Servoventilazione : Bool;
+            END_STRUCT;
+            Posizionatore : STRUCT
+                KConv_HzSpeed : Real;
+                DeadBand_InPosition : Real;
+                LimiteFisicoPos : Real;
+                LimiteFisicoNeg : Real;
+            END_STRUCT;
             Quote : Array[0.._.K_NumCamma] of Real;
             { S7_Setpoint := "False" }
             UnitaMisura : _.Std_UnitaDiMisura;
-            Mech : STRUCT
-                Direction : Bool;
-                EndLess : Bool;
-                GearIn : UInt;
-                GearOut : UInt;
-                FeedConstant : UDInt;
-                RPMMaxRef : UInt;
-                JLoad : DInt;
-                Z176 : DInt;
-            END_STRUCT;
-            Enc : STRUCT
-                Direction : Bool;
-                EncoderLess : Bool;
-                Z180_2 : Bool;
-                Z180_3 : Bool;
-                Z180_4 : Bool;
-                Z180_5 : Bool;
-                Z180_6 : Bool;
-                Z180_7 : Bool;
-                ModoCalcoloK : Bool;
-                SetupDoppio : Bool;
-                Z181_2 : Bool;
-                Z181_3 : Bool;
-                Z181_4 : Bool;
-                Z181_5 : Bool;
-                Z181_6 : Bool;
-                Z181_7 : Bool;
-                Mounting : USInt;
-                SetupMode : USInt;
-                ModuloPosEnc : DInt := DINT#1_000_000_000;
-                ModuloNegEnc : DInt;
-                KSetup : DInt;
-                FeedConstant : UDInt;
-                ImpRev : Real;
-            END_STRUCT;
-            "C" : STRUCT
-                ContPrema : Int;
-                OldPosEncoder : DInt;
-                TrgPos : Real;
-                SpazioGiroEncoder : Real;
-                EncPos : Real;
-                VelMax : DInt;
-            END_STRUCT;
-            "M" : STRUCT
-                RichManPos : Bool;
-                RichManNeg : Bool;
-                AsseNuovaPosManRich : Bool;
-            END_STRUCT;
-            AbiltManutenzionePrev : Bool;
-            K_Analogica : Int;
-            EscludiFunzPos : Bool;
-            CalcTempoRimanente : Bool;
-            CambioDirNoFreno : Bool;
-            PremaNoFreno : Bool;
-            FrenoPresente : Bool;
-            FBKFrenoPresente : Bool;
-            AnticadutaPresente : Bool;
-            ByPassAnticaduta : Bool;
-            DisabCicloAutoAllarme : Bool;
-            DisabCicloManuAllarme : Bool;
-            TReazioneSistema : Int := 120;
-            TPrema : Int := 250;
-            TBassaVel : Int := 100;
-            TAggancioFreno : Int := 100;
-            TSgancioFreno : Int := 100;
-            TOutPrema : Int := 1000;
-            TMinVCost : Int;
-            TCambioDir : Int;
-            ValMaxRef : Int;
-            LimitePos : DInt;
-            LimiteNeg : DInt;
-            PosManutenzione : DInt;
-            VelPrema : DInt;
-            VelBassa : DInt;
-            VelSgancioFrenoPos : DInt;
-            VelSgancioFrenoNeg : DInt;
-            SpazioArrestoPos : DInt;
-            SpazioArrestoNeg : DInt;
-            Precisione : DInt;
-            Inerzia : DInt;
-            FollowingLimit : DInt;
-            MaxCopia : DInt;
-            DecFinale : DInt;
-            DecEmergenza : DInt;
-            Jerk : DInt;
-            VelMan : DInt;
-            VelJog : DInt;
         END_STRUCT;
-        Dati : STRUCT
-            BloccoRichiamato : Bool;
-            InclusoInUnaSequenza : Bool;
-            SetupPN : STRUCT
-                Input : STRUCT
-                    REQ : Bool;
-                    "ID" : Bool;
-                    INDEX : Bool;
-                    "LEN" : Bool;
-                END_STRUCT;
-                Output : STRUCT
-                    DONE : Bool;
-                    BUSY : Bool;
-                    ERROR : Bool;
-                    STATUS : DWord;
-                END_STRUCT;
+        { S7_MLC := "MLC_qL" }
+        Hmi : STRUCT
+            STW1 : Word;
+            CTW1 : Word;
+            TipoManuale : Int;
+            StatoCmd : STRUCT
+                StatoFromHmi : Byte;
+                Auto : Bool;
+                Stop : Bool;
+                ManPos : Bool;
+                ManNeg : Bool;
+                TestServoVentola : Bool;
             END_STRUCT;
-            MP : STRUCT
-                SpazioPercorso : DInt;
-                TempoMovimento : DInt;
-                ImpMarcia : Bool;
-                ImpFreno : Bool;
-                MetriPercorsi : DInt;
-                MinutiLavorati : DInt;
-                NAvviamenti : DInt;
-                NSgancioFreno : DInt;
-            END_STRUCT;
-            MotorStop : Bool;
-            { S7_MLC := "MLC_57V" }
-            ActVelPos : Bool;
-            { S7_MLC := "MLC_584" }
-            ActVelNeg : Bool;
-            { S7_MLC := "MLC_4Lb" }
-            MotoreFermo : Bool;
-            { S7_MLC := "MLC_4Rd" }
-            RitAggancioFreno : Bool;
-            { S7_MLC := "MLC_ib" }
-            CambioDirezioneAlVolo : Bool;
-            { S7_MLC := "MLC_4zr" }
-            SetupSensoreTrovato : Bool;
-            { S7_MLC := "MLC_4bT" }
-            SetupFermoMeccTrovato : Bool;
-            { S7_MLC := "MLC_4pX" }
-            TOffInverterStatus : Bool;
-            { S7_MLC := "MLC_ya" }
-            TOffMotoreMarcia : Bool;
-            { S7_MLC := "MLC_44y" }
-            AppoImpMotoreFermo : Bool;
-            { S7_MLC := "MLC_4VZ" }
-            AppoImpEsecSetUP : Bool;
-            { S7_MLC := "MLC_58S" }
-            AppoImpOnSegnSonora : Bool;
-            { S7_MLC := "MLC_55W" }
-            AppoImpFunzPositioning : Bool;
-            { S7_MLC := "MLC_4XT" }
-            AppoImpMovRelativo : Bool;
-            { S7_MLC := "MLC_4sh" }
-            AppoImpCaVelPunto : Bool;
-            { S7_MLC := "MLC_4jA" }
-            StatoFreno : Bool;
-            PrmSend : Bool;
-            { S7_MLC := "MLC_3gk" }
-            ContMotoreInPrec : Int;
-            { S7_MLC := "MLC_4k4" }
-            ContTimeOutInverter : Int;
-            { S7_MLC := "MLC_54R" }
-            ContTimeOutFreno1 : Int;
-            { S7_MLC := "MLC_3bv" }
-            ContTimeOutFreno2 : Int;
-            { S7_MLC := "MLC_3kx" }
-            ContSgancioFreno : Int;
-            { S7_MLC := "MLC_3rp" }
-            ContAggancioFreno : Int;
-            { S7_MLC := "MLC_3av" }
-            ContTimeOutPrema : Int;
-            { S7_MLC := "MLC_4p7" }
-            ContTOffInverterStatus : Int;
-            { S7_MLC := "MLC_43e" }
-            ContTOffMotoreMarcia : Int;
-            { S7_MLC := "MLC_3PP" }
-            ContCheckFollowError : Int;
-            { S7_MLC := "MLC_NL" }
-            ContSetUPEncoder : Int;
-            { S7_MLC := "MLC_bB" }
-            Memo_PercentualeRich : Int;
-            { S7_MLC := "MLC_36e" }
-            ContTimeOutAzzeramento : Int;
-            { S7_MLC := "MLC_YM" }
-            ContTOutAnticaduta : Int;
-            { S7_MLC := "MLC_546" }
-            RetVal_Read_Inv : Int;
-            { S7_MLC := "MLC_3V7" }
-            RetVal_SCR_Inv : Int;
-            { S7_MLC := "MLC_4zN" }
-            ContCambioDirPos : Int;
-            { S7_MLC := "MLC_4Tn" }
-            ContCambioDirNeg : Int;
-            { S7_MLC := "MLC_hc" }
-            ContOffSezAperto : Int;
-            { S7_MLC := "MLC_59E" }
-            ContSegnSetup : Int;
-            { S7_MLC := "MLC_59V" }
-            ContTORichSetup : Int;
-            { S7_MLC := "MLC_4d3" }
-            ContAbilAccDopoCambioDir : Int;
-            { S7_MLC := "MLC_W9" }
-            ContFermoMeccTrovato : Int;
-            { S7_MLC := "MLC_3cj" }
-            IdPrm : UInt;
-            { S7_MLC := "MLC_3DR" }
-            TempoEsecuzioneProfilo : DInt;
-            { S7_MLC := "MLC_3PW" }
-            ContTimeOutMovimento : DInt;
-            { S7_MLC := "MLC_3Nb" }
-            ChFol_SpazioEncoder : DInt;
-            { S7_MLC := "MLC_4Jx" }
-            ChFol_SpazioTarget : DInt;
-            { S7_MLC := "MLC_3dF" }
-            TRG_OLD_POS_Select : DInt;
-            { S7_MLC := "MLC_nL" }
-            PosizioneAlloStop : DInt;
-            { S7_MLC := "MLC_3RG" }
-            PosizioneCheckDirezione : DInt;
-            { S7_MLC := "MLC_it" }
-            VeloRichPerc : DInt;
-            { S7_MLC := "MLC_4bR" }
-            AccRichPerc : DInt;
-            { S7_MLC := "MLC_Pk" }
-            DecRichPerc : DInt;
-            { S7_MLC := "MLC_4J5" }
-            VeloDopoCambioRich : DInt;
-            { S7_MLC := "MLC_3tv" }
-            TrgPosDint : DInt;
-            { S7_MLC := "MLC_3i5" }
-            OldTrgPosDint : DInt;
-            { S7_MLC := "MLC_3Ju" }
-            OldEncoder : DInt;
-            { S7_MLC := "MLC_4ak" }
-            Memo_Req_Vel : DInt;
-            { S7_MLC := "MLC_3ZY" }
-            Memo_Req_Acc : DInt;
-            { S7_MLC := "MLC_3qz" }
-            Memo_Req_Dec : DInt;
-            { S7_MLC := "MLC_4i4" }
-            Memo_Req_Dec_Emergenza : DInt;
-            { S7_MLC := "MLC_hr" }
-            PosImpulsoSetup : DInt;
-            { S7_MLC := "MLC_4Xk" }
-            DecReqInLavo : DInt;
-            { S7_MLC := "MLC_4xP" }
-            DecReqFinaleInLavo : DInt;
-            { S7_MLC := "MLC_4LA" }
-            DecReqEmergInLavo : DInt;
-            { S7_MLC := "MLC_44j" }
-            MovRelRichiesto : DInt;
-            { S7_MLC := "MLC_k7" }
-            MemoCheckInversione : DInt;
-            { S7_MLC := "MLC_4DS" }
-            MaxPosRicercaFermoMeccanico : DInt;
-            { S7_MLC := "MLC_3LL" }
-            ReqVelConv : Real;
-            { S7_MLC := "MLC_Sw" }
-            VeloMinConv : Real;
-            Encoder : STRUCT
-                { S7_MLC := "MLC_iE" }
-                PrmEncSend : Bool;
-                { S7_MLC := "MLC_3JD" }
-                OLD_Senso_Rotazione : Bool;
-                {
-                    S7_Access := "ReadOnly := External";
-                    S7_MLC := "MLC_4wU";
-                    S7_Visibility := "Hidden := External"
-                }
-                RichSetupEnc : Bool;
-                { S7_MLC := "MLC_4Ha" }
-                RetValRdEnc : Int;
-                { S7_MLC := "MLC_4p5" }
-                RetValScrEnc : Int;
-                { S7_MLC := "MLC_nH" }
-                RicircoloEncoder : DInt := 0;
-                { S7_MLC := "MLC_3TR" }
-                MezzoRicircoloEncoder : DInt := 0;
-                { S7_MLC := "MLC_3Zv" }
-                o_OldPosEncoder : DInt;
-                { S7_MLC := "MLC_4ax" }
-                OLD_Spazio_Giro_Encoder : Real;
-                { S7_MLC := "MLC_3BB" }
-                ValoKSetupSuSens : DInt;
-            END_STRUCT;
-            { S7_MLC := "MLC_vZ" }
-            AlmInv_ResetInverter : Bool;
-            { S7_MLC := "MLC_49g" }
-            Alm_ContAzzCont : DInt;
-            { S7_MLC := "MLC_4w4" }
-            AlmBloccato_Cont : DInt := 0;
-            { S7_MLC := "MLC_4nE" }
-            AlmInv_ToutReset : Int;
-            { S7_MLC := "MLC_4GJ" }
-            AlmInv_Cont : DInt := 0;
-            { S7_MLC := "MLC_4Zk" }
-            AlmInv_ContStorico : DInt := 0;
-            { S7_MLC := "MLC_3jX" }
-            AlmInv_RitRestart : Int;
-            { S7_MLC := "MLC_iM" }
-            AlmInv_StoricoCodici : Array[0..9] of DInt;
-        END_STRUCT;
-        HMI : STRUCT
+            StatoMotore : Int;
+            VelManuale : Real;
             Visibilita : STRUCT
+                VelManuale : Bool;
+                Posizioni : Bool;
                 Servoventola : Bool;
             END_STRUCT;
-            Param : STRUCT
-                Read : Bool;
-                Write : Bool;
-                Save : Bool;
-                FactoryInit : Bool;
-                Init_Motor : Bool;
-                ReadAll : Bool;
-                Number : Int;
-                SubNumber : Int;
-                Value : DInt;
-            END_STRUCT;
-            Setup : Bool;
-            PulsanteSetupPremuto : Bool;
-            ManMov : Bool;
-            UpdParam : Bool;
-            UM : USInt;
-            FBGestione : Int;
-            IndexAreaAuto : UInt;
-            Stato : USInt;
-            ComandoRichiesto : USInt;
-            STW1 : Word;
-            STW2 : Word;
-            STW3 : Word;
-            CTW1 : Word;
-            CTW2 : Word;
-            CTW3 : Word;
-            ValoreSetupEncoder : DInt;
-            ValoreSetupRichiesto : DInt;
-            ValoreSetupSensore : DInt;
-            CodiceWarning : DInt;
-            CodiceAllarme : DInt;
-            ModoInizializza : USInt;
-            ALM : Array[0..1] of Word;
+            EseguiHomingAsse : Bool;
+            CmdPosRich : Bool;
+            CmdNegRich : Bool;
+            BypassSicurezze : Bool;
         END_STRUCT;
+        Dati : STRUCT
+            Feedback_Speed : Real;
+            Feedback_Marcia : Bool;
+            WarningInverter : Bool;
+            SensoMarciaPos : Bool;
+            SensoMarciaNeg : Bool;
+            Abilita : Bool;
+            RetVal_Read_Inv : Int;
+            RetVal_SCR_Inv : Int;
+            PosRich_old : DInt;
+            StatoMotoreOld : Int;
+            PulsantieraLocalePresente : Bool;
+            BloccoRichiamato : Bool;
+            VelocitàDaInverter : DInt;
+            FrequenzaRichiesta : Real;
+            InclusoInUnaSequenza : Bool;
+        END_STRUCT;
+        { S7_MLC := "MLC_V7" }
         Allarmi : STRUCT
             { S7_Setpoint := "False" }
-            "A" : Array[0.._.K_NumAllarmiPerMotori] of _.Std_PrmAllarmeStd;
-            { S7_Setpoint := "True" }
-            WordHmi_1 : Word;
-            WordHmi_2 : Word;
-            ComunInverter : Bool;
-            ComunEncoder : Bool;
-            TOutMarcia : Bool;
-            ConteggioEnc : Bool;
-            FolError : Bool;
-            Bloccato : Bool;
-            TroppoVeloce : Bool;
-            Direzione : Bool;
-            EncMismatch : Bool;
-            TOUTMovimento : Bool;
-            InverterFault : Bool;
-            TermicoVentola : Bool;
-            RotturaCinghia : Bool;
-            TimeOutAnticaduta : Bool;
-            Freno : Bool;
-            Freno2 : Bool;
-            TOUT_Azzeramento : Bool;
-            MotoreNonParam : Bool;
-            EncoderNonSetup : Bool;
-            SetupEncoderEseg : Bool;
-            InverterWarning : Bool;
-            Parametri : Bool;
-            SezAperto : Bool;
-            SpinaSicNoInPos : Bool;
-            TrgPosMinNeg : Bool;
-            TrgPosMaxPos : Bool;
-            TrgPosMinNegVar : Bool;
-            TrgPosMaxPosVar : Bool;
-            AccRichZero : Bool;
-            AccRichMaxMaxDec : Bool;
-            DecRichZero : Bool;
-            DecRichMaxMaxDec : Bool;
-            DecFinaleRichZero : Bool;
-            DecFinaleRichMaxMaxDec : Bool;
-            DecEmergenzaRichZero : Bool;
-            TrgVelMinFreno : Bool;
-            TrgVelMaxMax : Bool;
-            TrgVelCamMinFreno : Bool;
-            TrgVelCamMaxMax : Bool;
+            "A" : Array[0.._.K_NumAllarmiPerMotori] of _.Std_PrmAllarmeStd := [
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                (),
+                ()
+            ];
+            WordHMI : Word;
         END_STRUCT;
+        { S7_MLC := "MLC_4vz" }
         Out : STRUCT
             Pronto : Bool;
-            PremaOK : Bool;
-            TOUTPrema : Bool;
+            Allarme : Bool;
+            Avviso : Bool;
             InMarcia : Bool;
-            ActDirPos : Bool;
-            ActDirNeg : Bool;
-            FaseAcc : Bool;
-            FaseDec : Bool;
-            PosOK : Bool;
-            RichMovPos : Bool;
-            RichMovNeg : Bool;
-            MinLimNeg : Bool;
-            MaxLimPos : Bool;
-            ActInInerzia : Bool;
-            MinTrg : Bool;
-            MaxTrg : Bool;
-            CmdPosServoventola : Bool;
             CmdPosMotore : Bool;
             CmdNegMotore : Bool;
-            CmdAnticaduta : Bool;
-            CmdFreno : Bool;
-            RitSgancioFreno : Bool;
-            Allarme : Bool;
-            DisContattori : Bool;
-            Lampada : Bool;
-            Sirena : Bool;
-            EncoderHomed : Bool;
-            SetUpSensEseg : Bool;
-            UpdParam : Bool;
-            CmdUsc01Inv : Bool;
-            CmdUsc02Inv : Bool;
-            CmdUsc03Inv : Bool;
-            CmdUsc04Inv : Bool;
+            CmdPosServoVentola : Bool;
+            InMarciaRifRag : Bool;
+            PosiRichiestaRaggiunta : Bool;
             "Paw" : Word;
-            ActPos : DInt;
-            SpazioStop : DInt;
-            ActPosPiuStop : DInt;
-            ActPosPiuInerzia : DInt;
-            ActPosMenoInerzia : DInt;
-            SpazioCicloEnc : DInt;
-            DistTRG : DInt;
-            TrgPosFiltrata : DInt;
-            FollowingError : DInt;
-            MotorSpeed : DInt;
-            TFineProfilo : DInt;
-            Vel : Real;
-            VelAss : Real;
-            VelEncoder : DInt;
+            PosAttuale : Real;
+            ErrCom : Int;
+            CodiceAllarmeInv : DInt;
+            CodiceWarningInv : DInt;
+            CorrenteAtt : Real;
+            InPosQuota : Array[0.._.K_NumCamma] of Bool;
         END_STRUCT;
+        { S7_MLC := "MLC_43T" }
         Rif_Inc : STRUCT
             K_Pid : Int;
             K_Zona : Int := 0;
-            { S7_MLC := "MLC_4T2" }
             K_Analogica : Int;
             K_Sequenza : Array[0.._.K_NumRifIncrociatiSequenza] of Int;
         END_STRUCT;

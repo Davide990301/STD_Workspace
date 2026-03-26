@@ -17,33 +17,32 @@ VERSION : 0.1
 
 
 BEGIN
-	
-	 REGION Default parameter - Ripristino dati iniziali!
-	     // IF "Motore".Funzioni.DefaultPrm THEN
-	         // FOR #CounterMotori := 0 TO "K_NumMotore" DO
+	REGION Default parameter - Ripristino dati iniziali!
+	     IF "Motore".Funzioni.DefaultPrm THEN
+	         FOR #CounterMotori := 0 TO "K_NumMotore" DO
 	             //Abilitazioni caduta ciclo automatico
-	             // FOR #CounterAllarmi := 1 TO "K_NumAllarmiPerMotori" DO
-	             //     "Motore".M[#CounterMotori].Allarmi.A[#CounterAllarmi].EnCadutaCiclo := False;
-	             //     "Motore".M[#CounterMotori].Allarmi.A[#CounterAllarmi].EnWarnHmi := True;
-	             // END_FOR;
-	             // "Motore".M[#CounterMotori].Allarmi.A["KAllMot_Termico"].EnCadutaCiclo := True;
-	             // "Motore".M[#CounterMotori].Allarmi.A["KAllMot_Termico"].EnWarnHmi := True;
-	             //Parametrizzazione motore
-	             //  "Motore".M[#CounterMotori].Prm.Generali.TStart.Preset := 1;
-	             //  "Motore".M[#CounterMotori].Prm.Generali.Tstop.Preset := 1;
-	             //  "Motore".M[#CounterMotori].Prm.Generali.TimeOutMarcia.Preset := 1;
-	             //  "Motore".M[#CounterMotori].Prm.Generali.TStopServoventola.Preset := 1;
-	             // "Motore".M[#CounterMotori].Prm.Generali.Inverter.MassimaFreqDel_Inv := 100;
-	             // "Motore".M[#CounterMotori].Prm.Generali.MassimaFrequenza := 100;
-	         // END_FOR;
-	     //     "Motore".Funzioni.DefaultPrm := False;
-	     // END_IF;
-	     // IF "Motore".Funzioni.TuttiInAutoMode THEN
-	     //     FOR #CounterMotori := 0 TO "K_NumMotore" DO
-	     //         "Motore".M[#CounterMotori].HMI.Stato := 
-	     //     END_FOR;
-	     //     "Motore".Funzioni.TuttiInAutoMode := False;
-	     // END_IF;
+	             FOR #CounterAllarmi := 1 TO "K_NumAllarmiPerMotori" DO
+	                 "Motore".M[#CounterMotori].Allarmi.A[#CounterAllarmi].EnCadutaCiclo := False;
+	                 "Motore".M[#CounterMotori].Allarmi.A[#CounterAllarmi].EnWarnHmi := True;
+	             END_FOR;
+	             "Motore".M[#CounterMotori].Allarmi.A["KAllMot_Termico"].EnCadutaCiclo := True;
+	             "Motore".M[#CounterMotori].Allarmi.A["KAllMot_Termico"].EnWarnHmi := True;
+	             //Parametrizzazione Motore
+	              "Motore".M[#CounterMotori].Prm.Generali.TStart.Preset := 1;
+	              "Motore".M[#CounterMotori].Prm.Generali.Tstop.Preset := 1;
+	              "Motore".M[#CounterMotori].Prm.Generali.TimeOutMarcia.Preset := 1;
+	              "Motore".M[#CounterMotori].Prm.Generali.TStopServoventola.Preset := 1;
+	             "Motore".M[#CounterMotori].Prm.Generali.Inverter.MassimaFreqDel_Inv := 100;
+	             "Motore".M[#CounterMotori].Prm.Generali.MassimaFrequenza := 100;
+	         END_FOR;
+	         "Motore".Funzioni.DefaultPrm := False;
+	     END_IF;
+	     IF "Motore".Funzioni.TuttiInAutoMode THEN
+	         FOR #CounterMotori := 0 TO "K_NumMotore" DO
+	             "Motore".M[#CounterMotori].Hmi.StatoMotore := 1;
+	         END_FOR;
+	         "Motore".Funzioni.TuttiInAutoMode := False;
+	     END_IF;
 	 END_REGION ;
 	 REGION Motore di esempio
 	     REGION Logica motore
@@ -51,14 +50,14 @@ BEGIN
 	         "Motore".M["K_Motore_Esempio"].In.CmdNegRich := False;
 	     END_REGION ;
 	     REGION Ingressi digitali del motore
-	         "Motore".M["K_Motore_Esempio"].In.MotoreRun := False;
-	         "Motore".M["K_Motore_Esempio"].In.SezAperto := False;
-	         // "Motore".M["K_Motore_Esempio"].In.FbDigitali.CoppiaSuperata := false;
-	         // "Motore".M["K_Motore_Esempio"].In.FbDigitali.TermicoIntervenuto := false;
-	         // "Motore".M["K_Motore_Esempio"].In.FbDigitali.TermicoServoventilazione := true;
-	         // "Motore".M["K_Motore_Esempio"].In.FbDigitali.FaultInverter := False;
-	         // "Motore".M["K_Motore_Esempio"].In.FbDigitali.Sovracorrente := False;
-	         // "Motore".M["K_Motore_Esempio"].Prm.Generali.K_Analogica := "K_Analogica_Esempio";
+	         "Motore".M["K_Motore_Esempio"].In.FbDigitali.FeedbackMarcia := False;
+	         "Motore".M["K_Motore_Esempio"].In.FbDigitali.SezMotoreAperto := False;
+	         "Motore".M["K_Motore_Esempio"].In.FbDigitali.CoppiaSuperata := false;
+	         "Motore".M["K_Motore_Esempio"].In.FbDigitali.TermicoIntervenuto := false;
+	         "Motore".M["K_Motore_Esempio"].In.FbDigitali.TermicoServoventilazione := true;
+	         "Motore".M["K_Motore_Esempio"].In.FbDigitali.FaultInverter := False;
+	         "Motore".M["K_Motore_Esempio"].In.FbDigitali.Sovracorrente := False;
+	         "Motore".M["K_Motore_Esempio"].Prm.Generali.K_Analogica := "K_Analogica_Esempio";
 	     END_REGION ;
 	     REGION Call motore    
 	         "GestMotore"(K_Motore := "K_Motore_Esempio",

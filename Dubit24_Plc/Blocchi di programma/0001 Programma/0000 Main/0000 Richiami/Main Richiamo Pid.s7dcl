@@ -7,6 +7,7 @@
 ORGANIZATION_BLOCK "Main Richiamo Pid"
     VAR_TEMP
         "Nop" : Bool;
+        "Real" : Array[0..100] of Real;
     END_VAR
 
     { S7_Language := "LAD" }
@@ -20,6 +21,6 @@ ORGANIZATION_BLOCK "Main Richiamo Pid"
         S7_NetworkTitle := "MLC_4J8"
     }
     NETWORK
-        
+        "Main pid"();
     END_NETWORK
 END_ORGANIZATION_BLOCK

@@ -9,7 +9,7 @@
       <SW.Tags.PlcUserConstant ID="1" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_EncMismatch</Name>
+          <Name>KAllMot_Comunicazione</Name>
           <Value>1</Value>
         </AttributeList>
         <ObjectList>
@@ -52,7 +52,7 @@
       <SW.Tags.PlcUserConstant ID="8" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_ToutMovimento</Name>
+          <Name>KAllMot_DriveInAllarme</Name>
           <Value>2</Value>
         </AttributeList>
         <ObjectList>
@@ -95,7 +95,7 @@
       <SW.Tags.PlcUserConstant ID="F" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_InverterFault</Name>
+          <Name>KAllMot_Sovracorrente</Name>
           <Value>3</Value>
         </AttributeList>
         <ObjectList>
@@ -138,7 +138,7 @@
       <SW.Tags.PlcUserConstant ID="16" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_TermicoVentola</Name>
+          <Name>KAllMot_Coppia</Name>
           <Value>4</Value>
         </AttributeList>
         <ObjectList>
@@ -181,7 +181,7 @@
       <SW.Tags.PlcUserConstant ID="1D" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_RotturaCinghia</Name>
+          <Name>KAllMot_Termico</Name>
           <Value>5</Value>
         </AttributeList>
         <ObjectList>
@@ -224,7 +224,7 @@
       <SW.Tags.PlcUserConstant ID="24" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_TimeOutAnticaduta</Name>
+          <Name>KAllMot_TimeOutMarcia</Name>
           <Value>6</Value>
         </AttributeList>
         <ObjectList>
@@ -267,7 +267,7 @@
       <SW.Tags.PlcUserConstant ID="2B" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_Freno</Name>
+          <Name>KAllMot_SezMotoreAperto</Name>
           <Value>7</Value>
         </AttributeList>
         <ObjectList>
@@ -310,7 +310,7 @@
       <SW.Tags.PlcUserConstant ID="32" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_Freno2</Name>
+          <Name>KAllMot_ScattoTermicoServoventola</Name>
           <Value>8</Value>
         </AttributeList>
         <ObjectList>
@@ -353,7 +353,7 @@
       <SW.Tags.PlcUserConstant ID="39" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_ComunInverter</Name>
+          <Name>KAllMot_RichiestaAzzeramento</Name>
           <Value>9</Value>
         </AttributeList>
         <ObjectList>
@@ -396,7 +396,7 @@
       <SW.Tags.PlcUserConstant ID="40" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_ComunEncoder</Name>
+          <Name>KAllMot_LimiteFisicoPosRaggiunto</Name>
           <Value>10</Value>
         </AttributeList>
         <ObjectList>
@@ -439,7 +439,7 @@
       <SW.Tags.PlcUserConstant ID="47" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_TOutMarcia</Name>
+          <Name>KAllMot_LimiteFisicoNegRaggiunto</Name>
           <Value>11</Value>
         </AttributeList>
         <ObjectList>
@@ -482,7 +482,7 @@
       <SW.Tags.PlcUserConstant ID="4E" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_ConteggioEnc</Name>
+          <Name>KAllMot_MotoreNonInAutoDaHmi</Name>
           <Value>12</Value>
         </AttributeList>
         <ObjectList>
@@ -525,7 +525,7 @@
       <SW.Tags.PlcUserConstant ID="55" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_FolError</Name>
+          <Name>KAllMot_MotoreNonInAutoDaPulsLoc</Name>
           <Value>13</Value>
         </AttributeList>
         <ObjectList>
@@ -556,221 +556,6 @@
                 </AttributeList>
               </MultilingualTextItem>
               <MultilingualTextItem ID="5B" CompositionName="Items">
-                <AttributeList>
-                  <Culture>it-IT</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-            </ObjectList>
-          </MultilingualText>
-        </ObjectList>
-      </SW.Tags.PlcUserConstant>
-      <SW.Tags.PlcUserConstant ID="5C" CompositionName="UserConstants">
-        <AttributeList>
-          <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_Bloccato</Name>
-          <Value>14</Value>
-        </AttributeList>
-        <ObjectList>
-          <MultilingualText ID="5D" CompositionName="Comment">
-            <ObjectList>
-              <MultilingualTextItem ID="5E" CompositionName="Items">
-                <AttributeList>
-                  <Culture>de-DE</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="5F" CompositionName="Items">
-                <AttributeList>
-                  <Culture>en-GB</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="60" CompositionName="Items">
-                <AttributeList>
-                  <Culture>es-ES</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="61" CompositionName="Items">
-                <AttributeList>
-                  <Culture>fr-FR</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="62" CompositionName="Items">
-                <AttributeList>
-                  <Culture>it-IT</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-            </ObjectList>
-          </MultilingualText>
-        </ObjectList>
-      </SW.Tags.PlcUserConstant>
-      <SW.Tags.PlcUserConstant ID="63" CompositionName="UserConstants">
-        <AttributeList>
-          <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_TroppoVeloce</Name>
-          <Value>15</Value>
-        </AttributeList>
-        <ObjectList>
-          <MultilingualText ID="64" CompositionName="Comment">
-            <ObjectList>
-              <MultilingualTextItem ID="65" CompositionName="Items">
-                <AttributeList>
-                  <Culture>de-DE</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="66" CompositionName="Items">
-                <AttributeList>
-                  <Culture>en-GB</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="67" CompositionName="Items">
-                <AttributeList>
-                  <Culture>es-ES</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="68" CompositionName="Items">
-                <AttributeList>
-                  <Culture>fr-FR</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="69" CompositionName="Items">
-                <AttributeList>
-                  <Culture>it-IT</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-            </ObjectList>
-          </MultilingualText>
-        </ObjectList>
-      </SW.Tags.PlcUserConstant>
-      <SW.Tags.PlcUserConstant ID="6A" CompositionName="UserConstants">
-        <AttributeList>
-          <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_SpinaSicNoInPos</Name>
-          <Value>32</Value>
-        </AttributeList>
-        <ObjectList>
-          <MultilingualText ID="6B" CompositionName="Comment">
-            <ObjectList>
-              <MultilingualTextItem ID="6C" CompositionName="Items">
-                <AttributeList>
-                  <Culture>de-DE</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="6D" CompositionName="Items">
-                <AttributeList>
-                  <Culture>en-GB</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="6E" CompositionName="Items">
-                <AttributeList>
-                  <Culture>es-ES</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="6F" CompositionName="Items">
-                <AttributeList>
-                  <Culture>fr-FR</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="70" CompositionName="Items">
-                <AttributeList>
-                  <Culture>it-IT</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-            </ObjectList>
-          </MultilingualText>
-        </ObjectList>
-      </SW.Tags.PlcUserConstant>
-      <SW.Tags.PlcUserConstant ID="71" CompositionName="UserConstants">
-        <AttributeList>
-          <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_22(Word1_x6)</Name>
-          <Value>22</Value>
-        </AttributeList>
-        <ObjectList>
-          <MultilingualText ID="72" CompositionName="Comment">
-            <ObjectList>
-              <MultilingualTextItem ID="73" CompositionName="Items">
-                <AttributeList>
-                  <Culture>de-DE</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="74" CompositionName="Items">
-                <AttributeList>
-                  <Culture>en-GB</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="75" CompositionName="Items">
-                <AttributeList>
-                  <Culture>es-ES</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="76" CompositionName="Items">
-                <AttributeList>
-                  <Culture>fr-FR</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="77" CompositionName="Items">
-                <AttributeList>
-                  <Culture>it-IT</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-            </ObjectList>
-          </MultilingualText>
-        </ObjectList>
-      </SW.Tags.PlcUserConstant>
-      <SW.Tags.PlcUserConstant ID="78" CompositionName="UserConstants">
-        <AttributeList>
-          <DataTypeName>Int</DataTypeName>
-          <Name>KAllMot_23(Word1_x7)</Name>
-          <Value>23</Value>
-        </AttributeList>
-        <ObjectList>
-          <MultilingualText ID="79" CompositionName="Comment">
-            <ObjectList>
-              <MultilingualTextItem ID="7A" CompositionName="Items">
-                <AttributeList>
-                  <Culture>de-DE</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="7B" CompositionName="Items">
-                <AttributeList>
-                  <Culture>en-GB</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="7C" CompositionName="Items">
-                <AttributeList>
-                  <Culture>es-ES</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="7D" CompositionName="Items">
-                <AttributeList>
-                  <Culture>fr-FR</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="7E" CompositionName="Items">
                 <AttributeList>
                   <Culture>it-IT</Culture>
                   <Text />

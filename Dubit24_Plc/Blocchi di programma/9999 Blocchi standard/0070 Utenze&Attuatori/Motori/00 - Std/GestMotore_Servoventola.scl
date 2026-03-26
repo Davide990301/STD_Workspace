@@ -12,8 +12,8 @@ VERSION : 0.1
 
 
 BEGIN
-	"Motore".M[#K_Motore].HMI.Visibilita.Servoventola := True;
-	"Motore".M[#K_Motore].In.TerVentolaOff := #TermicoScattato;
-	#ComandoMarcia := "Motore".M[#K_Motore].Out.CmdPosServoventola;
+	"Motore".M[#K_Motore].Hmi.Visibilita.Servoventola := True;
+	"Motore".M[#K_Motore].In.FbDigitali.TermicoServoventilazione := #TermicoScattato;
+	#ComandoMarcia := "Motore".M[#K_Motore].Out.CmdPosServoVentola;
 END_FUNCTION
 

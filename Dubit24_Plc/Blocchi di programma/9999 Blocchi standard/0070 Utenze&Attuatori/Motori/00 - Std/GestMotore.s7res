@@ -1,0 +1,53 @@
+﻿MultiLingualTexts:
+  - id: MLC_56y
+    it-IT: Costante che indica il motore
+  - id: MLC_4dq
+    it-IT: 1 = Ciclo automatico inserito
+  - id: MLC_4dd
+    it-IT: Process Input Data (Inv. Mitsubishi)
+  - id: MLC_Ly
+    it-IT: Process Output Data (Inv. Mitsubishi)
+  - id: MLC_4z8
+    it-IT: Process Input Data (Inv. Siemens)
+  - id: MLC_55F
+    it-IT: Process Output Data (Inc. Siemens)
+  - id: MLC_3Sx
+    it-IT: Process Input Data (Inv. Schneider)
+  - id: MLC_4tJ
+    it-IT: Process Output Data (Inv. Schneider)
+  - id: MLC_PU
+    it-IT: Process Input Data (Movimot)
+  - id: MLC_zK
+    it-IT: Process Output Data (Movimot)
+  - id: MLC_39p
+    it-IT: Process Input Data (MoviGear)
+  - id: MLC_j2
+    it-IT: Process Output Data (MoviGear)
+  - id: MLC_3Ac
+    it-IT: Process Input Data (Inv. Danfoss)
+  - id: MLC_Xx
+    it-IT: Process Output Data (Inv. INVT)
+  - id: MLC_54D
+    it-IT: Process Input Data (Inv. INVT)
+  - id: MLC_3Tb
+    it-IT: Process Output Data (Inv. Danfoss)
+  - id: MLC_43m
+    it-IT: Process Input Data (Movitrac)
+  - id: MLC_4UJ
+    it-IT: Process Output Data (Movitrac)
+  - id: MLC_4MS
+    it-IT: Costante che indica il motore interna (Appoggiata in ingresso al blocco)
+  - id: MLC_3Jy
+    it-IT: 1 = Ciclo automatico inserito (Appoggiata in ingresso al blocco)
+  - id: MLC_3Kj
+    it-IT: Richiesta marcia motore
+  - id: MLC_3bs
+    it-IT: Timeout feedback marcia
+  - id: MLC_3vB
+    it-IT: '...'
+  - id: MLC_3YZ
+    it-IT: Start marcia
+  - id: MLC_4Bb
+    it-IT: Timer motore
+  - id: MLC_hj
+    it-IT: Comando marcia

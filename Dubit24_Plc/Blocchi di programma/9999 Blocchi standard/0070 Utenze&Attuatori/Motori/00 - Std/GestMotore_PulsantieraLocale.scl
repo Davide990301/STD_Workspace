@@ -33,69 +33,69 @@ VERSION : 0.1
 
 
 BEGIN
-	// "Motore".M[#K_Motore].Dati.PulsantieraLocalePresente := True;
+	"Motore".M[#K_Motore].Dati.PulsantieraLocalePresente := True;
 	
-	// REGION Tipologia di pulsantiere differenti
-	// (* 
-	// SPIEGAZIONE PULSANTIERA SOLO MANUALE: (Pulsantiera che prevede unicamente il comando manuale)
-	// Nel caso della pulsantiera solo manuale montare un selettore 0/1 per tenere il motore in marcia continua.
-	// Se venisse montato un pulsante al posto del selettore il motore si fermerà nel momento in cui verrà rilasciato il pulsante.
-	// Questo funzionamento viene obbligato a selettore perchè altrimenti dopo aver messo il motore in manuale non si è più in grado di riportarlo in stop.
-	// La targhetta in campo dovrà riportare le voci MAN / AUTO
+	REGION Tipologia di pulsantiere differenti
+	(* 
+	SPIEGAZIONE PULSANTIERA SOLO MANUALE: (Pulsantiera che prevede unicamente il comando manuale)
+	Nel caso della pulsantiera solo manuale montare un selettore 0/1 per tenere il motore in marcia continua.
+	Se venisse montato un pulsante al posto del selettore il motore si fermerà nel momento in cui verrà rilasciato il pulsante.
+	Questo funzionamento viene obbligato a selettore perchè altrimenti dopo aver messo il motore in manuale non si è più in grado di riportarlo in stop.
+	La targhetta in campo dovrà riportare le voci MAN / AUTO
 	
-	// SPIEGAZIONE DELLA PULSANTIERA AUTOMAN: (Pulsantiera che prevede unicamente i comandi manuale e automatico)
-	// Nel caso della pulsantiera automan è necessario montare un selettore a tre posizioni per tenere il motore in marcia continua o automatico continuo.
-	// Dopo di che cablare il contatto del manuale e dell'automatico. Lasciando il selettore nella posizione non cablata il motore si porta nello stato stop.
-	// Se vengono montati due pulsanti auto man il motore si fermerà nel momento in cui viene rilasciato il pulsante man o automatico.
-	// Questo funzionamento viene obbligato a selettore perchè altrimenti dopo aver messo il motore in automatico o manuale non si è più in grado di riportarlo in stop.
-	// La targhetta in campo dovrà riportare le voci MAN / STOP / AUTO
+	SPIEGAZIONE DELLA PULSANTIERA AUTOMAN: (Pulsantiera che prevede unicamente i comandi manuale e automatico)
+	Nel caso della pulsantiera automan è necessario montare un selettore a tre posizioni per tenere il motore in marcia continua o automatico continuo.
+	Dopo di che cablare il contatto del manuale e dell'automatico. Lasciando il selettore nella posizione non cablata il motore si porta nello stato stop.
+	Se vengono montati due pulsanti auto man il motore si fermerà nel momento in cui viene rilasciato il pulsante man o automatico.
+	Questo funzionamento viene obbligato a selettore perchè altrimenti dopo aver messo il motore in automatico o manuale non si è più in grado di riportarlo in stop.
+	La targhetta in campo dovrà riportare le voci MAN / STOP / AUTO
 	
-	// PULSANTIERE MAN STOP AUTO: (Oppure tutte le pulsantiere non descritte precedentemente)
-	// Tutte le altre pulsantiere sono ritentive, se premuto il pulsante o messo il selettore in una determinata posizione,
-	// la pulsantiera rimane in tale comando fino a nuovo input.
-	// Se ad esempio premiamo stop, rimarrà in stop fino a comando manuale o automatico.
-	// Il comando di stop quindi risulta essenziale se si intende fermare il motore da locale.
-	// Se presente solo lui, non potrà più ripartire una volta fermato.
-	// *)
+	PULSANTIERE MAN STOP AUTO: (Oppure tutte le pulsantiere non descritte precedentemente)
+	Tutte le altre pulsantiere sono ritentive, se premuto il pulsante o messo il selettore in una determinata posizione,
+	la pulsantiera rimane in tale comando fino a nuovo input.
+	Se ad esempio premiamo stop, rimarrà in stop fino a comando manuale o automatico.
+	Il comando di stop quindi risulta essenziale se si intende fermare il motore da locale.
+	Se presente solo lui, non potrà più ripartire una volta fermato.
+	*)
 	
-	//     CASE #K_TipoPulsantiera OF
-	//         "K_TipoPulsantieraSoloMan":
-	//             #Auto := NOT (#Puls_o_Sel_ManPos OR #Puls_o_Sel_ManNeg);
-	//             #Stop := False; 
-	//         "K_TipoPulsantieraAutoMan":
-	//             #Stop := NOT (#Puls_o_Sel_ManPos OR #Puls_o_Sel_ManNeg OR #Puls_o_Sel_Auto);
-	//             #Auto := #Puls_o_Sel_Auto;
-	//         ELSE
-	//             #Stop := #Puls_o_Sel_Stop;
-	//             #Auto := #Puls_o_Sel_Auto;
-	//     END_CASE;
-	//     #ManPos := #Puls_o_Sel_ManPos;
-	//     #ManNeg := #Puls_o_Sel_ManNeg;
+	    CASE #K_TipoPulsantiera OF
+	        "K_TipoPulsantieraSoloMan":
+	            #Auto := NOT (#Puls_o_Sel_ManPos OR #Puls_o_Sel_ManNeg);
+	            #Stop := False; 
+	        "K_TipoPulsantieraAutoMan":
+	            #Stop := NOT (#Puls_o_Sel_ManPos OR #Puls_o_Sel_ManNeg OR #Puls_o_Sel_Auto);
+	            #Auto := #Puls_o_Sel_Auto;
+	        ELSE
+	            #Stop := #Puls_o_Sel_Stop;
+	            #Auto := #Puls_o_Sel_Auto;
+	    END_CASE;
+	    #ManPos := #Puls_o_Sel_ManPos;
+	    #ManNeg := #Puls_o_Sel_ManNeg;
 	    
-	// END_REGION;
+	END_REGION;
 	
-	// REGION Stato pulsantiera
-	//     IF #Stop THEN
-	//         "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls := #StatoStop;
-	//     ELSIF #ManPos THEN
-	//         "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls := #StatoManPos;
-	//     ELSIF #ManNeg THEN
-	//         "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls := #StatoManNeg;
-	//     ELSIF #Auto THEN
-	//         "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls := #StatoAutomatico;
-	//     END_IF;
-	// END_REGION;
+	REGION Stato pulsantiera
+	    IF #Stop THEN
+	        "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls := #StatoStop;
+	    ELSIF #ManPos THEN
+	        "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls := #StatoManPos;
+	    ELSIF #ManNeg THEN
+	        "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls := #StatoManNeg;
+	    ELSIF #Auto THEN
+	        "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls := #StatoAutomatico;
+	    END_IF;
+	END_REGION;
 	
-	// "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.Auto := "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls = #StatoAutomatico;
-	// "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.ManPos := "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls = #StatoManPos;
-	// "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.ManNeg := "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls = #StatoManNeg;
-	// "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.Stop := "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls = #StatoStop;
+	"Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.Auto := "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls = #StatoAutomatico;
+	"Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.ManPos := "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls = #StatoManPos;
+	"Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.ManNeg := "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls = #StatoManNeg;
+	"Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.Stop := "Motore".M[#K_Motore].In.FbDigitali.PulsantieraLocale.StatoFromPuls = #StatoStop;
 	
-	// REGION Lampade
-	//     #Lampada_Allarme := "Motore".M[#K_Motore].HMI.StatoMotore = 4;
-	//     #Lampada_Auto := "Motore".M[#K_Motore].HMI.StatoMotore = 1;
-	//     #Lampada_Man := "Motore".M[#K_Motore].HMI.StatoMotore = 2;
-	//     #Lampada_Marcia := "Motore".M[#K_Motore].Out.InMarcia;
-	// END_REGION ;
+	REGION Lampade
+	    #Lampada_Allarme := "Motore".M[#K_Motore].Hmi.StatoMotore = 4;
+	    #Lampada_Auto := "Motore".M[#K_Motore].Hmi.StatoMotore = 1;
+	    #Lampada_Man := "Motore".M[#K_Motore].Hmi.StatoMotore = 2;
+	    #Lampada_Marcia := "Motore".M[#K_Motore].Out.InMarcia;
+	END_REGION ;
 END_FUNCTION
 
