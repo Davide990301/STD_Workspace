@@ -49,7 +49,7 @@ BEGIN
 	        #NumeroParatieAbilitate := 0.0;                                                                                             //Inizializzo il numero di paratie abilitate
 	        #CicloDecrementoNecessario :=
 	        #CicloIncrementoNecessario := False;
-	        FOR #NumeroParatia := 1 TO "K_NumParatia" DO                                                                                //Per ogni paratia dell'array
+	        FOR #NumeroParatia := 0 TO "K_NumParatia" DO                                                                                //Per ogni paratia dell'array
 	            IF "Paratia".Posizionamento.Paratia[#NumeroParatia].K_Paratia <> 0 THEN                                                 //Se il valore è diverso da zero signifca che la paratia è inserita
 	                #NumeroParatieConfigurate += 1;                                                                                     //Conto ogni paratia configurata
 	                "Paratia".Posizionamento.Paratia[#NumeroParatia].PosizioneAttuale :=                                                //Intanto leggo
@@ -102,7 +102,7 @@ BEGIN
 	            END_IF;                                                                                                                 //
 	        END_FOR;                                                                                                                    //
 	        IF "Paratia".Posizionamento.EquidistribuzioneCarico THEN                                                                    //Se viene richiesto di equidistribuire 
-	            FOR #NumeroParatia := 1 TO #NumeroParatieConfigurate DO                                                                 //per ogni paratia configurata
+	            FOR #NumeroParatia := 0 TO #NumeroParatieConfigurate DO                                                                 //per ogni paratia configurata
 	                IF "Paratia".Posizionamento.Paratia[#NumeroParatia].Abilitazione THEN                                               //controllo se è abilitata
 	                    "Paratia".Posizionamento.Paratia[#NumeroParatia].Target := 100.0 / #NumeroParatieAbilitate;                     //e in caso assegno il valore
 	                END_IF;                                                                                                             //
