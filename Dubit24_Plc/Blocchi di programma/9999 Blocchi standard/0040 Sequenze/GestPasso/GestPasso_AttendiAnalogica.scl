@@ -3,7 +3,7 @@
 VERSION : 0.1
    VAR_INPUT 
       K_Analogica : Int;   // Costante che indica la analogica da attendere
-      KAllAnalog : Int;   // Soglia da controllare
+      KAllAnalogica : Int;   // Soglia da controllare
       Comportamento : Int;   // 0 = Smette di contare 1 = Resetta il tempo attuale
       K_Sequenza : Int;   // Sequenza di riferimento
       K_Passo : Int;   // Passo in cui deve aprirsi la valvola
@@ -26,7 +26,7 @@ BEGIN
 	    IF "Sequenza".S[#K_Sequenza].Out.SequenzaAvviata THEN
 	        IF "Sequenza".S[#K_Sequenza].Dati.PassoAttuale = #K_Passo THEN
 	            #AnalogicaNonInPosizione := False;
-	            CASE #KAllAnalog OF
+	            CASE #KAllAnalogica OF
 	                "KAllAnalog_Mini":
 	                    #AnalogicaNonInPosizione := NOT "Analogica".A[#K_Analogica].Out.SogliaMini;
 	                "KAllAnalog_IntMin":
