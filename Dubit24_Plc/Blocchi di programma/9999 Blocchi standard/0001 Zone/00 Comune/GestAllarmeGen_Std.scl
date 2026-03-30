@@ -1,0 +1,64 @@
+﻿FUNCTION "GestAllarmeGen_Std" : Void
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+   VAR_INPUT 
+      NumAllarme : Int;
+      GestioneSirena : Bool;
+      K_Zona : Int;
+   END_VAR
+
+
+BEGIN
+	REGION Word HMI
+	    CASE #NumAllarme OF
+	        1:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X0 :=  "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        2:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X1 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        3:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X2 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        4:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X3 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        5:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X4 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        6:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X5 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        7:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X6 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        8:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X7 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        9:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X8 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        10:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X9 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        11:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X10 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        12:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X11 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        13:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X12 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        14:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X13 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        15:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X14 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	        16:
+	            "Zona".Z[#K_Zona].Allarmi.WordHMI_Gen_1.%X15 := "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato AND "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].EnWarnHmi;
+	    END_CASE;
+	END_REGION ;
+	REGION Allarme nella zona
+	    IF #GestioneSirena THEN
+	        IF "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Stato THEN                                                          //Se ho l'allarme attivo
+	            "Zona".Z[#K_Zona].In.RichiestaLampadaReset := True;                         //Setto subito il pulsante di reset
+	            IF "Zona".Z[#K_Zona].Gen.Reset THEN                                         //Se ho la zona in reset
+	                "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Silenziato := True;                                            //Setto che l'allarme è silenziato
+	            END_IF;
+	            IF NOT "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Silenziato THEN                                             //Se l'allarme non è silenziato
+	                "Zona".Z[#K_Zona].Out.SirenaSuona := True;                              //Setto che la sirena deve suonare
+	            END_IF;
+	        ELSE                                                                            //Se non ho l'allarme attivo
+	            "Zona".Z[#K_Zona].Allarmi.A[#NumAllarme].Silenziato := False;                                               //Resetto che l'allarme è silenziato
+	        END_IF;
+	    END_IF;
+	END_REGION ;
+END_FUNCTION
+
