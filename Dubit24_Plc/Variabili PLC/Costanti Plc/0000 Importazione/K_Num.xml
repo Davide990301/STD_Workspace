@@ -780,6 +780,49 @@
           </MultilingualText>
         </ObjectList>
       </SW.Tags.PlcUserConstant>
+      <SW.Tags.PlcUserConstant ID="7F" CompositionName="UserConstants">
+        <AttributeList>
+          <DataTypeName>Int</DataTypeName>
+          <Name>K_NumStazione</Name>
+          <Value>1</Value>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="80" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="81" CompositionName="Items">
+                <AttributeList>
+                  <Culture>de-DE</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+              <MultilingualTextItem ID="82" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-GB</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+              <MultilingualTextItem ID="83" CompositionName="Items">
+                <AttributeList>
+                  <Culture>es-ES</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+              <MultilingualTextItem ID="84" CompositionName="Items">
+                <AttributeList>
+                  <Culture>fr-FR</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+              <MultilingualTextItem ID="85" CompositionName="Items">
+                <AttributeList>
+                  <Culture>it-IT</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Tags.PlcUserConstant>
     </ObjectList>
   </SW.Tags.PlcTagTable>
 </Document>

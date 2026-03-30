@@ -95,8 +95,8 @@
       <SW.Tags.PlcUserConstant ID="F" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumStazione</Name>
-          <Value>1</Value>
+          <Name>K_NumUtente</Name>
+          <Value>0</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="10" CompositionName="Comment">
@@ -138,8 +138,8 @@
       <SW.Tags.PlcUserConstant ID="16" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumUtente</Name>
-          <Value>0</Value>
+          <Name>K_NumPopup</Name>
+          <Value>1</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="17" CompositionName="Comment">
@@ -181,8 +181,8 @@
       <SW.Tags.PlcUserConstant ID="1D" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumPopup</Name>
-          <Value>1</Value>
+          <Name>K_NumCamma</Name>
+          <Value>0</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="1E" CompositionName="Comment">
@@ -224,7 +224,7 @@
       <SW.Tags.PlcUserConstant ID="24" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumCamma</Name>
+          <Name>K_NumValvolaFestoVTEM</Name>
           <Value>0</Value>
         </AttributeList>
         <ObjectList>
@@ -267,7 +267,7 @@
       <SW.Tags.PlcUserConstant ID="2B" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumValvolaFestoVTEM</Name>
+          <Name>K_NumVistaManuale</Name>
           <Value>0</Value>
         </AttributeList>
         <ObjectList>
@@ -310,7 +310,7 @@
       <SW.Tags.PlcUserConstant ID="32" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumVistaManuale</Name>
+          <Name>K_NumSezionePastorizzatore</Name>
           <Value>0</Value>
         </AttributeList>
         <ObjectList>
@@ -353,8 +353,8 @@
       <SW.Tags.PlcUserConstant ID="39" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumSezionePastorizzatore</Name>
-          <Value>0</Value>
+          <Name>K_NumSegnaleMacchina</Name>
+          <Value>2</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="3A" CompositionName="Comment">
@@ -386,7 +386,7 @@
               <MultilingualTextItem ID="3F" CompositionName="Items">
                 <AttributeList>
                   <Culture>it-IT</Culture>
-                  <Text />
+                  <Text>Numero di macchine con cui abbiamo segnali</Text>
                 </AttributeList>
               </MultilingualTextItem>
             </ObjectList>
@@ -396,8 +396,8 @@
       <SW.Tags.PlcUserConstant ID="40" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumSegnaleMacchina</Name>
-          <Value>2</Value>
+          <Name>K_NumSegnaleMacchinaDigitale</Name>
+          <Value>6</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="41" CompositionName="Comment">
@@ -429,7 +429,7 @@
               <MultilingualTextItem ID="46" CompositionName="Items">
                 <AttributeList>
                   <Culture>it-IT</Culture>
-                  <Text>Numero di macchine con cui abbiamo segnali</Text>
+                  <Text />
                 </AttributeList>
               </MultilingualTextItem>
             </ObjectList>
@@ -439,8 +439,8 @@
       <SW.Tags.PlcUserConstant ID="47" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumSegnaleMacchinaDigitale</Name>
-          <Value>6</Value>
+          <Name>K_NumSegnaleMacchinaAnalogico</Name>
+          <Value>0</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="48" CompositionName="Comment">
@@ -482,7 +482,7 @@
       <SW.Tags.PlcUserConstant ID="4E" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumSegnaleMacchinaAnalogico</Name>
+          <Name>K_NumConteggio</Name>
           <Value>0</Value>
         </AttributeList>
         <ObjectList>
@@ -525,7 +525,7 @@
       <SW.Tags.PlcUserConstant ID="55" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumConteggio</Name>
+          <Name>K_NumFrontiSalitaDiscesa</Name>
           <Value>0</Value>
         </AttributeList>
         <ObjectList>
@@ -568,8 +568,8 @@
       <SW.Tags.PlcUserConstant ID="5C" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumFrontiSalitaDiscesa</Name>
-          <Value>0</Value>
+          <Name>K_NumRifIncrociatiSequenza</Name>
+          <Value>5</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="5D" CompositionName="Comment">
@@ -601,7 +601,7 @@
               <MultilingualTextItem ID="62" CompositionName="Items">
                 <AttributeList>
                   <Culture>it-IT</Culture>
-                  <Text />
+                  <Text>Rappresenta il numero di riferimenti incrociti possibili delle sequenze (Una valvola può essere comandata da più sequenze)</Text>
                 </AttributeList>
               </MultilingualTextItem>
             </ObjectList>
@@ -611,8 +611,8 @@
       <SW.Tags.PlcUserConstant ID="63" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumRifIncrociatiSequenza</Name>
-          <Value>5</Value>
+          <Name>K_NumPassi</Name>
+          <Value>25</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="64" CompositionName="Comment">
@@ -644,7 +644,7 @@
               <MultilingualTextItem ID="69" CompositionName="Items">
                 <AttributeList>
                   <Culture>it-IT</Culture>
-                  <Text>Rappresenta il numero di riferimenti incrociti possibili delle sequenze (Una valvola può essere comandata da più sequenze)</Text>
+                  <Text>Numero di passi per ogni sequenza</Text>
                 </AttributeList>
               </MultilingualTextItem>
             </ObjectList>
@@ -654,8 +654,8 @@
       <SW.Tags.PlcUserConstant ID="6A" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumPassi</Name>
-          <Value>25</Value>
+          <Name>K_NumDatiBool_Ricetta</Name>
+          <Value>10</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="6B" CompositionName="Comment">
@@ -687,7 +687,7 @@
               <MultilingualTextItem ID="70" CompositionName="Items">
                 <AttributeList>
                   <Culture>it-IT</Culture>
-                  <Text>Numero di passi per ogni sequenza</Text>
+                  <Text />
                 </AttributeList>
               </MultilingualTextItem>
             </ObjectList>
@@ -697,7 +697,7 @@
       <SW.Tags.PlcUserConstant ID="71" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumDatiBool_Ricetta</Name>
+          <Name>K_NumDatiReal_Ricetta</Name>
           <Value>10</Value>
         </AttributeList>
         <ObjectList>
@@ -740,8 +740,8 @@
       <SW.Tags.PlcUserConstant ID="78" CompositionName="UserConstants">
         <AttributeList>
           <DataTypeName>Int</DataTypeName>
-          <Name>K_NumDatiReal_Ricetta</Name>
-          <Value>10</Value>
+          <Name>K_NumTrends</Name>
+          <Value>0</Value>
         </AttributeList>
         <ObjectList>
           <MultilingualText ID="79" CompositionName="Comment">
@@ -771,49 +771,6 @@
                 </AttributeList>
               </MultilingualTextItem>
               <MultilingualTextItem ID="7E" CompositionName="Items">
-                <AttributeList>
-                  <Culture>it-IT</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-            </ObjectList>
-          </MultilingualText>
-        </ObjectList>
-      </SW.Tags.PlcUserConstant>
-      <SW.Tags.PlcUserConstant ID="7F" CompositionName="UserConstants">
-        <AttributeList>
-          <DataTypeName>Int</DataTypeName>
-          <Name>K_NumTrends</Name>
-          <Value>0</Value>
-        </AttributeList>
-        <ObjectList>
-          <MultilingualText ID="80" CompositionName="Comment">
-            <ObjectList>
-              <MultilingualTextItem ID="81" CompositionName="Items">
-                <AttributeList>
-                  <Culture>de-DE</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="82" CompositionName="Items">
-                <AttributeList>
-                  <Culture>en-GB</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="83" CompositionName="Items">
-                <AttributeList>
-                  <Culture>es-ES</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="84" CompositionName="Items">
-                <AttributeList>
-                  <Culture>fr-FR</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-              <MultilingualTextItem ID="85" CompositionName="Items">
                 <AttributeList>
                   <Culture>it-IT</Culture>
                   <Text />
